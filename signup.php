@@ -17,6 +17,46 @@ $createUserTb = "CREATE TABLE user(username varchar(50) PRIMARY KEY,password var
 email varchar(40),name varchar(40) )";
 $conn->query($createUserTb);
 
+$createApplicantTb = "CREATE TABLE applicant(
+username varchar(50),
+idtype varchar(10),
+idno varchar(20),
+mobileNo varchar(12),
+dateOfBirth date,
+foreign key (username) references user(username))";
+$conn->query($createApplicantTb);
+
+$createQualificationTb ="CREATE TABLE qualification(
+qualificationID varchar(10) primary key,
+qualificationName varchar(50),
+minimumScore int(10),
+maximumScore int(10),
+resultCalcDescription varchar(200),
+gradeList varchar(200))";
+$conn->query($createQualificationTb);
+
+$insertSTPM ="INSERT into qualification values ('Q01','STPM',0,4,'Average of best 3 Subjects','A   (4.00)
+A-	(3.67)
+B+ (3.33)
+B    (3.00)
+B-  (2.67)
+C+  (2.33)
+C   (2.00)
+B+ (1.67)
+D+ (1.33)
+D  (1.00)
+qualificationqualificationF  (0.00)
+')";
+$conn->query($insertSTPM);
+
+$insertALevel ="insert into qualification values ('Q02','A-levels',0,5,'Average of best 3 Subjects','A - 5 points
+B - 4 points
+C - 3 points
+D - 2 points
+E - 1 point
+')";
+$conn->query($insertALevel);
+
 
  ?>
  <!DOCTYPE html>
