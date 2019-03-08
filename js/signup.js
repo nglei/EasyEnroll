@@ -137,7 +137,7 @@ function validation(){
 	//validate ID type
 	function validIDtype(){
 		if(selectValue == "type"){
-			document.getElementById("errorIDType").innerHTML="Invalid mobile number format";
+			document.getElementById("errorIDType").innerHTML="Please choose your ID Type";
 			idType.style.borderColor="red";
 			return false;
 		}

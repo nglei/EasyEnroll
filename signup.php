@@ -209,13 +209,13 @@ $conn->query($insertALevel);
                    <div class="contact-form-area wow fadeInUp" data-wow-delay="500ms">
                        <form action="#" onsubmit="return validation()" method="post">
                            <div class="form-label-group">
-                             <input type="text" id="inputUsername" class="form-control" placeholder="Username">
+                             <input type="text" name="username" id="inputUsername" class="form-control" placeholder="Username">
                              <span id="errorUsername" class="error"></span>
                              <label for="inputUsername">Username</label>
                            </div>
 
                            <div class="form-label-group">
-                             <input type="password" id="inputPassword" class="form-control" placeholder="Password" >
+                             <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" >
                              <span id="errorPassword" class="error"></span>
                              <label for="inputPassword">Password</label>
                            </div>
@@ -227,20 +227,20 @@ $conn->query($insertALevel);
                            </div>
 
                            <div class="form-label-group">
-                             <input type="text" id="inputName" class="form-control" placeholder="Full Name">
+                             <input type="text" name="fullName" id="inputName" class="form-control" placeholder="Full Name">
                              <span id="errorName" class="error"></span>
                              <label for="inputName">Full Name</label>
                            </div>
 
                            <div class="form-label-group">
-                             <input type="email" id="inputEmail" class="form-control" placeholder="Email Address">
+                             <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email Address">
                              <span id="errorEmail" class="error"></span>
                              <label for="inputEmail">Email Address</label>
                            </div>
 
 
                            <div class="form-label-group">
-                             <select id="selectIDType" class="form-control">
+                             <select id="selectIDType" name="idType" class="form-control">
                                <option value="type" disabled="" selected="">ID Type</option>
                                <option value="ic">IC</option>
                                <option value="passport">Passport</option>
@@ -250,20 +250,20 @@ $conn->query($insertALevel);
                            </div>
 
                            <div class="form-label-group">
-                             <input type="text" id="inputIDNo" class="form-control" placeholder="IDNo">
+                             <input type="text" name="idNo" id="inputIDNo" class="form-control" placeholder="IDNo">
                              <span id="errorIDNo" class="error"></span>
                              <label for="inputIDNo">ID Number</label>
                            </div>
 
 
                            <div class="form-label-group">
-                             <input type="text" id="inputMobile" class="form-control" placeholder="Mobile Number">
+                             <input type="text" name="mobileNo" id="inputMobile" class="form-control" placeholder="Mobile Number">
                              <span id="errorMobileNo" class="error"></span>
                              <label for="inputMobile">Mobile Number</label>
                            </div>
 
                            <div class="form-label-group">
-                             <input type="date" id="inputDateOfBirth" class="form-control">
+                             <input type="date" name="date" id="inputDateOfBirth" class="form-control">
                              <span id="errorDate" class="error"></span>
                              <label for="inputDateOfBirth">Date of Birth</label>
                            </div>
@@ -273,7 +273,7 @@ $conn->query($insertALevel);
                            </div>
 
                            <div class="form-label-group">
-                             <select id="selectQualification" class="form-control">
+                             <select id="selectQualification" name="qualification" class="form-control">
                                <option value="type" disabled="" selected="">Qualification</option>
                                <option value="1">STPM</option>
                                <option value="2">A-Levels</option>
@@ -387,6 +387,28 @@ $conn->query($insertALevel);
 
                            <button class="btn academy-btn mt-30" type="submit">Sign up</button>
                        </form>
+<?php
+
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+  $username = $_POST['username'];
+	$password = $_POST['password'];
+	$name = $_POST['fullName'];
+	$email = $_POST['email'];
+  $insertUser = "INSERT into user values('$username','$password','$name','$email')";
+  $conn->query($insertUser);
+
+  if(isset($_POST['idType'])){
+    $idType = $_POST['idType'];
+    $idNo = $_POST['idNo'];
+    $mobileNo = $_POST['mobileNo'];
+    $date = $_POST['date'];
+    $insertApplicant = "INSERT into applicant values('$username','$idType','$idNo','$mobileNo','$date')";
+    $conn->query($insertApplicant);
+  }
+
+
+}
+ ?>
                    </div>
                </div>
              </div>
