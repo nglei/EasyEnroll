@@ -271,3 +271,11 @@ date.onchange = function(){
 		date.style.borderColor="white";
 	}
 }
+
+qualification.onchange = function(){
+	var selectValue = qualification[qualification.selectedIndex].value;
+	if(selectValue != "type"){
+		document.getElementById("errorQualification").innerHTML="";
+		qualification.style.borderColor="white";
+	}
+}
