@@ -130,7 +130,7 @@ $conn->query($insertALevel);
                              <!-- Nav Start -->
                              <div class="classynav">
                                  <ul>
-                                     <li><a href="index.html">Home</a></li>
+                                     <li><a href="index.php">Home</a></li>
                                      <li><a href="#">Pages</a>
                                          <ul class="dropdown">
                                              <li><a href="index.html">Home</a></li>
