@@ -8,14 +8,14 @@ if ($conn->connect_error){
   die("Connection failed: " . $conn->connect_error);
 }
 
-$createDb = "CREATE DATABASE easyenroll";
+/*$createDb = "CREATE DATABASE easyenroll";
 $useDb = "USE easyenroll";
 $conn->query($createDb);
 $conn->query($useDb);
 
 $createUserTb = "CREATE TABLE user(username varchar(50) PRIMARY KEY,password varchar(25),
 email varchar(40),name varchar(40) )";
-$conn->query($createUserTb);
+$conn->query($createUserTb);*/
 
 $createApplicantTb = "CREATE TABLE applicant(
 username varchar(50),
@@ -99,7 +99,32 @@ $conn->query($insertALevel);
                                  <a href="index.html"><img src="img/core-img/logo.png" alt=""></a>
                              </div>
                              <div class="login-content">
-                                 <a href="#">Register / Login</a>
+                                 <!--a href="#">Register / Login</a-->
+                                 <ul class="">
+ 			                               <li class="nav-item">
+ 				                                   <a data-toggle="dropdown" class="nav-link dropdown-toggle" href="#" aria-expanded="false">Register / Login</a>
+ 				                                       <ul class="dropdown-menu login-form">
+ 					                                            <li>
+ 						                                                  <form action="" method="post">
+                                                                 <div class="form-label-group">
+                                                                   <input type="text" name="loginUsername" id="loginUsername" class="form-control" placeholder="Username">
+                                                                   <span id="loginUsername" class="error"></span>
+                                                                   <label for="loginUsername">Username</label>
+                                                                 </div>
+                                                                 <div class="form-label-group">
+                                                                   <input type="password" name="loginPassword" id="loginPassword" class="form-control" placeholder="Password" >
+                                                                   <span id="loginPassword" class="error"></span>
+                                                                   <label for="loginPassword">Password</label>
+                                                                 </div>
+                                                                 <div>
+                                                                 <a href="#" style="font-size:12px">Don't have account? Register here</a>
+                                                               </div>
+ 							                                                <input type="submit" class="btn academy-btn mt-30" value="Login">
+ 						                                                 </form>
+ 					                                                </li>
+ 				                                                      </ul>
+ 			                                                        </li>
+ 		                                                         </ul>
                              </div>
                          </div>
                      </div>
