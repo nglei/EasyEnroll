@@ -136,7 +136,7 @@
     <!-- ##### Breadcumb Area Start ##### -->
     <div class="breadcumb-area bg-img" style="background-image: url(img/bg-img/breadcumb.jpg);">
         <div class="bradcumbContent">
-            <h2>Contact</h2>
+            <h2>Add University</h2>
         </div>
     </div>
     <!-- ##### Breadcumb Area End ##### -->
@@ -158,8 +158,8 @@
                                 <div class="contact-information wow fadeInUp" data-wow-delay="400ms">
                                     <div class="section-heading text-left">
                                         <span>EasyEnroll</span>
-                                        <h3>Add Qualification</h3>
-                                        <p class="mt-30">This is the site to add qualification based on qualificationName, minScore, maxScore, resultCalcDescription and gradelist five attributes. Please enter the information carefully. Minimum Score and Maximum Score are the highest and lowest score that this qualification can have</p>
+                                        <h3>Add University</h3>
+                                        <p class="mt-30">This site is restricted only for system admins to access in. System admins must aware of the data type requested in all the fields. Assign a university admins after register one university to in charge of this particular university</p>
                                     </div>
 
                                     <!-- Contact Social Info -->
@@ -201,14 +201,13 @@
                             <div class="col-12 col-lg-7">
                                 <div class="contact-form-area wow fadeInUp" data-wow-delay="500ms">
                                     <form action="#" method="post">
-                                        <input type="text" class="form-control" id="name" placeholder="New Qualification">
-                                        <input type="text" class="form-control" id="minScore" placeholder="Minimum Score">
-                                        <input type="text" class="form-control" id="maxScore" placeholder="Maximum Score">
-                                        Overall Result Calculation
-                                        <textarea name="resultcalculation" class="form-control" id="resultcalculation" cols="30" rows="10" placeholder="eg. Average 3 subjects"></textarea>
-                                        Grade List
-                                        <textarea name="gradelist" class="form-control" id="gradelist" cols="30" rows="10" placeholder="grade list"></textarea>
-                                        <button class="btn academy-btn mt-30" type="submit">Contact Us</button>
+                                        <input type="text" class="form-control" id="uniName" placeholder="University Name (in full)">
+                                        <h6>University Admin Details Sign Up</h6>
+                                        <input type="text" class="form-control" id="uniadminusername" placeholder="University Admin's username" required>
+                                        <input type="password" class="form-control" id="uniadminpw" placeholder="password" required>
+                                        <input type="text" class="form-control" id="uniadminfullname" placeholder="Fullname">
+                                        <input type="email" class="form-control" id="uniadminemail" placeholder="email" required>
+                                        <button class="btn academy-btn mt-30" type="submit">Add University</button>
                                     </form>
                                 </div>
                             </div>
