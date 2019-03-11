@@ -200,11 +200,21 @@
                             <!-- Contact Form Area -->
                             <div class="col-12 col-lg-7">
                                 <div class="contact-form-area wow fadeInUp" data-wow-delay="500ms">
-                                    <form action="#" method="post">
+                                    <form action="#" onsubmit="return uniAdminValidation()" method="post">
                                         <input type="text" class="form-control" id="uniName" placeholder="University Name (in full)">
                                         <h6>University Admin Details Sign Up</h6>
-                                        <input type="text" class="form-control" id="uniadminusername" placeholder="University Admin's username" required>
+                                        <div class="form-label-group">
+                                        <input type="text" class="form-control" id="uniadminusername" placeholder="marcus" required>
+                                        <span id="errorUsername" class="error"></span>
+                                        <label for="uniadminusername">University's Admin username (e.g. marcusliew@utar)</label>
+                                        
+                                    </div>
+                                    <div class="form-label-group">
                                         <input type="password" class="form-control" id="uniadminpw" placeholder="password" required>
+                                        <label for="uniadminpw">Password</label>
+                                        <span id="invalidPW" class="error"></span>
+                                        
+                                    </div>
                                         <input type="text" class="form-control" id="uniadminfullname" placeholder="Fullname">
                                         <input type="email" class="form-control" id="uniadminemail" placeholder="email" required>
                                         <button class="btn academy-btn mt-30" type="submit">Add University</button>
@@ -308,6 +318,9 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         </div>
     </footer>
     <!-- ##### Footer Area Start ##### -->
+    <script src="js/addUniversity.js">
+                                        
+    </script>
 
     <!-- ##### All Javascript Script ##### -->
     <!-- jQuery-2.2.4 js -->
