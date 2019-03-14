@@ -274,7 +274,7 @@ $conn->query($insertALevel);
                        <form action="#" onsubmit="return validation()" method="post">
                            <div class="form-label-group">
                              <input type="text" name="username" id="inputUsername" class="form-control" placeholder="Username">
-                             <span id="errorUsername" class="error"><?php if($errorUsername ==""){echo $errorUsername;}?></span>
+                             <span id="errorUsername" class="error"><?php if($errorUsername !=""){echo $errorUsername;}?></span>
                              <label for="inputUsername">Username</label>
                            </div>
 
