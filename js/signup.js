@@ -1,10 +1,3 @@
-var result = document.getElementById("result");
-
-
-
-
-
-
 var username = document.getElementById("inputUsername");
 var inPassword = document.getElementById("inputPassword");
 var confirmPass = document.getElementById("inputConfirmPass");
@@ -56,8 +49,8 @@ function validation(){
         username.style.borderColor="red";
 		return false;
 	}
-	else if(username.value.length < 5){
-		document.getElementById("errorUsername").innerHTML="Must have at least 5 character";
+	else if(username.value.length < 5 || username.value.length > 15){
+		document.getElementById("errorUsername").innerHTML="Username should be between 5-15 characters";
         username.style.borderColor="red";
 		return false;
 	}
@@ -122,13 +115,19 @@ function validation(){
 	}}
 	//validate mobile number
 	function validMobileNo(){
+		var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{7})$/;
+		var phoneno2 = /^\(?([0-9]{3})\)?[-. ]?([0-9]{8})$/;
 	if(mobileNo.value == ""){
 		document.getElementById("errorMobileNo").innerHTML="Please enter your mobile number";
         mobileNo.style.borderColor="red";
 		return false;
-	}else if(mobileNo.value.length < 10 || mobileNo.value.length > 11){
+	}/*else if(mobileNo.value.length < 10 || mobileNo.value.length > 11){
 		document.getElementById("errorMobileNo").innerHTML="Invalid mobile number format";
         mobileNo.style.borderColor="red";
+		return false;
+	}*/else if(!(mobileNo.value.match(phoneno) || mobileNo.value.match(phoneno2))) {
+		document.getElementById("errorMobileNo").innerHTML="Invalid mobile number format";
+				mobileNo.style.borderColor="red";
 		return false;
 	}
 	else{
@@ -167,7 +166,7 @@ function validation(){
 }
 
 username.onkeyup = function(){
-	if(username.value.length >= 5){
+	if(username.value.length >= 5 && username.value.length <=15){
 		username.style.borderColor="white";
 		document.getElementById("errorUsername").innerHTML="";
 
@@ -176,8 +175,8 @@ username.onkeyup = function(){
 		document.getElementById("errorUsername").innerHTML="Please enter a username";
         username.style.borderColor="red";
 	}
-	else if(username.value.length < 5){
-		document.getElementById("errorUsername").innerHTML="Must have at least 5 character";
+	else if(username.value.length < 5 || username.value.length > 15){
+		document.getElementById("errorUsername").innerHTML="Username should be between 5-15 characters";
         username.style.borderColor="red";
 	}
 }
@@ -244,16 +243,19 @@ idNo.onkeyup = function(){
 }
 
 mobileNo.onkeyup = function(){
-	if(mobileNo.value.length == 10 || mobileNo.value.length == 11){
+	var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{7})$/;
+	var phoneno2 = /^\(?([0-9]{3})\)?[-. ]?([0-9]{8})$/;
+	if(mobileNo.value.match(phoneno) || mobileNo.value.match(phoneno2)){
 		document.getElementById("errorMobileNo").innerHTML="";
         mobileNo.style.borderColor="white";
 	}
 	else if(mobileNo.value == ""){
 		document.getElementById("errorMobileNo").innerHTML="Please enter your mobile number";
         mobileNo.style.borderColor="red";
-	}else if(mobileNo.value.length < 10 || mobileNo.value.length > 11){
+	}else if(!(mobileNo.value.match(phoneno) || mobileNo.value.match(phoneno2))) {
 		document.getElementById("errorMobileNo").innerHTML="Invalid mobile number format";
-        mobileNo.style.borderColor="red";
+				mobileNo.style.borderColor="red";
+		return false;
 	}
 }
 
