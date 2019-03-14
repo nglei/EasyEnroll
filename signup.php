@@ -35,6 +35,21 @@ resultCalcDescription varchar(200),
 gradeList varchar(200))";
 $conn->query($createQualificationTb);
 
+$qualificationObtainedTb = "create table qualificationObtained(
+username varchar(50)PRIMARY KEY,
+qualificationID varchar(10),
+overallScore int(10),
+foreign key (username) references user(username),
+foreign key (qualificationID) references qualification(qualificationID))";
+$conn->query($qualificationObtainedTb);
+
+$resultTb = "create table result(
+username varchar(20),
+subject varchar(30),
+grade varchar(5),
+foreign key (username) references user(username))";
+$conn->query($resultTb);
+
 $insertSTPM ="INSERT into qualification values ('Q01','STPM',0,4,'Average of best 3 Subjects','A   (4.00)
 A-	(3.67)
 B+ (3.33)
@@ -189,7 +204,45 @@ $conn->query($insertALevel);
          </div>
      </header>
      <!-- ##### Header Area End ##### -->
+     <?php
+     $errorUsername = "";
+     if($_SERVER["REQUEST_METHOD"] == "POST"){
+     	$username = $_POST['username'];
 
+     	if(isset($_POST['username'])){
+     	$findUser = "SELECT username from user where username = '".$username."'";
+     	$result = $conn->query($findUser);
+     	if($result->num_rows >=1){
+     		$errorUsername = "Username already exist.";
+     	}else{
+     	$password = $_POST['password'];
+     	$name = $_POST['fullName'];
+     	$email = $_POST['email'];
+     	$idType = $_POST['idType'];
+     	$idNo = $_POST['idNo'];
+     	$mobileNo = $_POST['mobileNo'];
+     	$date = $_POST['date'];
+     	$insertUser = "INSERT into user (username,password,email,name) values('$username','$password','$email','$name')";
+     	$conn->query($insertUser);
+
+     	$insertApplicant = "INSERT into applicant (username,idtype,idno,mobileNo,dateOfBirth) values('$username','$idType','$idNo','$mobileNo','$date')";
+         $conn->query($insertApplicant);
+
+     	$qualification = $_POST['qualification'];
+     	$insertQualObtained = "INSERT into qualificationobtained (username,qualificationID,overallScore) values ('$username','$qualification',50)";
+
+
+
+     		$sub = $_POST['sub1'];
+     		$grade = $_POST['grade1'];
+     		$insertResult = "INSERT into result (username,subject,grade) values('$username','$sub','$grade')";
+     		$conn->query($insertResult);
+
+     	}
+     	}
+
+     }
+      ?>
      <!-- ##### Breadcumb Area Start ##### -->
      <div class="breadcumb-area bg-img" style="background-image: url(img/bg-img/breadcumb.jpg);">
          <div class="bradcumbContent">
@@ -210,7 +263,7 @@ $conn->query($insertALevel);
                        <form action="#" onsubmit="return validation()" method="post">
                            <div class="form-label-group">
                              <input type="text" name="username" id="inputUsername" class="form-control" placeholder="Username">
-                             <span id="errorUsername" class="error"></span>
+                             <span id="errorUsername" class="error"><?php if($errorUsername ==""){echo $errorUsername;}?></span>
                              <label for="inputUsername">Username</label>
                            </div>
 
@@ -275,18 +328,27 @@ $conn->query($insertALevel);
                            <div class="form-label-group">
                              <select id="selectQualification" name="qualification" class="form-control">
                                <option value="type" disabled="" selected="">Qualification</option>
-                               <option value="1">STPM</option>
+                               <?php
+                                      $getQualification = "SELECT qualificationID,qualificationName from qualification";
+                                             $qualification = $conn->query($getQualification);
+                                                    if($qualification->num_rows > 0){
+                                                              while($row = $qualification->fetch_assoc()){
+                                                                         echo "<option value='" .$row["qualificationID"] ."'>" .$row["qualificationName"] ."</option>";
+                                                                               }
+                                                                                    }
+                               ?>
+                               <!--option value="1">STPM</option>
                                <option value="2">A-Levels</option>
                                <option value="3">Australian Matriculation</option>
                                <option value="4">Canadian Pre-University</option>
                                <option value="5">Unified Examination Certificate (UEC)</option>
-                               <option value="6">International Baccalaureate</option>
+                               <option value="6">International Baccalaureate</option-->
                              </select>
                              <span id="errorQualification" class="error"></span>
                            </div>
 
                            <div class="">
-                             <table class="table" id="result">
+                             <table class="table" id="result" name="result">
                                <thead>
                                  <tr>
                                    <th>Subject</th>
@@ -378,6 +440,7 @@ $conn->query($insertALevel);
                                      </div>
                                    </td>
                                  </tr>
+                                 <tr><td><input type="button" class="btn academy-btn mt-30 btn-sm " onclick="addSubject()" value="Add Subject"></td></tr>
                                </tbody>
 
                              </table>
@@ -387,28 +450,7 @@ $conn->query($insertALevel);
 
                            <button class="btn academy-btn mt-30" type="submit">Sign up</button>
                        </form>
-<?php
 
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-  $username = $_POST['username'];
-	$password = $_POST['password'];
-	$name = $_POST['fullName'];
-	$email = $_POST['email'];
-  $insertUser = "INSERT into user values('$username','$password','$name','$email')";
-  $conn->query($insertUser);
-
-  if(isset($_POST['idType'])){
-    $idType = $_POST['idType'];
-    $idNo = $_POST['idNo'];
-    $mobileNo = $_POST['mobileNo'];
-    $date = $_POST['date'];
-    $insertApplicant = "INSERT into applicant values('$username','$idType','$idNo','$mobileNo','$date')";
-    $conn->query($insertApplicant);
-  }
-
-
-}
- ?>
                    </div>
                </div>
              </div>
@@ -504,6 +546,23 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
          </div>
      </footer>
      <!-- ##### Footer Area Start ##### -->
+     <script>
+     var count = 5;
+     var table = document.getElementById("result");
+
+     //add a row to enter subject and grade
+     function addSubject(){
+       var row = table.insertRow(count);
+       var cell1 = row.insertCell(0);
+       var cell2 = row.insertCell(1);
+       cell1.innerHTML = "<div class='form-label-group'><input type='text' name='sub"+ (count)+ "' class='form-control' placeholder='Subject'><label for='subject'>Subject</label></div>";
+       cell2.innerHTML = "<div class='form-label-group'>" +
+                                     "<input type='text name='grade"+ (count)+"' class='form-control' placeholder='Grade'>"+
+                                     "<label for='grade'>Grade</label></div>";
+                                     count++;
+                                   }
+
+     </script>
      <script src="js/signup.js"></script>
      <!-- ##### All Javascript Script ##### -->
      <!-- jQuery-2.2.4 js -->
