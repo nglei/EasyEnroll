@@ -1,3 +1,37 @@
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$conn = new mysqli($servername,$username,$password);
+if($conn->connect_error){
+    die("Connection failed: " . $conn->connect_error);
+}
+echo "Connect successfully";
+
+$sql = "CREATE DATABASE easyenroll";
+if($conn->query($sql) === TRUE){
+    echo "Database created successfully";
+}else{
+    echo "Error create database: " . $conn->error;
+}
+$sqlUseDb = "USE academy";
+$sqlcreateTbl = "CREATE TABLE University (
+    UniID INT(5) PRIMARY KEY DEFAULT '0' NOT NULL, UniName VARCHAR(55));";
+    if($conn->query($sqlUseDb) === TRUE){
+        echo "Use Database Successful";
+    }
+    else{
+        echo "Error Using Database " . $conn->error;
+    }
+    if($conn->query($sqlcreateTbl)===TRUE){
+        echo "Create Table Successfully";
+    }
+    else{
+        echo "Error creating table " . $conn->error;
+    }
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -200,8 +234,8 @@
                             <!-- Contact Form Area -->
                             <div class="col-12 col-lg-7">
                                 <div class="contact-form-area wow fadeInUp" data-wow-delay="500ms">
-                                    <form action="#" onsubmit="return uniAdminValidation()" method="post">
-                                        <input type="text" class="form-control" id="uniName" placeholder="University Name (in full)">
+                                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" onsubmit="return uniAdminValidation()" method="post">
+                                        <input type="text" class="form-control" id="uniName" name="uniName"value="<?php echo $uniName?>"placeholder="University Name (in full)">
                                         <h6>University Admin Details Sign Up</h6>
                                         <div class="form-label-group">
                                         <input type="text" class="form-control" id="uniadminusername" name="uniadminusername" placeholder="marcus" required>
@@ -227,6 +261,18 @@
             </div>
         </div>
     </section>
+    <?php
+    if($_SERVER["REQUEST_METHOD"] == "POST"){
+        $UniName = $_POST["uniName"];
+        $insertUni = "Insert into Universities (UniName) VALUES('$UniName');";
+        if($conn->query($insertUni) === TRUE){
+            echo "Data added successfully";
+        }
+        else{
+            echo "Error entering data " . $conn->error;
+        }
+        $conn->close();
+    }
     <!-- ##### Contact Area End ##### -->
 
     <!-- ##### Footer Area Start ##### -->
