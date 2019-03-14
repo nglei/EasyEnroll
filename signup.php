@@ -13,12 +13,12 @@ $useDb = "USE easyenroll";
 $conn->query($createDb);
 $conn->query($useDb);
 
-$createUserTb = "CREATE TABLE user(username varchar(50) PRIMARY KEY,password varchar(25),
+$createUserTb = "CREATE TABLE user(username varchar(50) PRIMARY KEY NOT NULL,password varchar(25),
 email varchar(40),name varchar(40) )";
 $conn->query($createUserTb);
 
 $createApplicantTb = "CREATE TABLE applicant(
-username varchar(50),
+username varchar(50) PRIMARY KEY,
 idtype varchar(10),
 idno varchar(20),
 mobileNo varchar(12),
@@ -35,16 +35,18 @@ resultCalcDescription varchar(200),
 gradeList varchar(200))";
 $conn->query($createQualificationTb);
 
-$qualificationObtainedTb = "create table qualificationObtained(
-username varchar(50)PRIMARY KEY,
+$qualificationObtainedTb = "CREATE table qualificationObtained(
+qobtainedID int auto_increment primary key not null,
+username varchar(50),
 qualificationID varchar(10),
 overallScore int(10),
 foreign key (username) references user(username),
 foreign key (qualificationID) references qualification(qualificationID))";
 $conn->query($qualificationObtainedTb);
 
-$resultTb = "create table result(
-username varchar(20),
+$resultTb = "CREATE table result(
+resultID int not null auto_increment primary key,
+username varchar(50),
 subject varchar(30),
 grade varchar(5),
 foreign key (username) references user(username))";
@@ -226,17 +228,26 @@ $conn->query($insertALevel);
      	$conn->query($insertUser);
 
      	$insertApplicant = "INSERT into applicant (username,idtype,idno,mobileNo,dateOfBirth) values('$username','$idType','$idNo','$mobileNo','$date')";
-         $conn->query($insertApplicant);
+      $conn->query($insertApplicant);
 
      	$qualification = $_POST['qualification'];
      	$insertQualObtained = "INSERT into qualificationobtained (username,qualificationID,overallScore) values ('$username','$qualification',50)";
+      $conn->query($insertQualObtained);
 
+     	$subjectList = $_POST['subject'];
+     	$gradeList = $_POST['grade'];
 
-
-     		$sub = $_POST['sub1'];
-     		$grade = $_POST['grade1'];
-     		$insertResult = "INSERT into result (username,subject,grade) values('$username','$sub','$grade')";
+      for($i = 0;$i < sizeof($subjectList) ;$i++){
+        $subject = $subjectList[$i];
+        $grade = $gradeList[$i];
+        $insertResult = "INSERT into result (username,subject,grade) values('$username','$subject','$grade')";
      		$conn->query($insertResult);
+      }
+
+      /*foreach($subjectList as $key => $subject){
+        foreach($gradeList as $key => $grade){
+     		$insertResult = "INSERT into result (username,subject,grade) values('$username','$subject','$grade')";
+     		$conn->query($insertResult);}}*/
 
      	}
      	}
@@ -297,7 +308,6 @@ $conn->query($insertALevel);
                                <option value="type" disabled="" selected="">ID Type</option>
                                <option value="ic">IC</option>
                                <option value="passport">Passport</option>
-                               <option value="other">Other</option>
                              </select>
                              <span id="errorIDType" class="error"></span>
                            </div>
@@ -359,13 +369,13 @@ $conn->query($insertALevel);
                                  <tr>
                                    <td>
                                      <div class="form-label-group">
-                                       <input type="text" id="subject" class="form-control" placeholder="Subject">
+                                       <input type="text" name="subject[]" class="form-control" placeholder="Subject">
                                        <label for="subject">Subject</label>
                                      </div>
                                    </td>
                                    <td>
                                      <div class="form-label-group">
-                                       <input type="text" id="grade" class="form-control" placeholder="Grade">
+                                       <input type="text" name="grade[]" class="form-control" placeholder="Grade">
                                        <label for="grade">Grade</label>
                                      </div>
                                    </td>
@@ -373,13 +383,13 @@ $conn->query($insertALevel);
                                  <tr>
                                    <td>
                                      <div class="form-label-group">
-                                       <input type="text" id="subject" class="form-control" placeholder="Subject">
+                                       <input type="text" name="subject[]" class="form-control" placeholder="Subject">
                                        <label for="subject">Subject</label>
                                      </div>
                                    </td>
                                    <td>
                                      <div class="form-label-group">
-                                       <input type="text" id="grade" class="form-control" placeholder="Grade">
+                                       <input type="text" name="grade[]" class="form-control" placeholder="Grade">
                                        <label for="grade">Grade</label>
                                      </div>
                                    </td>
@@ -387,13 +397,13 @@ $conn->query($insertALevel);
                                  <tr>
                                    <td>
                                      <div class="form-label-group">
-                                       <input type="text" id="subject" class="form-control" placeholder="Subject">
+                                       <input type="text" name="subject[]" class="form-control" placeholder="Subject">
                                        <label for="subject">Subject</label>
                                      </div>
                                    </td>
                                    <td>
                                      <div class="form-label-group">
-                                       <input type="text" id="grade" class="form-control" placeholder="Grade">
+                                       <input type="text" name="grade[]" class="form-control" placeholder="Grade">
                                        <label for="grade">Grade</label>
                                      </div>
                                    </td>
@@ -401,13 +411,13 @@ $conn->query($insertALevel);
                                  <tr>
                                    <td>
                                      <div class="form-label-group">
-                                       <input type="text" id="subject" class="form-control" placeholder="Subject">
+                                       <input type="text" name="subject[]" class="form-control" placeholder="Subject">
                                        <label for="subject">Subject</label>
                                      </div>
                                    </td>
                                    <td>
                                      <div class="form-label-group">
-                                       <input type="text" id="grade" class="form-control" placeholder="Grade">
+                                       <input type="text" name="grade[]" class="form-control" placeholder="Grade">
                                        <label for="grade">Grade</label>
                                      </div>
                                    </td>
@@ -415,27 +425,13 @@ $conn->query($insertALevel);
                                  <tr>
                                    <td>
                                      <div class="form-label-group">
-                                       <input type="text" id="subject" class="form-control" placeholder="Subject">
+                                       <input type="text" name="subject[]" class="form-control" placeholder="Subject">
                                        <label for="subject">Subject</label>
                                      </div>
                                    </td>
                                    <td>
                                      <div class="form-label-group">
-                                       <input type="text" id="grade" class="form-control" placeholder="Grade">
-                                       <label for="grade">Grade</label>
-                                     </div>
-                                   </td>
-                                 </tr>
-                                 <tr>
-                                   <td>
-                                     <div class="form-label-group">
-                                       <input type="text" id="subject" class="form-control" placeholder="Subject">
-                                       <label for="subject">Subject</label>
-                                     </div>
-                                   </td>
-                                   <td>
-                                     <div class="form-label-group">
-                                       <input type="text" id="grade" class="form-control" placeholder="Grade">
+                                       <input type="text" name="grade[]" class="form-control" placeholder="Grade">
                                        <label for="grade">Grade</label>
                                      </div>
                                    </td>
@@ -450,7 +446,6 @@ $conn->query($insertALevel);
 
                            <button class="btn academy-btn mt-30" type="submit">Sign up</button>
                        </form>
-
                    </div>
                </div>
              </div>
@@ -547,7 +542,7 @@ $conn->query($insertALevel);
      </footer>
      <!-- ##### Footer Area Start ##### -->
      <script>
-     var count = 5;
+     var count = 6;
      var table = document.getElementById("result");
 
      //add a row to enter subject and grade
@@ -555,9 +550,9 @@ $conn->query($insertALevel);
        var row = table.insertRow(count);
        var cell1 = row.insertCell(0);
        var cell2 = row.insertCell(1);
-       cell1.innerHTML = "<div class='form-label-group'><input type='text' name='sub"+ (count)+ "' class='form-control' placeholder='Subject'><label for='subject'>Subject</label></div>";
+       cell1.innerHTML = "<div class='form-label-group'><input type='text' name='subject[]' class='form-control' placeholder='Subject'><label for='subject'>Subject</label></div>";
        cell2.innerHTML = "<div class='form-label-group'>" +
-                                     "<input type='text name='grade"+ (count)+"' class='form-control' placeholder='Grade'>"+
+                                     "<input type='text' name='grade[]' class='form-control' placeholder='Grade'>"+
                                      "<label for='grade'>Grade</label></div>";
                                      count++;
                                    }
