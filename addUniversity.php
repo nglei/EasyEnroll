@@ -123,17 +123,17 @@ $sqlcreateTbl = "CREATE TABLE IF NOT EXISTS University (
                                     <li><a href="index.html">Home</a></li>
                                     <li><a href="#">Pages</a>
                                         
-                                        <ul class="dropdown">
+                                    <ul class="dropdown">
                                             <li><a href="index.html">Home</a></li>
-                                            <li><a href="about-us.html">About Us</a></li>
-                                            <li><a href="course.html">Course</a></li>
-                                            <li><a href="blog.html">Programme</a></li>
+                                            <li><a href="addUniversity.php">Add University</a></li>
+                                            <li><a href="addProgramme.html">Course</a></li>
+                                            <li><a href="addQualification.html">Programme</a></li>
                                             <li><a href="contact.html">Apply Now</a></li>
                                             <li><a href="elements.html">Contact</a></li>
-                                        
+
                                         </ul>
                                     </li>
-                                    <li><a href="#">Mega Menu</a>
+                                    <li><a href="#">Universities</a>
                                         <div class="megamenu">
                                             <ul class="single-mega cn-col-4">
                                                 <li><a href="index.html">Home</a></li>
