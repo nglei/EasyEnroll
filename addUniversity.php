@@ -7,15 +7,15 @@ if($conn->connect_error){
     die("Connection failed: " . $conn->connect_error);
 }
 echo "Connect successfully";
-
-$sql = "CREATE DATABASE easyenroll";
+$uniName="";
+$sql = "CREATE DATABASE IF NOT EXISTS easyenroll";
 if($conn->query($sql) === TRUE){
     echo "Database created successfully";
 }else{
     echo "Error create database: " . $conn->error;
 }
-$sqlUseDb = "USE academy";
-$sqlcreateTbl = "CREATE TABLE University (
+$sqlUseDb = "USE easyenroll";
+$sqlcreateTbl = "CREATE TABLE IF NOT EXISTS University (
     UniID INT(5) PRIMARY KEY DEFAULT '0' NOT NULL, UniName VARCHAR(55));";
     if($conn->query($sqlUseDb) === TRUE){
         echo "Use Database Successful";
@@ -28,6 +28,20 @@ $sqlcreateTbl = "CREATE TABLE University (
     }
     else{
         echo "Error creating table " . $conn->error;
+    }
+    $sqlcreateuniIndexTbl = "CREATE TABLE IF NOT EXISTS UniIndexTable( id INT PRIMARY KEY NOT NULL AUTO_INCREMENT);";
+    if ($conn->query($sqlcreateuniIndexTbl) === TRUE){
+        echo "Create uniIndex Table successful";
+    }
+    else{
+        echo "Error creating uniIndex table " . $conn->error;
+    }
+    $sqlcreatetriggeruninumindex = "CREATE TRIGGER num_trigger BEFORE INSERT ON University FOR EACH ROW BEGIN INSERT INTO UniIndexTable VALUES(NULL); SET NEW.UniID = CONCAT('U',LPAD(LAST_INSERT_ID(),'3','0'));END $$ DELIMITER ;";
+    if($conn ->query($sqlcreatetriggeruninumindex) === TRUE){
+        echo "Create Trigger Successfully";
+    }
+    else{
+        echo "Error Create Trigger" . $conn->error;
     }
 ?>
 
@@ -235,7 +249,7 @@ $sqlcreateTbl = "CREATE TABLE University (
                             <div class="col-12 col-lg-7">
                                 <div class="contact-form-area wow fadeInUp" data-wow-delay="500ms">
                                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" onsubmit="return uniAdminValidation()" method="post">
-                                        <input type="text" class="form-control" id="uniName" name="uniName"value="<?php echo $uniName?>"placeholder="University Name (in full)">
+                                        <input type="text" class="form-control" id="uniName" name="uniName"value="<?php echo $uniName;?>"placeholder="University Name (in full)">
                                         <h6>University Admin Details Sign Up</h6>
                                         <div class="form-label-group">
                                         <input type="text" class="form-control" id="uniadminusername" name="uniadminusername" placeholder="marcus" required>
@@ -263,8 +277,8 @@ $sqlcreateTbl = "CREATE TABLE University (
     </section>
     <?php
     if($_SERVER["REQUEST_METHOD"] == "POST"){
-        $UniName = $_POST["uniName"];
-        $insertUni = "Insert into Universities (UniName) VALUES('$UniName');";
+        $uniName = $_POST['uniName'];
+        $insertUni = "Insert into Universities (UniName) VALUES('$uniName');";
         if($conn->query($insertUni) === TRUE){
             echo "Data added successfully";
         }
@@ -273,6 +287,7 @@ $sqlcreateTbl = "CREATE TABLE University (
         }
         $conn->close();
     }
+    ?>
     <!-- ##### Contact Area End ##### -->
 
     <!-- ##### Footer Area Start ##### -->
