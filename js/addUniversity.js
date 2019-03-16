@@ -1,16 +1,65 @@
 var usernamefield= document.getElementById("uniadminusername");
+var unifield = document.getElementById("uniadminusername");
+var pwfield = document.getElementById("uniadminpw");
+var fullNamefield = document.getElementById("uniadminfullname");
+var emailfield = document.getElementById("uniadminemail");
 
 function uniAdminValidation(){
-    validUsername();
+    if (validUsername()){
+        if(validUniversityName()){
+            if (validPassword()){
+                if (validEmail()){
+                    if(validFullName()){
+                        return true;
+                    }
+                }
+            }
+        }
+    };
+}
+
 
 function validUsername(){
-if (usernamefield.value == ""){
-    document.getElementById("errorUsername").innerHTML="Please enter valid username";
-    usernamefield.style.borderColor="rgb(255,0,0)";
-                                        }
-                                    }
-                                    
-}
+    if (usernamefield.value == ""){
+        document.getElementById("errorUsername").innerHTML="Please enter valid username";
+        usernamefield.style.borderColor="rgb(255,0,0)";
+    }
+    else if(usernamefield.value.includes(" ")){
+        document.getElementById("errorUsername").innerHTML = "Username must not include spaces";}
+        else {
+            return true;
+        }
+    }
+
+    function validUniversityName(){
+        if(unifield.value == "" || unifield.value==" "){
+            document.getElementById("invalidUniName").innerHTML = "University Name is blamk";
+        }else{
+            return true;
+        }
+    }
+    function validPassword(){
+        if(pwfield.value == ""){
+            document.getElementById("invalidPW").innerHTML = "Password is required";
+        }else{
+            return true;
+        }
+    }
+    function validEmail(){
+        if(emailfield.value == "" ){
+            document.getElementById("invalidEmail").innerHTML == "Invalid email format";
+        }else{
+            return true;
+        }
+    }
+    function validFullName(){
+        if(fullNamefield.value == "" || fullNamefield.value == " "){
+            document.getElementById("invalidFullName").innerHTML == "Your name is not in full";
+        }
+        else{
+            return true;
+        }
+    }
 usernamefield.onkeyup = function(){
         if(usernamefield.value == ""){
             document.getElementById("errorUsername").innerHTML="Please enter valid username";

@@ -250,7 +250,11 @@ $sqlcreateTbl = "CREATE TABLE IF NOT EXISTS University (
                             <div class="col-12 col-lg-7">
                                 <div class="contact-form-area wow fadeInUp" data-wow-delay="500ms">
                                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" onsubmit="return uniAdminValidation()" method="post">
-                                        <input type="text" class="form-control" id="uniName" name="uniName"value="<?php echo $uniName;?>"placeholder="University Name (in full)">
+                                    <div class="form-label-group">
+                                        <input type="text" class="form-control" id="uniName" name="uniName"value="<?php echo $uniName;?>"placeholder="University Name (in full)" required>
+                                        <label for="uniName">University Name</label>
+                                        <span id="invalidUniName" class="error"></span>
+                                        </div>
                                         <h6>University Admin Details Sign Up</h6>
                                         <div class="form-label-group">
                                         <input type="text" class="form-control" id="uniadminusername" name="uniadminusername" placeholder="marcus" required>
@@ -263,9 +267,16 @@ $sqlcreateTbl = "CREATE TABLE IF NOT EXISTS University (
                                         <label for="uniadminpw">Password</label>
                                         <span id="invalidPW" class="error"></span>
                                         
-                                    </div>
+                                    </div class="form-label-group">
                                         <input type="text" class="form-control" id="uniadminfullname" name="uniadminfullname"placeholder="Fullname">
+                                        <label for="uniadminfullname">NRIC Full Name</label>
+                                        <span id="invalidFullName"></span>
+                                        </div>
+                                    <div class="form-label-group">
                                         <input type="email" class="form-control" id="uniadminemail" name="uniadminemaiyplaceholder="email" required>
+                                        <span id="invalidEmail"></span>
+                                        <label for="uniadminemail">Email</label>
+                                        </div>
                                         <button class="btn academy-btn mt-30" type="submit">Add University</button>
                                     </form>
                                 </div>
