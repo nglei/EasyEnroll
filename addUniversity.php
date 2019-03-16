@@ -16,7 +16,7 @@ if($conn->query($sql) === TRUE){
 }
 $sqlUseDb = "USE easyenroll";
 $sqlcreateTbl = "CREATE TABLE IF NOT EXISTS University (
-    UniID INT(5) PRIMARY KEY DEFAULT '0' NOT NULL, UniName VARCHAR(55));";
+    UniID VARCHAR(5) PRIMARY KEY DEFAULT '0' NOT NULL, UniName VARCHAR(55));";
     if($conn->query($sqlUseDb) === TRUE){
         echo "Use Database Successful";
     }
@@ -36,7 +36,8 @@ $sqlcreateTbl = "CREATE TABLE IF NOT EXISTS University (
     else{
         echo "Error creating uniIndex table " . $conn->error;
     }
-    $sqlcreatetriggeruninumindex = "CREATE TRIGGER num_trigger BEFORE INSERT ON University FOR EACH ROW BEGIN INSERT INTO UniIndexTable VALUES(NULL); SET NEW.UniID = CONCAT('U',LPAD(LAST_INSERT_ID(),'3','0'));END $$ DELIMITER ;";
+    $sqlcreatetriggeruninumindex = "CREATE TRIGGER uniIndex_trigger BEFORE INSERT ON University FOR EACH ROW BEGIN INSERT INTO UniIndexTable VALUES(NULL); SET NEW.UniID = CONCAT('U',LPAD(LAST_INSERT_ID(),'3','0'));END ";
+    
     if($conn ->query($sqlcreatetriggeruninumindex) === TRUE){
         echo "Create Trigger Successfully";
     }
@@ -278,7 +279,7 @@ $sqlcreateTbl = "CREATE TABLE IF NOT EXISTS University (
     <?php
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         $uniName = $_POST['uniName'];
-        $insertUni = "Insert into Universities (UniName) VALUES('$uniName');";
+        $insertUni = "Insert into University (UniName) VALUES('$uniName');";
         if($conn->query($insertUni) === TRUE){
             echo "Data added successfully";
         }
