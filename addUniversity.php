@@ -36,7 +36,7 @@ $sqlcreateTbl = "CREATE TABLE IF NOT EXISTS University (
     else{
         echo "Error creating uniIndex table " . $conn->error;
     }
-    $sqlcreatetriggeruninumindex = "CREATE TRIGGER uniIndex_trigger BEFORE INSERT ON University FOR EACH ROW BEGIN INSERT INTO UniIndexTable VALUES(NULL); SET NEW.UniID = CONCAT('U',LPAD(LAST_INSERT_ID(),'3','0'));END ";
+    $sqlcreatetriggeruninumindex = "CREATE TRIGGER uniIndex_trigger BEFORE INSERT ON University FOR EACH ROW BEGIN INSERT INTO UniIndexTable VALUES(NULL); SET NEW.UniID = CONCAT('U',IF(LAST_INSERT_ID()>999,LAST_INSERT_ID(),LPAD(LAST_INSERT_ID(),'3','0')));END ";
     
     if($conn ->query($sqlcreatetriggeruninumindex) === TRUE){
         echo "Create Trigger Successfully";
