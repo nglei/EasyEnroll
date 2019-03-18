@@ -8,6 +8,8 @@ var mobileNo = document.getElementById("inputMobile");
 var idType = document.getElementById("selectIDType");
 var date = document.getElementById("inputDateOfBirth");
 var qualification = document.getElementById("selectQualification");
+var score = document.getElementsByName("grade[]");
+var subject = document.getElementsByName("subject[]");
 
 
 function validation(){
@@ -24,6 +26,7 @@ function validation(){
 	validIDtype();
 	validDate();
 	validQualification();
+	validResult();
 
 	if(validUser()){
 		if(validPassword()){
@@ -35,8 +38,9 @@ function validation(){
 								if(validIDtype()){
 									if(validDate()){
 										if(validQualification()){
+										if(validResult()){
 								return true;
-	}}}}}}}}}}
+	}}}}}}}}}}}
 
 	return false;
 
@@ -163,6 +167,34 @@ function validation(){
 			else{
 				return true;
 			}}
+		//validate result
+		function validResult(){
+		countR = 0;
+		countG = 0;
+		var resultError = document.getElementById("errorResult");
+		for(i=0;i< score.length;i++){
+			if(score[i].value != ""){
+				countR++;
+			}else if(isNaN(score[i])){
+				resultError.innerHTML = "Please enter number for the score";
+				return false;
+			}else if(score[i]<0 || score[i] >100){
+				resultError.innerHTML = "Input score out of range, Please refer to the grade list";
+				return false;
+			}
+		}
+		for(i=0;i< subject.length;i++){
+			if(subject[i].value != ""){
+				countG++;
+			}
+		}
+		if(countR < 5 || countG < 5 ){
+			resultError.innerHTML = "Must at least enter 5 subject and 5 score";
+			return false;
+		}else{
+			return true;
+		}
+		}
 }
 
 username.onkeyup = function(){
@@ -276,8 +308,29 @@ date.onchange = function(){
 
 qualification.onchange = function(){
 	var selectValue = qualification[qualification.selectedIndex].value;
+	var viewBtn = document.getElementById("viewBtn");
 	if(selectValue != "type"){
 		document.getElementById("errorQualification").innerHTML="";
 		qualification.style.borderColor="white";
 	}
 }
+
+var gradeList = document.getElementById("gradeList");
+gradeList.style.display = 'none';
+function viewGradeList(){
+	var row = document.getElementById("row");
+	var table = document.getElementById("table");
+	var gradeList = document.getElementById("gradeList");
+	if(gradeList.style.display === "none"){
+		gradeList.style.display = "block";
+		row.setAttribute("class","row");
+		
+		table.setAttribute("class","col-8");
+		
+		gradeList.setAttribute("class","col-4 gradeList");
+	}else{
+		gradeList.style.display = "none";
+		table.setAttribute("class","col-12");
+	}
+}
+

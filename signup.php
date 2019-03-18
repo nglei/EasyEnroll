@@ -62,16 +62,11 @@ C   (2.00)
 B+ (1.67)
 D+ (1.33)
 D  (1.00)
-qualificationqualificationF  (0.00)
+F  (0.00)
 ')";
 $conn->query($insertSTPM);
 
-$insertALevel ="insert into qualification values ('Q02','A-levels',0,5,'Average of best 3 Subjects','A - 5 points
-B - 4 points
-C - 3 points
-D - 2 points
-E - 1 point
-')";
+$insertALevel ="insert into qualification values ('Q02','A-levels',0,5,'Average of best 3 Subjects','A - 5 points,B - 4 points,C - 3 points,D - 2 points,E - 1 point')";
 $conn->query($insertALevel);
 
 
@@ -94,7 +89,7 @@ $conn->query($insertALevel);
 
      <!-- Core Stylesheet -->
      <link rel="stylesheet" href="style.css">
-
+	
  </head>
 
  <body>
@@ -147,7 +142,7 @@ $conn->query($insertALevel);
                              <!-- Nav Start -->
                              <div class="classynav">
                                  <ul>
-                                     <li><a href="index.html">Home</a></li>
+                                     <li><a href="index.php">Home</a></li>
                                      <li><a href="#">Pages</a>
                                          <ul class="dropdown">
                                              <li><a href="index.html">Home</a></li>
@@ -208,31 +203,36 @@ $conn->query($insertALevel);
      <!-- ##### Header Area End ##### -->
      <?php
      $errorUsername = "";
+	 $save = array();
      if($_SERVER["REQUEST_METHOD"] == "POST"){
      	$username = $_POST['username'];
-
-     	if(isset($_POST['username'])){
-     	$findUser = "SELECT username from user where username = '".$username."'";
-     	$result = $conn->query($findUser);
-     	if($result->num_rows >=1){
-     		$errorUsername = "Username already exist.";
-     	}else{
-     	$password = $_POST['password'];
+		$password = $_POST['password'];
      	$name = $_POST['fullName'];
      	$email = $_POST['email'];
      	$idType = $_POST['idType'];
      	$idNo = $_POST['idNo'];
      	$mobileNo = $_POST['mobileNo'];
      	$date = $_POST['date'];
+		$qualification = $_POST['qualification'];
+
+     	if(isset($_POST['username'])){
+     	$findUser = "SELECT username from user where username = '".$username."'";
+     	$result = $conn->query($findUser);
+     	if($result->num_rows >=1){
+			$save = array($username,$name,$email,$idType,$idNo,$mobileNo,$date,$qualification);
+			
+     		$errorUsername = "Username already exist.";
+     	}else{
+     	
      	$insertUser = "INSERT into user (username,password,email,name) values('$username','$password','$email','$name')";
      	$conn->query($insertUser);
 
      	$insertApplicant = "INSERT into applicant (username,idtype,idno,mobileNo,dateOfBirth) values('$username','$idType','$idNo','$mobileNo','$date')";
-      $conn->query($insertApplicant);
+		$conn->query($insertApplicant);
 
-     	$qualification = $_POST['qualification'];
+     	
      	$insertQualObtained = "INSERT into qualificationobtained (username,qualificationID,overallScore) values ('$username','$qualification',50)";
-      $conn->query($insertQualObtained);
+		$conn->query($insertQualObtained);
 
      	$subjectList = $_POST['subject'];
      	$gradeList = $_POST['grade'];
@@ -243,11 +243,6 @@ $conn->query($insertALevel);
         $insertResult = "INSERT into result (username,subject,grade) values('$username','$subject','$grade')";
      		$conn->query($insertResult);
       }
-
-      /*foreach($subjectList as $key => $subject){
-        foreach($gradeList as $key => $grade){
-     		$insertResult = "INSERT into result (username,subject,grade) values('$username','$subject','$grade')";
-     		$conn->query($insertResult);}}*/
 
      	}
      	}
@@ -355,14 +350,18 @@ $conn->query($insertALevel);
                                <option value="6">International Baccalaureate</option-->
                              </select>
                              <span id="errorQualification" class="error"></span>
+							 
                            </div>
+						   <span id="viewBtn"><input type="button" class="btn academy-btn mt-30 btn-sm " onclick="viewGradeList()" value="View Grade List"></span>
 
-                           <div class="">
+                           <div id="row">
+						   <div id="table">
+						   <br>
                              <table class="table" id="result" name="result">
                                <thead>
                                  <tr>
                                    <th>Subject</th>
-                                   <th>Grade</th>
+                                   <th>Score</th>
                                  </tr>
                                </thead>
                                <tbody>
@@ -436,10 +435,37 @@ $conn->query($insertALevel);
                                      </div>
                                    </td>
                                  </tr>
+								 
                                  <tr><td><input type="button" class="btn academy-btn mt-30 btn-sm " onclick="addSubject()" value="Add Subject"></td></tr>
                                </tbody>
 
                              </table>
+							 </div>
+							 <div><span id="errorResult" class="error"></span></div>
+							 
+							 <div id="gradeList" class="gradeList">
+							 <br>
+	<?php
+	$getGradeList = "SELECT qualificationName,gradeList from qualification";
+    $gradeList = $conn->query($getGradeList);
+    if($gradeList->num_rows > 0){
+    while($row = $gradeList->fetch_assoc()){
+	echo $row["qualificationName"]."<br>";
+	echo $row["gradeList"]."<br><br>";}
+     
+    }	
+									/*echo "<script>";
+									echo 'var qualification = document.getElementById("qualification");';
+									echo "var value = qualification[qualification.selectedIndex].value;";
+									echo 'qualification.onchange = function(){';
+									echo 'if(value == "Q01"){';
+									echo ' alert("got");';
+									echo 'var list = document.getElementById("gradeList");';
+									echo 'list.innerHTML = "<p>cde</p>";}';
+									echo 'else{list.innerHTML = "<p>xyz</p>";}} ';
+									echo "</script>";*/
+								?>
+							 </div>
                            </div>
 
 
@@ -558,6 +584,27 @@ $conn->query($insertALevel);
                                    }
 
      </script>
+
+
+	 <?php
+		echo "<script>var username = document.getElementById('inputUsername');";
+		echo "var fullName = document.getElementById('inputName');";
+		echo "var email = document.getElementById('inputEmail');";
+		echo "var idType = document.getElementById('selectIDType');";
+		echo "var idNo = document.getElementById('inputIDNo');";	
+		echo "var mobileNo = document.getElementById('inputMobile');";
+		echo "var date = document.getElementById('inputDateOfBirth');";
+		echo "var qualification = document.getElementById('selectQualification');";
+		echo "username.value ='". $save[0]."';";
+		echo "fullName.value ='". $save[1]."';";		
+		echo "email.value ='". $save[2]."';";
+		echo "idType.value ='". $save[3]."';";
+		echo "idNo.value ='". $save[4]."';";		
+		echo "mobileNo.value ='". $save[5]."';";
+		echo "date.value ='". $save[6]."';";
+		echo "qualification.value ='". $save[7]."';";
+		echo "</script>";
+	 ?>
      <script src="js/signup.js"></script>
      <!-- ##### All Javascript Script ##### -->
      <!-- jQuery-2.2.4 js -->
