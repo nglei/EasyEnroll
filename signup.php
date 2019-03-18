@@ -31,7 +31,8 @@ qualificationID int auto_increment not null primary key,
 qualificationName varchar(50),
 minimumScore int(10),
 maximumScore int(10),
-resultCalcDescription varchar(200),
+method varchar(20),
+numOfSubject int(5),
 gradeList varchar(200))";
 $conn->query($createQualificationTb);
 
@@ -41,11 +42,14 @@ $conn->query($setIDindex);
 $qualificationObtainedTb = "CREATE table qualificationObtained(
 qobtainedID int auto_increment primary key not null,
 username varchar(50),
-qualificationID varchar(10),
+qualificationID int,
 overallScore int(10),
 foreign key (username) references user(username),
 foreign key (qualificationID) references qualification(qualificationID))";
 $conn->query($qualificationObtainedTb);
+
+$setID = "alter table qualificationObtained AUTO_INCREMENT=20001";
+$conn->query($setID);
 
 $resultTb = "CREATE table result(
 resultID int not null auto_increment primary key,
