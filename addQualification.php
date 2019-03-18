@@ -211,13 +211,39 @@ $conn->query($useDb);
                                 </div>
                             </div>
                             <!-- Contact Form Area -->
+                            <?php
+                              $errorQualification ="";
+                              if($_SERVER["REQUEST_METHOD"] == "POST"){
+                                $qualificationName = $_POST['qualificationName'];
+                                $minScore = $_POST['minScore'];
+                                $maxScore = $_POST['maxScore'];
+                                $method = $_POST['calcMethod'];
+                                $numOfSub = $_POST['subNum'];
+                                $gradeList = $_POST['gradelist'];
+
+
+                            	if(isset($_POST['qualificationName'])){
+                                $findQualification = "SELECT qualificationName from qualification where qualificationName = '".$qualificationName."'";
+                                $result = $conn->query($findQualification);
+                                if($result->num_rows >=1){
+                                  $save = array($qualificationName,$minScore,$maxScore,$method,$numOfSub,$gradeList);
+                                  $errorQualification = "Qualification already exist";
+                                }else{
+                                  $insertQualification ="INSERT into qualification (qualificationName,minimumScore,maximumScore,method,numOfSubject,gradeList) values
+                                  ('$qualificationName','$minScore','$maxScore','$method','$numOfSub','$gradeList')";
+                                  $conn->query($insertQualification);
+                                }
+                              }
+
+                              }
+                            ?>
                             <div class="col-12 col-lg-7">
                                 <div class="contact-form-area wow fadeInUp" data-wow-delay="500ms">
                                     <form action="addQualification.php" method="post" onsubmit="return validation()">
 										<div>
 										<label for="qualificationName">Qualification Name</label>
                                         <input type="text" id="qualificationName" name="qualificationName" class="form-control" placeholder="Qualification Name">
-                                        <span id="errorQualification" class="error"></span>
+                                        <span id="errorQualification" class="error"><?php if($errorQualification!=""){echo $errorQualification;}?></span>
                                         </div>
 										<div>
 										<label for="minScore">Minimum Score</label>
@@ -268,36 +294,16 @@ $conn->query($useDb);
 										</div>
 
 										</div>
-                                        
-                                        
+
+
 										<div>
-										<label>Grade List</label><button id="example" type="button" class="btn btn-link btn-sm">Example</button>  
+										<label>Grade List</label><button id="example" type="button" class="btn btn-link btn-sm">Example</button>
                                         <textarea name="gradelist" class="form-control" id="gradelist" cols="30" rows="10" placeholder="grade list"></textarea>
 										<span id="errorGradeList" class="error"></span>
 										</div>
                                         <button class="btn academy-btn mt-30" type="submit">Add Qualification</button>
                                     </form>
-<?php
 
-  if($_SERVER["REQUEST_METHOD"] == "POST"){
-    $qualificationName = $_POST['qualificationName'];
-    $minScore = $_POST['minScore'];
-    $maxScore = $_POST['maxScore'];
-    $resultCal = $_POST['resultcalculation'];
-    $gradeList = $_POST['gradelist'];
-    $countQualification = "SELECT * from qualification";
-	$count = $conn->query($countQualification);
-	$id = $count->num_rows;
-	if($id < 10){
-	$qualificationID = "Q00" . $id++;}
-	else{
-		$qualificationID = "Q0" . $id++;
-	}
-    $insertQualification = "INSERT into qualification (qualificationID,qualificationName,minimumScore,maximumScore,resultCalcDescription,gradeList)
-    values('$qualificationID','$qualificationName','$minScore','$maxScore','$resultCal','$gradeList')";
-	$conn->query($insertQualification);
-  }
-?>
                                 </div>
                             </div>
                         </div>
@@ -418,6 +424,21 @@ window.onclick = function(event) {
   }
 }
 </script>
+<?php
+ echo "<script>var qualificationName = document.getElementById('qualificationName');";
+ echo "var minScore = document.getElementById('minScore');";
+ echo "var maxScore = document.getElementById('maxScore');";
+ echo "var calcMethod = document.getElementById('calcMethod');";
+ echo "var subNum = document.getElementById('subNum');";
+ echo "var gradeList = document.getElementById('gradelist');";
+ echo "qualificationName.value ='". $save[0]."';";
+ echo "minScore.value ='". $save[1]."';";
+ echo "maxScore.value ='". $save[2]."';";
+ echo "calcMethod.value ='". $save[3]."';";
+ echo "subNum.value ='". $save[4]."';";
+ echo "gradeList.value ='". $save[5]."';";
+ echo "</script>";
+?>
     <!-- jQuery-2.2.4 js -->
 	<script src = "js/addQualification.js"></script>
     <script src="js/jquery/jquery-2.2.4.min.js"></script>
