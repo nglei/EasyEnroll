@@ -27,13 +27,16 @@ foreign key (username) references user(username))";
 $conn->query($createApplicantTb);
 
 $createQualificationTb ="CREATE TABLE qualification(
-qualificationID varchar(10) primary key,
+qualificationID int auto_increment not null primary key,
 qualificationName varchar(50),
 minimumScore int(10),
 maximumScore int(10),
 resultCalcDescription varchar(200),
 gradeList varchar(200))";
 $conn->query($createQualificationTb);
+
+$setIDindex = "alter table qualification AUTO_INCREMENT=10001";
+$conn->query($setIDindex);
 
 $qualificationObtainedTb = "CREATE table qualificationObtained(
 qobtainedID int auto_increment primary key not null,
@@ -89,7 +92,7 @@ $conn->query($insertALevel);
 
      <!-- Core Stylesheet -->
      <link rel="stylesheet" href="style.css">
-	
+
  </head>
 
  <body>
@@ -220,17 +223,17 @@ $conn->query($insertALevel);
      	$result = $conn->query($findUser);
      	if($result->num_rows >=1){
 			$save = array($username,$name,$email,$idType,$idNo,$mobileNo,$date,$qualification);
-			
+
      		$errorUsername = "Username already exist.";
      	}else{
-     	
+
      	$insertUser = "INSERT into user (username,password,email,name) values('$username','$password','$email','$name')";
      	$conn->query($insertUser);
 
      	$insertApplicant = "INSERT into applicant (username,idtype,idno,mobileNo,dateOfBirth) values('$username','$idType','$idNo','$mobileNo','$date')";
 		$conn->query($insertApplicant);
 
-     	
+
      	$insertQualObtained = "INSERT into qualificationobtained (username,qualificationID,overallScore) values ('$username','$qualification',50)";
 		$conn->query($insertQualObtained);
 
@@ -350,7 +353,7 @@ $conn->query($insertALevel);
                                <option value="6">International Baccalaureate</option-->
                              </select>
                              <span id="errorQualification" class="error"></span>
-							 
+
                            </div>
 						   <span id="viewBtn"><input type="button" class="btn academy-btn mt-30 btn-sm " onclick="viewGradeList()" value="View Grade List"></span>
 
@@ -435,14 +438,14 @@ $conn->query($insertALevel);
                                      </div>
                                    </td>
                                  </tr>
-								 
+
                                  <tr><td><input type="button" class="btn academy-btn mt-30 btn-sm " onclick="addSubject()" value="Add Subject"></td></tr>
                                </tbody>
 
                              </table>
 							 </div>
 							 <div><span id="errorResult" class="error"></span></div>
-							 
+
 							 <div id="gradeList" class="gradeList">
 							 <br>
 	<?php
@@ -452,8 +455,8 @@ $conn->query($insertALevel);
     while($row = $gradeList->fetch_assoc()){
 	echo $row["qualificationName"]."<br>";
 	echo $row["gradeList"]."<br><br>";}
-     
-    }	
+
+    }
 									/*echo "<script>";
 									echo 'var qualification = document.getElementById("qualification");';
 									echo "var value = qualification[qualification.selectedIndex].value;";
@@ -591,15 +594,15 @@ $conn->query($insertALevel);
 		echo "var fullName = document.getElementById('inputName');";
 		echo "var email = document.getElementById('inputEmail');";
 		echo "var idType = document.getElementById('selectIDType');";
-		echo "var idNo = document.getElementById('inputIDNo');";	
+		echo "var idNo = document.getElementById('inputIDNo');";
 		echo "var mobileNo = document.getElementById('inputMobile');";
 		echo "var date = document.getElementById('inputDateOfBirth');";
 		echo "var qualification = document.getElementById('selectQualification');";
 		echo "username.value ='". $save[0]."';";
-		echo "fullName.value ='". $save[1]."';";		
+		echo "fullName.value ='". $save[1]."';";
 		echo "email.value ='". $save[2]."';";
 		echo "idType.value ='". $save[3]."';";
-		echo "idNo.value ='". $save[4]."';";		
+		echo "idNo.value ='". $save[4]."';";
 		echo "mobileNo.value ='". $save[5]."';";
 		echo "date.value ='". $save[6]."';";
 		echo "qualification.value ='". $save[7]."';";
