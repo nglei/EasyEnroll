@@ -1,3 +1,18 @@
+<?php
+session_start();
+$_SESSION['servername'] = "localhost";
+$_SESSION['username'] = "root";
+$_SESSION['password'] = "";
+$conn = new mysqli($_SESSION['servername'], $_SESSION['username'],$_SESSION['password']);
+if ($conn->connect_error){
+  die("Connection failed: " . $conn->connect_error);
+}
+
+$createDb = "CREATE DATABASE easyenroll";
+$useDb = "USE easyenroll";
+$conn->query($createDb);
+$conn->query($useDb);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -198,7 +213,7 @@
                             <!-- Contact Form Area -->
                             <div class="col-12 col-lg-7">
                                 <div class="contact-form-area wow fadeInUp" data-wow-delay="500ms">
-                                    <form action="#" method="post" onsubmit="return validation()">
+                                    <form action="addQualification.php" method="post" onsubmit="return validation()">
 										<div>
 										<label for="qualificationName">Qualification Name</label>
                                         <input type="text" id="qualificationName" name="qualificationName" class="form-control" placeholder="Qualification Name">
@@ -210,7 +225,7 @@
                                         <span id="errorMinScore" class="error"></span>
                                         </div>
 										<div>
-                                        <label for="maxScore">Minimum Score</label>
+                                        <label for="maxScore">Maximum Score</label>
 										<input type="text" id="maxScore" name="maxScore" class="form-control" placeholder="Maximum Score">
                                         <span id="errorMaxScore" class="error"></span>
                                         </div>
@@ -262,14 +277,34 @@
 										</div>
                                         <button class="btn academy-btn mt-30" type="submit">Add Qualification</button>
                                     </form>
-									</div>
+<?php
+
+  if($_SERVER["REQUEST_METHOD"] == "POST"){
+    $qualificationName = $_POST['qualificationName'];
+    $minScore = $_POST['minScore'];
+    $maxScore = $_POST['maxScore'];
+    $resultCal = $_POST['resultcalculation'];
+    $gradeList = $_POST['gradelist'];
+    $countQualification = "SELECT * from qualification";
+	$count = $conn->query($countQualification);
+	$id = $count->num_rows;
+	if($id < 10){
+	$qualificationID = "Q00" . $id++;}
+	else{
+		$qualificationID = "Q0" . $id++;
+	}
+    $insertQualification = "INSERT into qualification (qualificationID,qualificationName,minimumScore,maximumScore,resultCalcDescription,gradeList)
+    values('$qualificationID','$qualificationName','$minScore','$maxScore','$resultCal','$gradeList')";
+	$conn->query($insertQualification);
+  }
+?>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
+        </div>
     </section>
     <!-- ##### Contact Area End ##### -->
 
@@ -362,34 +397,27 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         </div>
     </footer>
     <!-- ##### Footer Area Start ##### -->
-<script>
-// Get the modal
+
+    <!-- ##### All Javascript Script ##### -->
+	<script>
+
 var modal = document.getElementById('myModal');
-
-// Get the button that opens the modal
 var btn = document.getElementById("example");
-
-// Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks the button, open the modal 
 btn.onclick = function() {
   modal.style.display = "block";
 }
 
-// When the user clicks on <span> (x), close the modal
 span.onclick = function() {
   modal.style.display = "none";
 }
 
-// When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
   if (event.target == modal) {
     modal.style.display = "none";
   }
 }
 </script>
-    <!-- ##### All Javascript Script ##### -->
     <!-- jQuery-2.2.4 js -->
 	<script src = "js/addQualification.js"></script>
     <script src="js/jquery/jquery-2.2.4.min.js"></script>
