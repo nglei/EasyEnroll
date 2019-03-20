@@ -59,22 +59,7 @@ grade varchar(5),
 foreign key (username) references user(username))";
 $conn->query($resultTb);
 
-$insertSTPM ="INSERT into qualification values ('Q01','STPM',0,4,'Average of best 3 Subjects','A   (4.00)
-A-	(3.67)
-B+ (3.33)
-B    (3.00)
-B-  (2.67)
-C+  (2.33)
-C   (2.00)
-B+ (1.67)
-D+ (1.33)
-D  (1.00)
-F  (0.00)
-')";
-$conn->query($insertSTPM);
 
-$insertALevel ="insert into qualification values ('Q02','A-levels',0,5,'Average of best 3 Subjects','A - 5 points,B - 4 points,C - 3 points,D - 2 points,E - 1 point')";
-$conn->query($insertALevel);
 
 
  ?>
