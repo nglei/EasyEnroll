@@ -222,12 +222,34 @@ $conn->query($resultTb);
      	$insertApplicant = "INSERT into applicant (username,idtype,idno,mobileNo,dateOfBirth) values('$username','$idType','$idNo','$mobileNo','$date')";
 		$conn->query($insertApplicant);
 
+      $subjectList = $_POST['subject'];
+      $gradeList = $_POST['grade'];
 
-     	$insertQualObtained = "INSERT into qualificationobtained (username,qualificationID,overallScore) values ('$username','$qualification',50)";
-		$conn->query($insertQualObtained);
+      $getMethod = "SELECT method,numOfSubject from qualification where qualificationID = '".$qualification."'";
+      $methodRow = $conn->query($getMethod);
+      $overallScore = 0;
+      if($methodRow->num_rows > 0){
+                while($row = $methodRow->fetch_assoc()){
+                  $method = $row["method"];
+                  echo $method;
+                  $numOfSubject = $row["numOfSubject"];
+                  if($method == "total"){
+                    rsort($gradeList);
+                    for($i = 0;$i < $numOfSubject ;$i++){
+                      $overallScore =  ($overallScore + $gradeList[$i]);
+                    }
+                  }else{
+					for($i = 0;$i < $numOfSubject ;$i++){
+                      $overallScore =  ($overallScore + $gradeList[$i]);
+                    }
+					$overallScore = ($overallScore / $numOfSubject);
+				  }
+                }}
 
-     	$subjectList = $_POST['subject'];
-     	$gradeList = $_POST['grade'];
+     	$insertQualObtained = "INSERT into qualificationobtained (username,qualificationID,overallScore) values ('$username','$qualification','$overallScore')";
+		  $conn->query($insertQualObtained);
+
+
 
       for($i = 0;$i < sizeof($subjectList) ;$i++){
         $subject = $subjectList[$i];
@@ -399,34 +421,8 @@ $conn->query($resultTb);
                                      </div>
                                    </td>
                                  </tr>
-                                 <tr>
-                                   <td>
-                                     <div class="form-label-group">
-                                       <input type="text" name="subject[]" class="form-control" placeholder="Subject">
-                                       <label for="subject">Subject</label>
-                                     </div>
-                                   </td>
-                                   <td>
-                                     <div class="form-label-group">
-                                       <input type="text" name="grade[]" class="form-control" placeholder="Grade">
-                                       <label for="grade">Grade</label>
-                                     </div>
-                                   </td>
-                                 </tr>
-                                 <tr>
-                                   <td>
-                                     <div class="form-label-group">
-                                       <input type="text" name="subject[]" class="form-control" placeholder="Subject">
-                                       <label for="subject">Subject</label>
-                                     </div>
-                                   </td>
-                                   <td>
-                                     <div class="form-label-group">
-                                       <input type="text" name="grade[]" class="form-control" placeholder="Grade">
-                                       <label for="grade">Grade</label>
-                                     </div>
-                                   </td>
-                                 </tr>
+
+
 
                                  <tr><td><input type="button" class="btn academy-btn mt-30 btn-sm " onclick="addSubject()" value="Add Subject"></td></tr>
                                </tbody>
