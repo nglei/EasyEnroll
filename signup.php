@@ -195,7 +195,8 @@ $conn->query($resultTb);
      <!-- ##### Header Area End ##### -->
      <?php
      $errorUsername = "";
-	 $save = array();
+     $errorResult = "";
+
      if($_SERVER["REQUEST_METHOD"] == "POST"){
      	$username = $_POST['username'];
 		$password = $_POST['password'];
@@ -206,24 +207,37 @@ $conn->query($resultTb);
      	$mobileNo = $_POST['mobileNo'];
      	$date = $_POST['date'];
 		$qualification = $_POST['qualification'];
+    $subjectList = $_POST['subject'];
+    $gradeList = $_POST['grade'];
 
      	if(isset($_POST['username'])){
      	$findUser = "SELECT username from user where username = '".$username."'";
      	$result = $conn->query($findUser);
+      $getNumSubject = "SELECT numOfSubject from qualification where qualificationID='".$qualification."'";
+      $noSubject = $conn->query($getNumSubject);
      	if($result->num_rows >=1){
-			$save = array($username,$name,$email,$idType,$idNo,$mobileNo,$date,$qualification);
 
+        $save = array($username,$name,$email,$idType,$idNo,$mobileNo,$date,$qualification);
      		$errorUsername = "Username already exist.";
-     	}else{
+     	}
+      if($noSubject->num_rows >=1){
+        
+        while($noSub = $noSubject->fetch_assoc()){
+        if(sizeof($gradeList) < $noSub['numOfSubject']){
+			$save = array($username,$name,$email,$idType,$idNo,$mobileNo,$date,$qualification);
+            $errorResult = "Must at least enter ".$noSub['numOfSubject']." subject and ".$noSub['numOfSubject']." score";
+        }
+      }
+      }
+      if($errorUsername == "" && $errorResult ==""){
 
      	$insertUser = "INSERT into user (username,password,email,name) values('$username','$password','$email','$name')";
      	$conn->query($insertUser);
 
      	$insertApplicant = "INSERT into applicant (username,idtype,idno,mobileNo,dateOfBirth) values('$username','$idType','$idNo','$mobileNo','$date')";
-		$conn->query($insertApplicant);
+		  $conn->query($insertApplicant);
 
-      $subjectList = $_POST['subject'];
-      $gradeList = $_POST['grade'];
+
 
       $getMethod = "SELECT method,numOfSubject from qualification where qualificationID = '".$qualification."'";
       $methodRow = $conn->query($getMethod);
@@ -231,7 +245,6 @@ $conn->query($resultTb);
       if($methodRow->num_rows > 0){
                 while($row = $methodRow->fetch_assoc()){
                   $method = $row["method"];
-                  echo $method;
                   $numOfSubject = $row["numOfSubject"];
                   if($method == "total"){
                     rsort($gradeList);
@@ -240,6 +253,7 @@ $conn->query($resultTb);
                     }
                   }else{
 					for($i = 0;$i < $numOfSubject ;$i++){
+						rsort($gradeList);
                       $overallScore =  ($overallScore + $gradeList[$i]);
                     }
 					$overallScore = ($overallScore / $numOfSubject);
@@ -382,42 +396,42 @@ $conn->query($resultTb);
                                  <tr>
                                    <td>
                                      <div class="form-label-group">
-                                       <input type="text" name="subject[]" class="form-control" placeholder="Subject">
+                                       <input type="text" id="subject1" name="subject[]" class="form-control" placeholder="Subject">
                                        <label for="subject">Subject</label>
                                      </div>
                                    </td>
                                    <td>
                                      <div class="form-label-group">
-                                       <input type="text" name="grade[]" class="form-control" placeholder="Grade">
-                                       <label for="grade">Grade</label>
+                                       <input type="text" id="score1" name="grade[]" class="form-control" placeholder="Grade">
+                                       <label for="grade">Score</label>
                                      </div>
                                    </td>
                                  </tr>
                                  <tr>
                                    <td>
                                      <div class="form-label-group">
-                                       <input type="text" name="subject[]" class="form-control" placeholder="Subject">
+                                       <input type="text" id="subject2" name="subject[]" class="form-control" placeholder="Subject">
                                        <label for="subject">Subject</label>
                                      </div>
                                    </td>
                                    <td>
                                      <div class="form-label-group">
-                                       <input type="text" name="grade[]" class="form-control" placeholder="Grade">
-                                       <label for="grade">Grade</label>
+                                       <input type="text" id="score2" name="grade[]" class="form-control" placeholder="Grade">
+                                       <label for="grade">Score</label>
                                      </div>
                                    </td>
                                  </tr>
                                  <tr>
                                    <td>
                                      <div class="form-label-group">
-                                       <input type="text" name="subject[]" class="form-control" placeholder="Subject">
+                                       <input type="text" id="subject3" name="subject[]" class="form-control" placeholder="Subject">
                                        <label for="subject">Subject</label>
                                      </div>
                                    </td>
                                    <td>
                                      <div class="form-label-group">
-                                       <input type="text" name="grade[]" class="form-control" placeholder="Grade">
-                                       <label for="grade">Grade</label>
+                                       <input type="text" id="score3" name="grade[]" class="form-control" placeholder="Grade">
+                                       <label for="grade">Score</label>
                                      </div>
                                    </td>
                                  </tr>
@@ -429,7 +443,7 @@ $conn->query($resultTb);
 
                              </table>
 							 </div>
-							 <div><span id="errorResult" class="error"></span></div>
+							 <div><span id="errorResult" class="error"><?php if($errorResult !=""){echo $errorResult;}?></span></div>
 
 							 <div id="gradeList" class="gradeList">
 							 <br>
@@ -556,7 +570,7 @@ $conn->query($resultTb);
      </footer>
      <!-- ##### Footer Area Start ##### -->
      <script>
-     var count = 6;
+     var count = 4;
      var table = document.getElementById("result");
 
      //add a row to enter subject and grade
@@ -564,14 +578,15 @@ $conn->query($resultTb);
        var row = table.insertRow(count);
        var cell1 = row.insertCell(0);
        var cell2 = row.insertCell(1);
-       cell1.innerHTML = "<div class='form-label-group'><input type='text' name='subject[]' class='form-control' placeholder='Subject'><label for='subject'>Subject</label></div>";
+       cell1.innerHTML = "<div class='form-label-group'><input type='text' id='subject"+count+"' name='subject[]' class='form-control' placeholder='Subject'><label for='subject'>Subject</label></div>";
        cell2.innerHTML = "<div class='form-label-group'>" +
-                                     "<input type='text' name='grade[]' class='form-control' placeholder='Grade'>"+
-                                     "<label for='grade'>Grade</label></div>";
+                                     "<input type='text' id='score"+count+"' name='grade[]' class='form-control' placeholder='Grade'>"+
+                                     "<label for='grade'>Score</label></div>";
                                      count++;
                                    }
 
      </script>
+
 
 
 	 <?php
@@ -593,6 +608,25 @@ $conn->query($resultTb);
 		echo "qualification.value ='". $save[7]."';";
 		echo "</script>";
 	 ?>
+   <?php
+   if($errorUsername != "" || $errorResult != ""){
+		$subjectList = $_POST['subject'];
+		$gradeList = $_POST['grade'];
+		
+		echo "<script>";
+		
+		
+		for($i = 0;$i < sizeof($subjectList) ;$i++){
+        $subject = $subjectList[$i];
+        $score = $gradeList[$i];
+		echo "var subject = document.getElementById('subject".($i+1)."');";
+		echo "var score = document.getElementById('score".($i+1)."');";
+		echo "subject.value = '".$subject."';";
+		echo "score.value = '".$score."';";
+      }
+		echo "</script>";
+   }
+   ?>
      <script src="js/signup.js"></script>
      <!-- ##### All Javascript Script ##### -->
      <!-- jQuery-2.2.4 js -->

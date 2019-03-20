@@ -26,7 +26,7 @@ function validation(){
 	validIDtype();
 	validDate();
 	validQualification();
-	validResult();
+
 
 	if(validUser()){
 		if(validPassword()){
@@ -38,9 +38,9 @@ function validation(){
 								if(validIDtype()){
 									if(validDate()){
 										if(validQualification()){
-										if(validResult()){
+
 								return true;
-	}}}}}}}}}}}
+	}}}}}}}}}}
 
 	return false;
 
@@ -175,12 +175,6 @@ function validation(){
 		for(i=0;i< score.length;i++){
 			if(score[i].value != ""){
 				countR++;
-			}else if(isNaN(score[i])){
-				resultError.innerHTML = "Please enter number for the score";
-				return false;
-			}else if(score[i]<0 || score[i] >100){
-				resultError.innerHTML = "Input score out of range, Please refer to the grade list";
-				return false;
 			}
 		}
 		for(i=0;i< subject.length;i++){
@@ -188,13 +182,14 @@ function validation(){
 				countG++;
 			}
 		}
-		if(countR < 5 || countG < 5 ){
-			resultError.innerHTML = "Must at least enter 5 subject and 5 score";
+		if(countR < 3 || countG < 3 ){
+			resultError.innerHTML = "Must at least enter 3 subject and 3 score";
 			return false;
 		}else{
 			return true;
 		}
 		}
+
 }
 
 username.onkeyup = function(){
@@ -324,13 +319,12 @@ function viewGradeList(){
 	if(gradeList.style.display === "none"){
 		gradeList.style.display = "block";
 		row.setAttribute("class","row");
-		
+
 		table.setAttribute("class","col-8");
-		
+
 		gradeList.setAttribute("class","col-4 gradeList");
 	}else{
 		gradeList.style.display = "none";
 		table.setAttribute("class","col-12");
 	}
 }
-
