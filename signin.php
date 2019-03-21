@@ -33,7 +33,10 @@ $errorMessage="";
 
     }else{
       $_SESSION['loginUser'] = $loginUsername;
-      header('Location: index.php');
+      if($userType == "applicant"){
+      header('Location: index.php');}
+      else if($userType == "uniadmin"){}
+        else{header('Location: adminLogin.php');}
     }
   }
 
