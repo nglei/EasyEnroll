@@ -16,7 +16,7 @@ if($conn->query($sql) === TRUE){
 }
 $sqlUseDb = "USE easyenroll";
 $sqlcreateTbl = "CREATE TABLE IF NOT EXISTS University (
-    UniID VARCHAR(5) PRIMARY KEY DEFAULT '0' NOT NULL, UniName VARCHAR(55));";
+    UniID VARCHAR(5) PRIMARY KEY DEFAULT '0' NOT NULL, UniName VARCHAR(55), adminUsername VARCHAR(50), foreign KEY (adminUsername) references user(username));";
     if($conn->query($sqlUseDb) === TRUE){
         echo "Use Database Successful";
     }
@@ -44,6 +44,7 @@ $sqlcreateTbl = "CREATE TABLE IF NOT EXISTS University (
     else{
         echo "Error Create Trigger" . $conn->error;
     }
+    $duplicateusername="";
 ?>
 
 
@@ -273,7 +274,7 @@ $sqlcreateTbl = "CREATE TABLE IF NOT EXISTS University (
                                         <span id="invalidFullName"></span>
                                         </div>
                                     <div class="form-label-group">
-                                        <input type="email" class="form-control" id="uniadminemail" name="uniadminemaiyplaceholder="email" required>
+                                        <input type="email" class="form-control" id="uniadminemail" name="uniadminemail"placeholder="email" required>
                                         <span id="invalidEmail"></span>
                                         <label for="uniadminemail">Email</label>
                                         </div>
@@ -289,14 +290,35 @@ $sqlcreateTbl = "CREATE TABLE IF NOT EXISTS University (
     </section>
     <?php
     if($_SERVER["REQUEST_METHOD"] == "POST"){
-        $uniName = $_POST['uniName'];
-        $insertUni = "Insert into University (UniName) VALUES('$uniName');";
-        if($conn->query($insertUni) === TRUE){
-            echo "Data added successfully";
-        }
-        else{
-            echo "Error entering data " . $conn->error;
-        }
+        $uniadminfull=$_POST['uniadminfullname'];
+        $uniadminpassword=$_POST['uniadminpw'];
+        $uniadminemail=$_POST['uniadminemail'];
+        $uniadminusername=$_POST['uniadminusername'];
+        if(isset($_POST['uniadminusername'])){
+            $checkuserexist="SELECT username FROM user where username ='$uniadminusername';";
+            $sameusername=$conn->query($checkuserexist);
+            if($sameusername->num_rows>0){
+                $duplicateentry="User exists. Please change a different username";
+            }else{
+                $recorduniadmin= "INSERT INTO USER VALUES('$uniadminusername','$uniadminpassword','$uniadminemail','$uniadminfull'); ";
+                if($conn->query($recorduniadmin) === TRUE){
+                    echo "Uni Admin Record Added Successfully";
+                }
+                else{
+                     echo "Uni Admin Record: " . $conn->error;
+                    }
+                    /*University Register*/
+                    $uniName = $_POST['uniName'];
+                    $insertUni = "Insert into University (UniName,adminUsername) VALUES('$uniName','$uniadminusername');";
+                    if($conn->query($insertUni) === TRUE){
+                         echo "Data added successfully";
+                        }
+                        else{
+                            echo "Error entering data " . $conn->error;
+                        }
+                    }
+                }
+        
         $conn->close();
     }
     ?>
