@@ -67,10 +67,10 @@ $conn->query($addAdmin);
                                  <!--a href="signin.php" class="blueLink13"></a-->
                                  <?php
                                  if(isset($_SESSION['loginUser'])){
-									echo "<a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>";
-									echo "Welcome, ".$_SESSION['loginUser']."</a>";
-									echo "<div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>";
-									echo "<a class='dropdown-item' href='signout.php'>Logout</a></div>";
+									               echo "<a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>";
+									               echo "Welcome, ".$_SESSION['loginUser']."</a>";
+									               echo "<div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>";
+									               echo "<a class='dropdown-item' href='signout.php'>Logout</a></div>";
 
 
                                  }else{
