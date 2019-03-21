@@ -205,7 +205,7 @@ $sqlcreateTbl = "CREATE TABLE IF NOT EXISTS University (
             $checkuserexist="SELECT username FROM user where username ='$uniadminusername';";
             $sameusername=$conn->query($checkuserexist);
             if($sameusername->num_rows>0){
-                $duplicateentry="User exists. Please change a different username";
+                $duplicateusername="User exists. Please change a different username";
             }else{
                 $recorduniadmin= "INSERT INTO USER VALUES('$uniadminusername','$uniadminpassword','$uniadminemail','$uniadminfull'); ";
                 if($conn->query($recorduniadmin) === TRUE){
