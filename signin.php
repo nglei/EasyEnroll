@@ -17,9 +17,17 @@ $errorMessage="";
   if($_SERVER["REQUEST_METHOD"]=="POST"){
     $loginUsername = $_POST['loginUsername'];
     $loginPassword = $_POST['loginPassword'];
+    $userType = $_POST['userType'];
 
+    if($userType == "applicant"){
     $getUser = "SELECT username,password from user where username='".$loginUsername."' and password = '".$loginPassword."'";
     $result = $conn->query($getUser);
+  }else if($userType == "uniadmin"){
+
+  }else{
+    $getUser = "SELECT username,password from sasadmin where username='".$loginUsername."' and password = '".$loginPassword."'";
+    $result = $conn->query($getUser);
+  }
     if($result->num_rows != 1){
       $errorMessage = "Incorrect username or password, Please Try Again.";
 
@@ -188,6 +196,14 @@ $errorMessage="";
                           <input type="password" name="loginPassword" id="loginPassword" class="form-control" placeholder="Password" >
                           <span id="loginPassword" class="error"><?php if($errorMessage != ""){echo $errorMessage;}?></span>
                           <label for="loginPassword">Password</label>
+                    </div>
+                    <div class="form-group">
+                      <label for="userType">Sign in as:</label>
+                      <select id="selectIDType" name="userType" class="form-control">
+                        <option value="applicant" selected="">Applicant</option>
+                        <option value="uniadmin">Uni Admin</option>
+                        <option value="sasadmin">SAS Admin</option>
+                      </select>
                     </div>
                   <div class="register">
                     <a href="signup.php" style="font-size:12px">Don't have account? Register here</a>
