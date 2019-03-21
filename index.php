@@ -17,7 +17,11 @@ $createUserTb = "CREATE TABLE user(username varchar(50) PRIMARY KEY,password var
 email varchar(40),name varchar(40) )";
 $conn->query($createUserTb);
 
-$addAdmin ="  INSERT into user values('admin','admin123','admin@gmail.com','Admin One')";
+$createAdminTb = "CREATE TABLE sasadmin(username varchar(50) PRIMARY KEY,password varchar(25),
+email varchar(40),name varchar(40) )";
+$conn->query($createAdminTb);
+
+$addAdmin ="  INSERT into sasadmin values('admin1','admin123','admin@gmail.com','Admin One')";
 $conn->query($addAdmin);
  ?>
  <!DOCTYPE html>
@@ -60,7 +64,21 @@ $conn->query($addAdmin);
                                  <a href="index.html"><img src="img/bg-img/EasyEnroll.png" alt="" height="102vh" width="88vh"></a>
                              </div>
                              <div class="login-content">
-                                 <a href="signup.php" class="blueLink13"><?php if(isset($_SESSION['loginUser'])){echo $_SESSION['loginUser'];}else{echo "Register / Login";}?></a>
+                                 <!--a href="signin.php" class="blueLink13"></a-->
+                                 <?php
+                                 if(isset($_SESSION['loginUser'])){
+									echo "<a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>";
+									echo "Welcome, ".$_SESSION['loginUser']."</a>";
+									echo "<div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>";
+									echo "<a class='dropdown-item' href='signout.php'>Logout</a></div>";
+
+
+                                 }else{
+                                   echo "<a href='signin.php' class='blueLink13'>";
+                                   echo "Register / Login";
+                                   echo "</a>";
+                                 }
+                                 ?>
                              </div>
                          </div>
                      </div>
