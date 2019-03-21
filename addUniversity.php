@@ -195,7 +195,40 @@ $sqlcreateTbl = "CREATE TABLE IF NOT EXISTS University (
     <div class="map-area wow fadeInUp" data-wow-delay="300ms">
         <div id="googleMap"></div>
     </div>
-
+<?php
+    if($_SERVER["REQUEST_METHOD"] == "POST"){
+        $uniadminfull=$_POST['uniadminfullname'];
+        $uniadminpassword=$_POST['uniadminpw'];
+        $uniadminemail=$_POST['uniadminemail'];
+        $uniadminusername=$_POST['uniadminusername'];
+        if(isset($_POST['uniadminusername'])){
+            $checkuserexist="SELECT username FROM user where username ='$uniadminusername';";
+            $sameusername=$conn->query($checkuserexist);
+            if($sameusername->num_rows>0){
+                $duplicateentry="User exists. Please change a different username";
+            }else{
+                $recorduniadmin= "INSERT INTO USER VALUES('$uniadminusername','$uniadminpassword','$uniadminemail','$uniadminfull'); ";
+                if($conn->query($recorduniadmin) === TRUE){
+                    echo "Uni Admin Record Added Successfully";
+                }
+                else{
+                     echo "Uni Admin Record: " . $conn->error;
+                    }
+                    /*University Register*/
+                    $uniName = $_POST['uniName'];
+                    $insertUni = "Insert into University (UniName,adminUsername) VALUES('$uniName','$uniadminusername');";
+                    if($conn->query($insertUni) === TRUE){
+                         echo "Data added successfully";
+                        }
+                        else{
+                            echo "Error entering data " . $conn->error;
+                        }
+                    }
+                }
+        
+        $conn->close();
+    }
+    ?>
     <!-- ##### Contact Area Start ##### -->
     <section class="contact-area">
         <div class="container">
@@ -259,7 +292,7 @@ $sqlcreateTbl = "CREATE TABLE IF NOT EXISTS University (
                                         <h6>University Admin Details Sign Up</h6>
                                         <div class="form-label-group">
                                         <input type="text" class="form-control" id="uniadminusername" name="uniadminusername" placeholder="marcus" required>
-                                        <span id="errorUsername" class="error"></span>
+                                        <span id="errorUsername" class="error"><?php echo(" | " . $duplicateusername)?></span>
                                         <label for="uniadminusername">University's Admin username (e.g. marcusliew@utar)</label>
                                         
                                     </div>
@@ -267,11 +300,11 @@ $sqlcreateTbl = "CREATE TABLE IF NOT EXISTS University (
                                         <input type="password" class="form-control" id="uniadminpw" name ="uniadminpw" placeholder="password" required>
                                         <label for="uniadminpw">Password</label>
                                         <span id="invalidPW" class="error"></span>
-                                        
-                                    </div class="form-label-group">
+                                        </div>
+                                        <div class="form-label-group">
                                         <input type="text" class="form-control" id="uniadminfullname" name="uniadminfullname"placeholder="Fullname">
                                         <label for="uniadminfullname">NRIC Full Name</label>
-                                        <span id="invalidFullName"></span>
+                                        <span id="invalidFullName" class="error"></span>
                                         </div>
                                     <div class="form-label-group">
                                         <input type="email" class="form-control" id="uniadminemail" name="uniadminemail"placeholder="email" required>
@@ -288,40 +321,7 @@ $sqlcreateTbl = "CREATE TABLE IF NOT EXISTS University (
             </div>
         </div>
     </section>
-    <?php
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
-        $uniadminfull=$_POST['uniadminfullname'];
-        $uniadminpassword=$_POST['uniadminpw'];
-        $uniadminemail=$_POST['uniadminemail'];
-        $uniadminusername=$_POST['uniadminusername'];
-        if(isset($_POST['uniadminusername'])){
-            $checkuserexist="SELECT username FROM user where username ='$uniadminusername';";
-            $sameusername=$conn->query($checkuserexist);
-            if($sameusername->num_rows>0){
-                $duplicateentry="User exists. Please change a different username";
-            }else{
-                $recorduniadmin= "INSERT INTO USER VALUES('$uniadminusername','$uniadminpassword','$uniadminemail','$uniadminfull'); ";
-                if($conn->query($recorduniadmin) === TRUE){
-                    echo "Uni Admin Record Added Successfully";
-                }
-                else{
-                     echo "Uni Admin Record: " . $conn->error;
-                    }
-                    /*University Register*/
-                    $uniName = $_POST['uniName'];
-                    $insertUni = "Insert into University (UniName,adminUsername) VALUES('$uniName','$uniadminusername');";
-                    if($conn->query($insertUni) === TRUE){
-                         echo "Data added successfully";
-                        }
-                        else{
-                            echo "Error entering data " . $conn->error;
-                        }
-                    }
-                }
-        
-        $conn->close();
-    }
-    ?>
+    
     <!-- ##### Contact Area End ##### -->
 
     <!-- ##### Footer Area Start ##### -->
