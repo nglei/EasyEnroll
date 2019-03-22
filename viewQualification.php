@@ -327,6 +327,19 @@ if($result->num_rows > 0){
 	 var minScore = document.getElementById('minScore');
 	 var maxScore = document.getElementById('maxScore');
 	 var numOfSubject = document.getElementById('subNum');
+	 qualificationName.style.fontWeight = "bold";
+	 gradeList.style.fontWeight = "bold";
+
+	 method.style.fontWeight = "bold";
+	 minScore.style.fontWeight = "bold";
+	 maxScore.style.fontWeight = "bold";
+	 numOfSubject.style.fontWeight = "bold";
+	 gradeList.style.backgroundColor = "silver";
+	 qualificationName.style.backgroundColor = "silver";
+	 minScore.style.backgroundColor = "silver";
+	 maxScore.style.backgroundColor = "silver";
+	 method.style.backgroundColor = "silver";
+	 numOfSubject.style.backgroundColor = "silver";
 	 <?php
 	 echo "method.value ='". $method."';";	
 	 echo "qualificationName.value ='". $qualificationName."';";		 
@@ -338,10 +351,24 @@ if($result->num_rows > 0){
 	 function enable(){
 		 method.disabled = false;
 		 gradeList.disabled = false;
-		 qualificationName.disabled = false;
+		 qualificationName.disabled = false; 
 		 minScore.disabled = false;
 		 maxScore.disabled = false;
 		 numOfSubject.disabled = false;
+		qualificationName.style.fontWeight = "normal";
+		gradeList.style.fontWeight = "normal";
+		method.style.fontWeight = "normal";
+		minScore.style.fontWeight = "normal";
+		maxScore.style.fontWeight = "normal";
+		numOfSubject.style.fontWeight = "normal";
+		gradeList.style.backgroundColor = "	#eef3f6";
+		qualificationName.style.backgroundColor = "#eef3f6";
+	 minScore.style.backgroundColor = "#eef3f6";
+	 maxScore.style.backgroundColor = "#eef3f6";
+	 method.style.backgroundColor = "#eef3f6";
+	 numOfSubject.style.backgroundColor = "#eef3f6";
+	 qualificationName.focus();
+		
 	 }
 	 
 	 </script>

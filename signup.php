@@ -13,51 +13,7 @@ $useDb = "USE easyenroll";
 $conn->query($createDb);
 $conn->query($useDb);
 
-$createUserTb = "CREATE TABLE user(username varchar(50) PRIMARY KEY NOT NULL,password varchar(25),
-email varchar(40),name varchar(40) )";
-$conn->query($createUserTb);
 
-$createApplicantTb = "CREATE TABLE applicant(
-username varchar(50) PRIMARY KEY,
-idtype varchar(10),
-idno varchar(20),
-mobileNo varchar(12),
-dateOfBirth date,
-foreign key (username) references user(username))";
-$conn->query($createApplicantTb);
-
-$createQualificationTb ="CREATE TABLE qualification(
-qualificationID int auto_increment not null primary key,
-qualificationName varchar(50),
-minimumScore int(10),
-maximumScore int(10),
-method varchar(20),
-numOfSubject int(5),
-gradeList varchar(200))";
-$conn->query($createQualificationTb);
-
-$setIDindex = "alter table qualification AUTO_INCREMENT=10001";
-$conn->query($setIDindex);
-
-$qualificationObtainedTb = "CREATE table qualificationObtained(
-qobtainedID int auto_increment primary key not null,
-username varchar(50),
-qualificationID int,
-overallScore int(10),
-foreign key (username) references user(username),
-foreign key (qualificationID) references qualification(qualificationID))";
-$conn->query($qualificationObtainedTb);
-
-$setID = "alter table qualificationObtained AUTO_INCREMENT=20001";
-$conn->query($setID);
-
-$resultTb = "CREATE table result(
-resultID int not null auto_increment primary key,
-username varchar(50),
-subject varchar(30),
-grade varchar(5),
-foreign key (username) references user(username))";
-$conn->query($resultTb);
 
 
 
@@ -221,7 +177,7 @@ $conn->query($resultTb);
      		$errorUsername = "Username already exist.";
      	}
       if($noSubject->num_rows >=1){
-        
+
         while($noSub = $noSubject->fetch_assoc()){
         if(sizeof($gradeList) < $noSub['numOfSubject']){
 			$save = array($username,$name,$email,$idType,$idNo,$mobileNo,$date,$qualification);
@@ -612,10 +568,10 @@ $conn->query($resultTb);
    if($errorUsername != "" || $errorResult != ""){
 		$subjectList = $_POST['subject'];
 		$gradeList = $_POST['grade'];
-		
+
 		echo "<script>";
-		
-		
+
+
 		for($i = 0;$i < sizeof($subjectList) ;$i++){
         $subject = $subjectList[$i];
         $score = $gradeList[$i];

@@ -131,15 +131,16 @@ $conn->query($useDb);
      <!-- ##### Breadcumb Area End ##### -->
 
      <!-- ##### About Us Area Start ##### -->
-     <section class="about-us-area mt-50 section-padding-100">
+     <section class="about-us-area mt-50 section-padding-0-100">
          <div class="container">
            <div class="">
 			<div class="academy-courses-area section-padding-100-0">
-        <div class="container contact-content">
+        <div class="container ">
+		<div class="" style="background-color: #eef3f6; ">
             <div class="row">
                 <!-- Single Course Area -->
                 <div class="col-12 col-sm-6 col-lg-6 "onclick="location.href='addQualification.php';" style="cursor: pointer;">
-                    <div class="single-course-area d-flex align-items-center mb-100 wow fadeInUp" data-wow-delay="300ms" style="visibility: visible; animation-delay: 300ms; animation-name: fadeInUp;">
+                    <div class="single-course-area d-flex align-items-center  wow fadeInUp" data-wow-delay="300ms" style="visibility: visible; animation-delay: 300ms; animation-name: fadeInUp;margin:80px;">
                         <div class="course-icon">
                             <i class="fa fa-table"></i>
                         </div>
@@ -151,7 +152,7 @@ $conn->query($useDb);
                 </div>
                 <!-- Single Course Area -->
                 <div class="col-12 col-sm-6 col-lg-6" onclick="location.href='#';" style="cursor: pointer;">
-                    <div class="single-course-area d-flex align-items-center mb-100 wow fadeInUp" data-wow-delay="400ms" style="visibility: visible; animation-delay: 400ms; animation-name: fadeInUp;">
+                    <div class="single-course-area d-flex align-items-center  wow fadeInUp" data-wow-delay="400ms" style="visibility: visible; animation-delay: 400ms; animation-name: fadeInUp; margin:80px;">
                         <div class="course-icon">
                             <i class="fa fa-tasks"></i>
                         </div>
@@ -162,6 +163,7 @@ $conn->query($useDb);
                 </div>
 	
             </div>
+			</div>
         </div>
     </div>
              </div>
