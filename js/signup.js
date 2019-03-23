@@ -38,10 +38,10 @@ function validation(){
 								if(validIDtype()){
 									if(validDate()){
 										if(validQualification()){
-
+										
 								return true;
 	}}}}}}}}}}
-
+	
 	return false;
 
 
@@ -51,11 +51,13 @@ function validation(){
 	if(username.value == ""){
 		document.getElementById("errorUsername").innerHTML="Please enter a username";
         username.style.borderColor="red";
+		username.focus();
 		return false;
 	}
 	else if(username.value.length < 5 || username.value.length > 15){
 		document.getElementById("errorUsername").innerHTML="Username should be between 5-15 characters";
         username.style.borderColor="red";
+		username.focus();
 		return false;
 	}
 	else{
@@ -67,10 +69,12 @@ function validation(){
 	if(inPassword.value == ""){
 		document.getElementById("errorPassword").innerHTML="Please enter a password";
         inPassword.style.borderColor="red";
+		inPassword.focus();
 		return false;
 	}else if(inPassword.value.length < 8){
 		document.getElementById("errorPassword").innerHTML="Must have at least 8 characters";
         inPassword.style.borderColor="red";
+		inPassword.focus();
 		return false;
 	}
 	else{
@@ -81,10 +85,12 @@ function validation(){
 	if(confirmPass.value == ""){
 		document.getElementById("errorConfirmPass").innerHTML="Please enter a password";
         confirmPass.style.borderColor="red";
+		confirmPass.focus();
 		return false;
 	}else if(confirmPass.value != inPassword.value){
 		document.getElementById("errorConfirmPass").innerHTML="Password not match";
         confirmPass.style.borderColor="red";
+		confirmPass.focus();
 		return false;
 	}
 	else{
@@ -95,6 +101,7 @@ function validation(){
 	if(fullName.value == ""){
 		document.getElementById("errorName").innerHTML="Please enter your name";
         fullName.style.borderColor="red";
+		fullName.focus();
 		return false;
 	}else{
 		return true;
@@ -104,6 +111,7 @@ function validation(){
 	if(email.value == ""){
 		document.getElementById("errorEmail").innerHTML="Please enter your email";
         email.style.borderColor="red";
+		email.focus();
 		return false;
 	}else{
 		return true;
@@ -113,6 +121,7 @@ function validation(){
 	if(idNo.value == ""){
 		document.getElementById("errorIDNo").innerHTML="Please enter your ID number";
         idNo.style.borderColor="red";
+		idNo.focus();
 		return false;
 	}else{
 		return true;
@@ -124,6 +133,7 @@ function validation(){
 	if(mobileNo.value == ""){
 		document.getElementById("errorMobileNo").innerHTML="Please enter your mobile number";
         mobileNo.style.borderColor="red";
+		mobileNo.focus();
 		return false;
 	}/*else if(mobileNo.value.length < 10 || mobileNo.value.length > 11){
 		document.getElementById("errorMobileNo").innerHTML="Invalid mobile number format";
@@ -132,6 +142,7 @@ function validation(){
 	}*/else if(!(mobileNo.value.match(phoneno) || mobileNo.value.match(phoneno2))) {
 		document.getElementById("errorMobileNo").innerHTML="Invalid mobile number format";
 				mobileNo.style.borderColor="red";
+				mobileNo.focus();
 		return false;
 	}
 	else{
@@ -142,6 +153,7 @@ function validation(){
 		if(selectValue == "type"){
 			document.getElementById("errorIDType").innerHTML="Please choose your ID Type";
 			idType.style.borderColor="red";
+			idType.focus();
 			return false;
 		}
 		else{
@@ -152,6 +164,7 @@ function validation(){
 			if(date.value == ""){
 				document.getElementById("errorDate").innerHTML="Please fill up the date";
 				date.style.borderColor="red";
+				date.focus();
 				return false;
 			}
 			else{
@@ -162,6 +175,7 @@ function validation(){
 			if(selectQual == "type"){
 				document.getElementById("errorQualification").innerHTML="Please Choose a Qualification";
 				qualification.style.borderColor="red";
+				qualification.focus();
 				return false;
 			}
 			else{
@@ -189,7 +203,6 @@ function validation(){
 			return true;
 		}
 		}
-
 }
 
 username.onkeyup = function(){
