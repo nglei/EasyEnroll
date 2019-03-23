@@ -13,7 +13,19 @@ $useDb = "USE easyenroll";
 $conn->query($createDb);
 $conn->query($useDb);
 
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+	$qualName = $_POST['qualificationName'];
+	$minS = $_POST['minScore'];
+	$maxS = $_POST['maxScore'];
+	$calc = $_POST['calcMethod'];
+	$noSub = $_POST['subNum'];
+	$gradeL = $_POST['gradelist'];
 
+	$updateQualification ="UPDATE qualification set qualificationName = '$qualName' , minimumScore = $minS,maximumScore = $maxS,method='$calc',numOfSubject=$noSub,gradeList = '$gradeL' where qualificationID = 10004 ";
+	$conn-> query($updateQualification);
+
+	header('Location: addQualification.php');
+}
 
  ?>
  <!DOCTYPE html>
@@ -30,7 +42,7 @@ $conn->query($useDb);
      <title>Academy - Education Course Template</title>
 
      <!-- Favicon -->
-     <link rel="icon" href="img/core-img/favicon.ico">
+     <link rel="icon" href="img/bg-img/EasyEnroll.png">
 
      <!-- Core Stylesheet -->
      <link rel="stylesheet" href="style.css">
@@ -53,7 +65,7 @@ $conn->query($useDb);
                      <div class="col-12 h-100">
                          <div class="header-content h-100 d-flex align-items-center justify-content-between">
                              <div class="academy-logo">
-                                 <a href="index.html"><img src="img/core-img/logo.png" alt=""></a>
+                                 <a href="index.html"><img src="img/bg-img/EasyEnroll.png" alt="" height="102vh" width="88vh"></a>
                              </div>
                              <div class="login-content">
                                <?php
@@ -131,7 +143,7 @@ $conn->query($useDb);
      </div>
      <!-- ##### Breadcumb Area End ##### -->
 <?php
-$getQualification = "SELECT * from qualification where qualificationID = 10003";
+$getQualification = "SELECT * from qualification where qualificationID = 10004";
 $result = $conn->query($getQualification);
 $qualificationName ="";
 $minScore ="";
@@ -147,7 +159,7 @@ if($result->num_rows > 0){
 		$method = $row['method'];
 		$numOfSub = $row['numOfSubject'];
 		$gradeList=$row['gradeList'];
-		
+
 	}
 }
 ?>
@@ -158,11 +170,11 @@ if($result->num_rows > 0){
 
                <div class="col-12">
                    <div class="contact-form-area wow fadeInUp" data-wow-delay="500ms">
-                     <form action="#" method="post" onsubmit="return validation()">
+                     <form action="viewQualification.php" method="post" onsubmit="return validation()" id="viewQualification">
      <div>
      <label for="qualificationName">Qualification Name</label>
                          <input type="text" id="qualificationName" name="qualificationName" class="form-control" disabled>
-                         <span id="errorQualification" class="error"><?php if($errorQualification!=""){echo $errorQualification;}?></span>
+                         <span id="errorQualification" class="error"></span>
                          </div>
      <div>
      <label for="minScore">Minimum Score</label>
@@ -217,11 +229,19 @@ if($result->num_rows > 0){
 
      <div>
      <label>Grade List</label><button id="example" type="button" class="btn btn-link btn-sm">Example</button>
-                         <textarea name="gradelist" class="form-control" id="gradelist" cols="30" rows="10" disabled></textarea>
+                         <textarea name="gradelist" class="form-control" id="gradelist" cols="30" rows="10" disabled><?php echo $gradeList;?></textarea>
      <span id="errorGradeList" class="error"></span>
      </div>
-                         <button type="button" class="btn academy-btn mt-30" onclick="enable()">Edit Qualification</button>
+	 <div class = "text-center">
+
+     <button type="button" id="edit" class="btn academy-btn mt-30 " onclick="enable()">Edit Qualification</button>
+
+		<button type="button" id= "save"  class="btn academy-btn mt-30 " onclick="location.href=('addQualification.php')" >Back To List</button>
                      </form>
+
+<?php
+
+?>
                    </div>
                </div>
              </div>
@@ -327,34 +347,28 @@ if($result->num_rows > 0){
 	 var minScore = document.getElementById('minScore');
 	 var maxScore = document.getElementById('maxScore');
 	 var numOfSubject = document.getElementById('subNum');
-	 qualificationName.style.fontWeight = "bold";
-	 gradeList.style.fontWeight = "bold";
+	 var save = document.getElementById('save');
+	 var edit = document.getElementById('edit');
 
-	 method.style.fontWeight = "bold";
-	 minScore.style.fontWeight = "bold";
-	 maxScore.style.fontWeight = "bold";
-	 numOfSubject.style.fontWeight = "bold";
 	 gradeList.style.backgroundColor = "silver";
-	 qualificationName.style.backgroundColor = "silver";
-	 minScore.style.backgroundColor = "silver";
-	 maxScore.style.backgroundColor = "silver";
 	 method.style.backgroundColor = "silver";
-	 numOfSubject.style.backgroundColor = "silver";
 	 <?php
-	 echo "method.value ='". $method."';";	
-	 echo "qualificationName.value ='". $qualificationName."';";		 
-	 echo "minScore.value ='". $minScore."';";	
+	 echo "method.value ='". $method."';";
+	 echo "qualificationName.value ='". $qualificationName."';";
+	 echo "minScore.value ='". $minScore."';";
 	 echo "maxScore.value ='". $maxScore."';";
 	 echo "numOfSubject.value ='". $numOfSub."';";
-	 echo "gradeList.value ='". $gradeList."';";
+	 //echo "gradeList.innerHTML ='".$gradeList."';";
 	 ?>
+
+
 	 function enable(){
-		 method.disabled = false;
-		 gradeList.disabled = false;
-		 qualificationName.disabled = false; 
-		 minScore.disabled = false;
-		 maxScore.disabled = false;
-		 numOfSubject.disabled = false;
+		method.disabled = false;
+		gradeList.disabled = false;
+		qualificationName.disabled = false;
+		minScore.disabled = false;
+		maxScore.disabled = false;
+		numOfSubject.disabled = false;
 		qualificationName.style.fontWeight = "normal";
 		gradeList.style.fontWeight = "normal";
 		method.style.fontWeight = "normal";
@@ -363,16 +377,24 @@ if($result->num_rows > 0){
 		numOfSubject.style.fontWeight = "normal";
 		gradeList.style.backgroundColor = "	#eef3f6";
 		qualificationName.style.backgroundColor = "#eef3f6";
-	 minScore.style.backgroundColor = "#eef3f6";
-	 maxScore.style.backgroundColor = "#eef3f6";
-	 method.style.backgroundColor = "#eef3f6";
-	 numOfSubject.style.backgroundColor = "#eef3f6";
-	 qualificationName.focus();
-		
+		minScore.style.backgroundColor = "#eef3f6";
+		maxScore.style.backgroundColor = "#eef3f6";
+		method.style.backgroundColor = "#eef3f6";
+		numOfSubject.style.backgroundColor = "#eef3f6";
+
+		save.innerHTML = "Save Qualification";
+		save.setAttribute("type","submit");
+		qualificationName.focus();
+		edit.innerHTML = 'Cancel';
+		edit.onclick = function () {
+        location.href = "viewQualification.php";}
+
+
+
 	 }
-	 
+
 	 </script>
-	 
+
 	 	<script>
 
 var modal = document.getElementById('myModal');

@@ -10,6 +10,13 @@
 @import url(css/custom-icon.css);
 @import url(css/classy-nav.min.css);
 /* :: 3.0 Base CSS */
+#viewQualification input,
+#viewQualification textarea,
+#viewQualification select{
+	background-color : silver;
+	font-weight:bold;
+}
+
 .modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */

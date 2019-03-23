@@ -27,7 +27,7 @@ $conn->query($useDb);
     <title>Academy - Education Course Template</title>
 
     <!-- Favicon -->
-    <link rel="icon" href="img/core-img/favicon.ico">
+    <link rel="icon" href="img/bg-img/EasyEnroll.png">
 
     <!-- Core Stylesheet -->
     <link rel="stylesheet" href="style.css">
@@ -53,7 +53,7 @@ $conn->query($useDb);
                     <div class="col-12 h-100">
                         <div class="header-content h-100 d-flex align-items-center justify-content-between">
                             <div class="academy-logo">
-                                <a href="index.html"><img src="img/core-img/logo.png" alt=""></a>
+                                <a href="index.html"><img src="img/bg-img/EasyEnroll.png" alt="" height="102vh" width="88vh"></a>
                             </div>
                             <div class="login-content">
                                 <a href="//www.123formbuilder.com/form-4669784/school-admission-form" class="blueLink13">Register / Login</a>
