@@ -12,7 +12,7 @@ $createDb = "CREATE DATABASE easyenroll";
 $useDb = "USE easyenroll";
 $conn->query($createDb);
 $conn->query($useDb);
-
+$checkPass ="";
 $errorMessage="";
   if($_SERVER["REQUEST_METHOD"]=="POST"){
     $loginUsername = $_POST['loginUsername'];
@@ -20,22 +20,30 @@ $errorMessage="";
     $userType = $_POST['userType'];
 
     if($userType == "applicant"){
-    $getUser = "SELECT username,password from user where username='".$loginUsername."' and password = '".$loginPassword."'";
+	$getUser = "SELECT username from applicant where username = '".$loginUsername."'";
+    $checkPassword = "SELECT username,password from user where username='".$loginUsername."' and password = '".$loginPassword."'";
     $result = $conn->query($getUser);
+	$checkPass = $conn->query($checkPassword);
   }else if($userType == "uniadmin"){
+	$getUser = "SELECT adminUsername from university where adminUsername = '".$loginUsername."'";
+	$result = $conn->query($getUser);
+	$checkPassword = "SELECT username,password from user where username='".$loginUsername."' and password = '".$loginPassword."'";
+	$checkPass = $conn->query($checkPassword);
 
   }else{
-    $getUser = "SELECT username,password from sasadmin where username='".$loginUsername."' and password = '".$loginPassword."'";
+	$getUser = "SELECT username from sasadmin where username = '".$loginUsername."'";
+    $checkPassword = "SELECT username,password from sasadmin where username='".$loginUsername."' and password = '".$loginPassword."'";
     $result = $conn->query($getUser);
+	$checkPass = $conn->query($checkPassword);
   }
-    if($result->num_rows != 1){
+    if($result->num_rows != 1 || $checkPass->num_rows != 1){
       $errorMessage = "Incorrect username or password, Please Try Again.";
-
+	
     }else{
       $_SESSION['loginUser'] = $loginUsername;
       if($userType == "applicant"){
       header('Location: index.php');}
-      else if($userType == "uniadmin"){}
+      else if($userType == "uniadmin"){header('Location: index.php');}
         else{header('Location: adminLogin.php');}
     }
   }
