@@ -12,6 +12,31 @@ $createDb = "CREATE DATABASE easyenroll";
 $useDb = "USE easyenroll";
 $conn->query($createDb);
 $conn->query($useDb);
+
+$errorQualification ="";
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+    $qualificationName = $_POST['qualificationName'];
+    $minScore = $_POST['minScore'];
+    $maxScore = $_POST['maxScore'];
+    $method = $_POST['calcMethod'];
+    $numOfSub = $_POST['subNum'];
+    $gradeList = $_POST['gradelist'];
+
+   	if(isset($_POST['qualificationName'])){
+        $findQualification = "SELECT qualificationName from qualification where qualificationName = '".$qualificationName."'";
+        $result = $conn->query($findQualification);
+        if($result->num_rows >=1){
+            $save = array($qualificationName,$minScore,$maxScore,$method,$numOfSub,$gradeList);
+            $errorQualification = "Qualification already exist";
+        }else{
+            $insertQualification ="INSERT into qualification (qualificationName,minimumScore,maximumScore,method,numOfSubject,gradeList) values
+            ('$qualificationName','$minScore','$maxScore','$method','$numOfSub','$gradeList')";
+            $conn->query($insertQualification);
+			header('location:qualificationList.php');
+        }
+    }
+
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,7 +81,20 @@ $conn->query($useDb);
                                 <a href="index.html"><img src="img/bg-img/EasyEnroll.png" alt="" height="102vh" width="88vh"></a>
                             </div>
                             <div class="login-content">
-                                <a href="//www.123formbuilder.com/form-4669784/school-admission-form" class="blueLink13">Register / Login</a>
+                                <?php
+                                 if(isset($_SESSION['loginUser'])){
+									echo "<a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>";
+									echo "Welcome, ".$_SESSION['loginUser']."</a>";
+									echo "<div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>";
+									echo "<a class='dropdown-item' href='signout.php'>Logout</a></div>";
+
+
+                                 }else{
+                                   echo "<a href='signin.php' class='blueLink13'>";
+                                   echo "Register / Login";
+                                   echo "</a>";
+                                 }
+                                 ?>
                             </div>
                         </div>
                     </div>
@@ -71,78 +109,37 @@ $conn->query($useDb);
                     <!-- Menu -->
                     <nav class="classy-navbar justify-content-between" id="academyNav">
 
-                        <!-- Navbar Toggler -->
-                        <div class="classy-navbar-toggler">
-                            <span class="navbarToggler"><span></span><span></span><span></span></span>
-                        </div>
+                         <!-- Navbar Toggler -->
+                         <div class="classy-navbar-toggler">
+                             <span class="navbarToggler"><span></span><span></span><span></span></span>
+                         </div>
 
-                        <!-- Menu -->
-                        <div class="classy-menu">
+                         <!-- Menu -->
+                         <div class="classy-menu">
 
-                            <!-- close btn -->
-                            <div class="classycloseIcon">
-                                <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
-                            </div>
+                             <!-- close btn -->
+                             <div class="classycloseIcon">
+                                 <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                             </div>
 
-                            <!-- Nav Start -->
-                            <div class="classynav">
-                                <ul>
-                                    <li><a href="index.html">Home</a></li>
-                                    <li><a href="#">Pages</a>
+                             <!-- Nav Start -->
+                             <div class="classynav">
+                                 <ul>
+                                     <li><a href="amdinLogin.php">Home</a></li>
+                                     <li><a href="qualificationList.php">Qualification</a></li>
+                                     <li><a href="#">University</a></li>
+                                 </ul>
+                             </div>
+                             <!-- Nav End -->
+                         </div>
 
-                                        <ul class="dropdown">
-                                            <li><a href="index.html">Home</a></li>
-                                            <li><a href="about-us.html">About Us</a></li>
-                                            <li><a href="course.html">Course</a></li>
-                                            <li><a href="blog.html">Programme</a></li>
-                                            <li><a href="contact.html">Apply Now</a></li>
-                                            <li><a href="elements.html">Contact</a></li>
-
-                                        </ul>
-                                    </li>
-                                    <li><a href="#">Mega Menu</a>
-                                        <div class="megamenu">
-                                            <ul class="single-mega cn-col-4">
-                                                <li><a href="index.html">Home</a></li>
-                                                <li><a href="#">Yale University</a></li>
-                                                <li><a href="#">Tokyo University</a></li>
-                                                <li><a href="#">National Technology University</a></li>
-                                                <li><a href="#">National University Singapore</a></li>
-                                            </ul>
-                                            <ul class="single-mega cn-col-4">
-                                                <li><a href="#">University Kebangsaan Malaysia</a></li>
-                                                <li><a href="#">University Islam </a></li>
-                                                <li><a href="#">University Teknologi Malaysia</a></li>
-                                                <li><a href="#">SEGI</a></li>
-                                                <li><a href="#">Students Gallery</a></li>
-                                            </ul>
-                                            <ul class="single-mega cn-col-4">
-                                                <li><a href="#">Home</a></li>
-                                                <li><a href="#">Services &amp; Features</a></li>
-                                                <li><a href="#">Accordions and tabs</a></li>
-                                                <li><a href="#">Menu ideas</a></li>
-                                                <li><a href="#">Students Gallery</a></li>
-                                            </ul>
-                                            <div class="single-mega cn-col-4">
-                                                <img src="img/bg-img/bg-1.jpg" alt="">
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li><a href="about-us.html">About Us</a></li>
-                                    <li><a href="course.html">Course</a></li>
-                                    <li><a href="contact.html">Contact</a></li>
-                                </ul>
-                            </div>
-                            <!-- Nav End -->
-                        </div>
-
-                        <!-- Calling Info -->
-                        <div class="calling-info">
-                            <div class="call-center">
-                                <a href="tel:+60108811385"><i class="icon-telephone-2"></i> <span>(+6010) 8811385</span></a>
-                            </div>
-                        </div>
-                    </nav>
+                         <!-- Calling Info -->
+                         <div class="calling-info">
+                             <div class="call-center">
+                                 <a href="tel:+654563325568889"><i class="icon-telephone-2"></i> <span>(+65) 456 332 5568 889</span></a>
+                             </div>
+                         </div>
+                     </nav>
                 </div>
             </div>
         </div>
@@ -212,30 +209,7 @@ $conn->query($useDb);
                             </div>
                             <!-- Contact Form Area -->
                             <?php
-                              $errorQualification ="";
-                              if($_SERVER["REQUEST_METHOD"] == "POST"){
-                                $qualificationName = $_POST['qualificationName'];
-                                $minScore = $_POST['minScore'];
-                                $maxScore = $_POST['maxScore'];
-                                $method = $_POST['calcMethod'];
-                                $numOfSub = $_POST['subNum'];
-                                $gradeList = $_POST['gradelist'];
-
-
-                            	if(isset($_POST['qualificationName'])){
-                                $findQualification = "SELECT qualificationName from qualification where qualificationName = '".$qualificationName."'";
-                                $result = $conn->query($findQualification);
-                                if($result->num_rows >=1){
-                                  $save = array($qualificationName,$minScore,$maxScore,$method,$numOfSub,$gradeList);
-                                  $errorQualification = "Qualification already exist";
-                                }else{
-                                  $insertQualification ="INSERT into qualification (qualificationName,minimumScore,maximumScore,method,numOfSubject,gradeList) values
-                                  ('$qualificationName','$minScore','$maxScore','$method','$numOfSub','$gradeList')";
-                                  $conn->query($insertQualification);
-                                }
-                              }
-
-                              }
+                              
                             ?>
                             <div class="col-12 col-lg-7">
                                 <div class="contact-form-area wow fadeInUp" data-wow-delay="500ms">

@@ -14,6 +14,10 @@ $conn->query($createDb);
 $conn->query($useDb);
 
 
+
+
+
+
  ?>
  <!DOCTYPE html>
  <html lang="en">
@@ -81,7 +85,7 @@ $conn->query($useDb);
              <div class="classy-nav-container breakpoint-off">
                  <div class="container">
                      <!-- Menu -->
-                     <nav class="classy-navbar justify-content-between" id="academyNav">
+<nav class="classy-navbar justify-content-between" id="academyNav">
 
                          <!-- Navbar Toggler -->
                          <div class="classy-navbar-toggler">
@@ -119,53 +123,37 @@ $conn->query($useDb);
          </div>
      </header>
      <!-- ##### Header Area End ##### -->
-     <?php
 
-     								?>
      <!-- ##### Breadcumb Area Start ##### -->
      <div class="breadcumb-area bg-img" style="background-image: url(img/bg-img/breadcumb.jpg);">
          <div class="bradcumbContent">
-             <h2>Welcome to Easy Enroll</h2>
+             <h2>Qualification</h2>
          </div>
      </div>
      <!-- ##### Breadcumb Area End ##### -->
 
      <!-- ##### About Us Area Start ##### -->
-     <section class="about-us-area mt-50 section-padding-0-100">
+     <section class="about-us-area mt-50 section-padding-100">
          <div class="container">
-           <div class="">
-			<div class="academy-courses-area section-padding-100-0">
-        <div class="container ">
-		<div class="" style="background-color: #eef3f6; ">
-            <div class="row">
-                <!-- Single Course Area -->
-                <div class="col-12 col-sm-6 col-lg-6 "onclick="location.href='qualificationList.php';" style="cursor: pointer;">
-                    <div class="single-course-area d-flex align-items-center  wow fadeInUp" data-wow-delay="300ms" style="visibility: visible; animation-delay: 300ms; animation-name: fadeInUp;margin:80px;">
-                        <div class="course-icon">
-                            <i class="fa fa-table"></i>
-                        </div>
-                        <div class="course-content">
-                            <a href="#"><h4>Maintain Qualification</h4></a>
+           <div class="contact-content">
+               <div class="col-12">
+                   <div class="contact-form-area wow fadeInUp" data-wow-delay="500ms">
 
-                        </div>
-                    </div>
-                </div>
-                <!-- Single Course Area -->
-                <div class="col-12 col-sm-6 col-lg-6" onclick="location.href='#';" style="cursor: pointer;">
-                    <div class="single-course-area d-flex align-items-center  wow fadeInUp" data-wow-delay="400ms" style="visibility: visible; animation-delay: 400ms; animation-name: fadeInUp; margin:80px;">
-                        <div class="course-icon">
-                            <i class="fa fa-tasks"></i>
-                        </div>
-                        <div class="course-content">
-                            <h4>Register University</h4>
-                        </div>
-                    </div>
-                </div>
+					<button type="button" class="btn academy-btn mt-30 btn-sm" onclick="location.href='addQualification.php'">Add Programme</button>
+					
+				   <ul class="list-group list-group-flush" id="qualificationList">
+				   <br>
+				   <?php
+					$getQualification = "SELECT * FROM qualification";
+					$qualification = $conn->query($getQualification);
+					if($qualification->num_rows > 0){
+						while($row = $qualification->fetch_assoc()){
+							echo "<a href='viewQualification.php?qID=".$row['qualificationID']."' class='list-group-item list-group-item-action'>".$row['qualificationName']."</a>";
+						}
+					}
+					?>
 
-            </div>
-			</div>
-        </div>
-    </div>
+							 </div>
              </div>
          </div>
      </section>
@@ -259,7 +247,47 @@ $conn->query($useDb);
          </div>
      </footer>
      <!-- ##### Footer Area Start ##### -->
+	 <?php
+		echo "<script>var username = document.getElementById('inputUsername');";
+		echo "var fullName = document.getElementById('inputName');";
+		echo "var email = document.getElementById('inputEmail');";
+		echo "var idType = document.getElementById('selectIDType');";
+		echo "var idNo = document.getElementById('inputIDNo');";
+		echo "var mobileNo = document.getElementById('inputMobile');";
+		echo "var date = document.getElementById('inputDateOfBirth');";
+		echo "var qualification = document.getElementById('selectQualification');";
+		echo "username.value ='". $save[0]."';";
+		echo "fullName.value ='". $save[1]."';";
+		echo "email.value ='". $save[2]."';";
+		echo "idType.value ='". $save[3]."';";
+		echo "idNo.value ='". $save[4]."';";
+		echo "mobileNo.value ='". $save[5]."';";
+		echo "date.value ='". $save[6]."';";
+		echo "qualification.value ='". $save[7]."';";
+		echo "</script>";
+	 ?>
+	 
+	
+   <?php
+   if($errorUsername != "" || $errorResult != ""){
+		$subjectList = $_POST['subject'];
+		$gradeList = $_POST['grade'];
 
+		echo "<script>";
+
+
+		for($i = 0;$i < sizeof($subjectList) ;$i++){
+        $subject = $subjectList[$i];
+        $score = $gradeList[$i];
+		echo "var subject = document.getElementById('subject".($i+1)."');";
+		echo "var score = document.getElementById('score".($i+1)."');";
+		echo "subject.value = '".$subject."';";
+		echo "score.value = '".$score."';";
+      }
+		echo "</script>";
+   }
+   ?>
+     <script src="js/signup.js"></script>
      <!-- ##### All Javascript Script ##### -->
      <!-- jQuery-2.2.4 js -->
      <script src="js/jquery/jquery-2.2.4.min.js"></script>

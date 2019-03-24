@@ -13,6 +13,7 @@ $useDb = "USE easyenroll";
 $conn->query($createDb);
 $conn->query($useDb);
 
+
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 	$qualName = $_POST['qualificationName'];
 	$minS = $_POST['minScore'];
@@ -20,11 +21,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	$calc = $_POST['calcMethod'];
 	$noSub = $_POST['subNum'];
 	$gradeL = $_POST['gradelist'];
-
-	$updateQualification ="UPDATE qualification set qualificationName = '$qualName' , minimumScore = $minS,maximumScore = $maxS,method='$calc',numOfSubject=$noSub,gradeList = '$gradeL' where qualificationID = 10004 ";
+	
+	$updateQualification ="UPDATE qualification set qualificationName = '$qualName' , minimumScore = $minS,maximumScore = $maxS,method='$calc',numOfSubject=$noSub,gradeList = '$gradeL' where qualificationID = ".$_SESSION['qID'];
 	$conn-> query($updateQualification);
 
-	header('Location: addQualification.php');
+	header('Location: qualificationList.php');
 }
 
  ?>
@@ -132,9 +133,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
          </div>
      </header>
      <!-- ##### Header Area End ##### -->
-     <?php
-
-     								?>
      <!-- ##### Breadcumb Area Start ##### -->
      <div class="breadcumb-area bg-img" style="background-image: url(img/bg-img/breadcumb.jpg);">
          <div class="bradcumbContent">
@@ -143,7 +141,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
      </div>
      <!-- ##### Breadcumb Area End ##### -->
 <?php
-$getQualification = "SELECT * from qualification where qualificationID = 10004";
+$getQualification = "SELECT * from qualification where qualificationID = ".$_GET['qID'];
 $result = $conn->query($getQualification);
 $qualificationName ="";
 $minScore ="";
@@ -151,6 +149,7 @@ $maxScore = "";
 $method ="";
 $numOfSub = "";
 $gradeList="";
+$_SESSION['qID'] = $_GET['qID'];
 if($result->num_rows > 0){
     while($row = $result->fetch_assoc()){
 		$qualificationName = $row['qualificationName'];
@@ -159,6 +158,7 @@ if($result->num_rows > 0){
 		$method = $row['method'];
 		$numOfSub = $row['numOfSubject'];
 		$gradeList=$row['gradeList'];
+		$qualificationID = $row['qualificationID'];
 
 	}
 }
@@ -236,12 +236,9 @@ if($result->num_rows > 0){
 
      <button type="button" id="edit" class="btn academy-btn mt-30 " onclick="enable()">Edit Qualification</button>
 
-		<button type="button" id= "save"  class="btn academy-btn mt-30 " onclick="location.href=('addQualification.php')" >Back To List</button>
+		<button type="button" id= "save"  class="btn academy-btn mt-30 " onclick="location.href=('qualificationList.php')" >Back To List</button>
                      </form>
 
-<?php
-
-?>
                    </div>
                </div>
              </div>
