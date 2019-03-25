@@ -12,41 +12,7 @@ $createDb = "CREATE DATABASE easyenroll";
 $useDb = "USE easyenroll";
 $conn->query($createDb);
 $conn->query($useDb);
-$checkPass ="";
-$errorMessage="";
-  if($_SERVER["REQUEST_METHOD"]=="POST"){
-    $loginUsername = $_POST['loginUsername'];
-    $loginPassword = $_POST['loginPassword'];
-    $userType = $_POST['userType'];
 
-    if($userType == "applicant"){
-	$getUser = "SELECT username from applicant where username = '".$loginUsername."'";
-    $checkPassword = "SELECT username,password from user where username='".$loginUsername."' and password = '".$loginPassword."'";
-    $result = $conn->query($getUser);
-	$checkPass = $conn->query($checkPassword);
-  }else if($userType == "uniadmin"){
-	$getUser = "SELECT adminUsername from university where adminUsername = '".$loginUsername."'";
-	$result = $conn->query($getUser);
-	$checkPassword = "SELECT username,password from user where username='".$loginUsername."' and password = '".$loginPassword."'";
-	$checkPass = $conn->query($checkPassword);
-
-  }else{
-	$getUser = "SELECT username from sasadmin where username = '".$loginUsername."'";
-    $checkPassword = "SELECT username,password from sasadmin where username='".$loginUsername."' and password = '".$loginPassword."'";
-    $result = $conn->query($getUser);
-	$checkPass = $conn->query($checkPassword);
-  }
-    if($result->num_rows != 1 || $checkPass->num_rows != 1){
-      $errorMessage = "Incorrect username or password, Please Try Again.";
-
-    }else{
-      $_SESSION['loginUser'] = $loginUsername;
-      if($userType == "applicant"){
-      header('Location: index.php');}
-      else if($userType == "uniadmin"){header('Location: uniadminLogin.php');}
-        else{header('Location: adminLogin.php');}
-    }
-  }
 
  ?>
  <!DOCTYPE html>
@@ -89,7 +55,20 @@ $errorMessage="";
                                  <a href="index.html"><img src="img/bg-img/EasyEnroll.png" alt="" height="102vh" width="88vh"></a>
                              </div>
                              <div class="login-content">
-                                 <a href="#">Register / Login</a>
+                                 <?php
+                                 if(isset($_SESSION['loginUser'])){
+									echo "<a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>";
+									echo "Welcome, ".$_SESSION['loginUser']."</a>";
+									echo "<div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>";
+									echo "<a class='dropdown-item' href='signout.php'>Logout</a></div>";
+
+
+                                 }else{
+                                   echo "<a href='signin.php' class='blueLink13'>";
+                                   echo "Register / Login";
+                                   echo "</a>";
+                                 }
+                                 ?>
                              </div>
                          </div>
                      </div>
@@ -120,48 +99,9 @@ $errorMessage="";
                              <!-- Nav Start -->
                              <div class="classynav">
                                  <ul>
-                                     <li><a href="index.php">Home</a></li>
-                                     <li><a href="#">Pages</a>
-                                         <ul class="dropdown">
-                                             <li><a href="index.php">Home</a></li>
-                                             <li><a href="about-us.html">About Us</a></li>
-                                             <li><a href="course.html">Course</a></li>
-                                             <li><a href="blog.html">Blog</a></li>
-                                             <li><a href="contact.html">Contact</a></li>
-                                             <li><a href="elements.html">Elements</a></li>
-                                         </ul>
-                                     </li>
-                                     <li><a href="#">Mega Menu</a>
-                                         <div class="megamenu">
-                                             <ul class="single-mega cn-col-4">
-                                                 <li><a href="#">Home</a></li>
-                                                 <li><a href="#">Services &amp; Features</a></li>
-                                                 <li><a href="#">Accordions and tabs</a></li>
-                                                 <li><a href="#">Menu ideas</a></li>
-                                                 <li><a href="#">Students Gallery</a></li>
-                                             </ul>
-                                             <ul class="single-mega cn-col-4">
-                                                 <li><a href="#">Home</a></li>
-                                                 <li><a href="#">Services &amp; Features</a></li>
-                                                 <li><a href="#">Accordions and tabs</a></li>
-                                                 <li><a href="#">Menu ideas</a></li>
-                                                 <li><a href="#">Students Gallery</a></li>
-                                             </ul>
-                                             <ul class="single-mega cn-col-4">
-                                                 <li><a href="#">Home</a></li>
-                                                 <li><a href="#">Services &amp; Features</a></li>
-                                                 <li><a href="#">Accordions and tabs</a></li>
-                                                 <li><a href="#">Menu ideas</a></li>
-                                                 <li><a href="#">Students Gallery</a></li>
-                                             </ul>
-                                             <div class="single-mega cn-col-4">
-                                                 <img src="img/bg-img/bg-1.jpg" alt="">
-                                             </div>
-                                         </div>
-                                     </li>
-                                     <li><a href="about-us.html">About Us</a></li>
-                                     <li><a href="course.html">Course</a></li>
-                                     <li><a href="contact.html">Contact</a></li>
+                                     <li><a href="uniadminLogin.php">Home</a></li>
+                                     <li><a href="3">Programme</a></li>
+                                     <li><a href="#">Review Application</a></li>
                                  </ul>
                              </div>
                              <!-- Nav End -->
@@ -185,44 +125,47 @@ $errorMessage="";
      <!-- ##### Breadcumb Area Start ##### -->
      <div class="breadcumb-area bg-img" style="background-image: url(img/bg-img/breadcumb.jpg);">
          <div class="bradcumbContent">
-             <h2>Sign in</h2>
+             <h2>Welcome to Easy Enroll</h2>
          </div>
      </div>
      <!-- ##### Breadcumb Area End ##### -->
 
      <!-- ##### About Us Area Start ##### -->
-     <section class="about-us-area mt-50 section-padding-100">
+     <section class="about-us-area mt-50 section-padding-0-100">
          <div class="container">
-           <div class="contact-content">
+           <div class="">
+			<div class="academy-courses-area section-padding-100-0">
+        <div class="container ">
+		<div class="" style="background-color: #eef3f6; ">
+            <div class="row">
+                <!-- Single Course Area -->
+                <div class="col-12 col-sm-6 col-lg-6 "onclick="location.href='programmeList.php';" style="cursor: pointer;">
+                    <div class="single-course-area d-flex align-items-center  wow fadeInUp" data-wow-delay="300ms" style="visibility: visible; animation-delay: 300ms; animation-name: fadeInUp;margin:80px;">
+                        <div class="course-icon">
+                            <i class="fa fa-table"></i>
+                        </div>
+                        <div class="course-content">
+                            <a href="#"><h4>Add Programme</h4></a>
 
-               <div class="col-12">
-                   <div class="contact-form-area wow fadeInUp" data-wow-delay="500ms">
-                     <form action="" method="post">
-                          <div class="form-label-group">
-                          <input type="text" name="loginUsername" id="loginUsername" class="form-control" placeholder="Username">
-                          <span id="loginUsername" class="error"></span>
-                          <label for="loginUsername">Username</label>
+                        </div>
                     </div>
-                    <div class="form-label-group">
-                          <input type="password" name="loginPassword" id="loginPassword" class="form-control" placeholder="Password" >
-                          <span id="loginPassword" class="error"><?php if($errorMessage != ""){echo $errorMessage;}?></span>
-                          <label for="loginPassword">Password</label>
+                </div>
+                <!-- Single Course Area -->
+                <div class="col-12 col-sm-6 col-lg-6" onclick="location.href='#';" style="cursor: pointer;">
+                    <div class="single-course-area d-flex align-items-center  wow fadeInUp" data-wow-delay="400ms" style="visibility: visible; animation-delay: 400ms; animation-name: fadeInUp; margin:80px;">
+                        <div class="course-icon">
+                            <i class="fa fa-tasks"></i>
+                        </div>
+                        <div class="course-content">
+                            <h4>Review Application</h4>
+                        </div>
                     </div>
-                    <div class="form-group">
-                      <label for="userType">Sign in as:</label>
-                      <select id="selectIDType" name="userType" class="form-control">
-                        <option value="applicant" selected="">Applicant</option>
-                        <option value="uniadmin">Uni Admin</option>
-                        <option value="sasadmin">SAS Admin</option>
-                      </select>
-                    </div>
-                  <div class="register">
-                    <a href="signup.php" style="font-size:12px">Don't have account? Register here</a>
-                          </div>
-                    <input type="submit" class="btn academy-btn mt-30" value="Login">
-                         </form>
-                   </div>
-               </div>
+                </div>
+
+            </div>
+			</div>
+        </div>
+    </div>
              </div>
          </div>
      </section>

@@ -145,11 +145,14 @@ $conn->query($useDb);
 				   <br>
 				   <?php
 					$getQualification = "SELECT * FROM qualification";
-					$qualification = $conn->query($getQualification);
+					if(($qualification = $conn->query($getQualification))==TRUE){
+					
 					if($qualification->num_rows > 0){
 						while($row = $qualification->fetch_assoc()){
 							echo "<a href='viewQualification.php?qID=".$row['qualificationID']."' class='list-group-item list-group-item-action'>".$row['qualificationName']."</a>";
 						}
+					}}else{
+						echo "No Qualification in the list";
 					}
 					?>
 

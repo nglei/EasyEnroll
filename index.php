@@ -65,6 +65,25 @@ subject varchar(30),
 grade varchar(5),
 foreign key (username) references user(username))";
 $conn->query($resultTb);
+
+$programmeTb = "create table programme(
+programmeID int auto_increment primary key not null,
+programmeName varchar(100),
+progDescription varchar(200),
+closingDate date)";
+$conn->query($programmeTb);
+
+$setProgID = "alter table programme AUTO_INCREMENt = 40001";
+$conn->query($setProgID);
+
+$entryReqTb = "create table entryReq(
+programmeID int,
+qualificationID int,
+entryScore int(5),
+foreign key (programmeID) references programme(programmeID),
+foreign key (qualificationID) references qualification(qualificationID))";
+$conn->query($entryReqTb);
+
  ?>
  <!DOCTYPE html>
  <html lang="en">

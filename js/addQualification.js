@@ -23,7 +23,7 @@ function validation(){
 				if(validCalcMethod()){
 					if(validSubNum()){
 						if(validGradeList()){
-							
+
 								return true;
 	}}}}}}
 
@@ -91,7 +91,7 @@ function validation(){
 	}else{
 		return true;
 	}}
-	
+
 	//validate calculation method
 	function validCalcMethod(){
 		if(selectMethod == ""){
@@ -102,7 +102,7 @@ function validation(){
 		else{
 			return true;
 		}}
-		
+
 }
 
 
@@ -136,7 +136,7 @@ maxScore.onkeyup = function(){
 		document.getElementById("errorMaxScore").innerHTML="Please enter maximum score";
         maxScore.style.borderColor="red";
 	}
-	
+
 	else if(isNaN(maxScore.value)){
 		document.getElementById("errorMaxScore").innerHTML="Please enter number for maximum score";
 		maxScore.style.borderColor="red";}
@@ -144,8 +144,8 @@ maxScore.onkeyup = function(){
 		document.getElementById("errorMaxScore").innerHTML="";
         maxScore.style.borderColor="white";
 	}
-		
-	
+
+
 }
 
 subNum.onkeyup = function(){
@@ -180,5 +180,3 @@ calcMethod.onchange = function(){
 		calcMethod.style.borderColor="white";
 	}
 }
-
-
