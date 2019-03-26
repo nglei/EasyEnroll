@@ -78,8 +78,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <i class="circle-preloader"></i>
     </div>
 
-    <!-- ##### Header Area Start ##### -->
-    <header class="header-area">
 
            <!-- ##### Header Area Start ##### -->
     <header class="header-area">
@@ -138,7 +136,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                              <!-- Nav Start -->
                              <div class="classynav">
                                  <ul>
-                                     <li><a href="amdinLogin.php">Home</a></li>
+                                     <li><a href="uniadminLogin.php">Home</a></li>
                                      <li><a href="programmeList.php">Programme</a></li>
                                      <li><a href="#">Review Application</a></li>
                                  </ul>
@@ -226,7 +224,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             ?>
                             <div class="col-12 col-lg-7">
                                 <div class="contact-form-area wow fadeInUp" data-wow-delay="500ms">
-                                    <form action="addProgramme.php" method="post" onsubmit="return validation()">
+                                    <form action="addProgramme.php" method="post" onsubmit="return (validation() && checkScore())">
 										<div>
 										<label for="programmeName">Programme Name</label>
                                         <input type="text" id="programmeName" name="programmeName" class="form-control" placeholder="Programme Name">
@@ -254,7 +252,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 																  echo "<td>".$row["qualificationName"]."</td>";
 																  echo "<td>";
 																  echo "<div class='form-label-group'>";
-																echo "<input type='text'  name='".$row['qualificationID']."' class='form-control' placeholder='Score'>";
+																echo "<input type='text'  id = '".$row['qualificationID']."' name='".$row['qualificationID']."' class='form-control' placeholder='Score'>";
 																echo "<label for='score'>Score</label>";
 																echo "</div>";
 																  echo "</td>";
@@ -263,14 +261,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                                                                }
                                                                                     }
 										?>
+										
 										</table>
 										</div>
+										<span class="error" id="errorMessage"></span>
 
 										
 									
+									<div>
 
-
-                                        <button class="btn academy-btn mt-30" type="submit">Add Programme</button>
+                                        <button class="btn academy-btn mt-30" type="submit">Add Programme</button></div>
                                     </form>
 
                                 </div>
@@ -282,7 +282,28 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         </div>
     </section>
     <!-- ##### Contact Area End ##### -->
-
+	<script>
+	var errorMessage = document.getElementById('errorMessage');
+	function checkScore(){
+	<?php
+	
+	$countEntry = 0;
+	$getQualification = "SELECT qualificationID,qualificationName from qualification";
+	$qualification = $conn->query($getQualification);
+	if($qualification->num_rows > 0){
+	while($row = $qualification->fetch_assoc()){
+		$qID = $row["qualificationID"];
+		echo "var entry".$countEntry." = document.getElementById('$qID');";	
+		echo "if(entry".$countEntry.".value==''){errorMessage.innerHTML = 'Please enter entry score for all qualification';";
+		echo "entry".$countEntry.".focus(); return false;}";
+		
+		$countEntry++;
+	}
+	}
+	echo "else{return true;}";
+	?>
+	}
+	</script>
     <!-- ##### Footer Area Start ##### -->
     <footer class="footer-area">
         <div class="main-footer-area section-padding-100-0">
@@ -374,7 +395,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     <!-- ##### Footer Area Start ##### -->
 
     <!-- ##### All Javascript Script ##### -->
-
+	
     <!-- jQuery-2.2.4 js -->
 	<script src = "js/addProgramme.js"></script>
     <script src="js/jquery/jquery-2.2.4.min.js"></script>
