@@ -208,7 +208,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                         <div class="contact-icon mr-15">
                                             <i class="icon-telephone-1"></i>
                                         </div>
-                                        <p>Main: 203-808-8613 <br> Office: 203-808-8648</p>
+                                        <p>Main: 603-7780036 <br> Office: 011-8990110</p>
                                     </div>
 
                                     <!-- Single Contact Info -->
@@ -216,7 +216,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                         <div class="contact-icon mr-15">
                                             <i class="icon-contract"></i>
                                         </div>
-                                        <p>office@yourbusiness.com</p>
+                                        <p>office@easyenroll.com</p>
                                     </div>
                                 </div>
                             </div>
