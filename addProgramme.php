@@ -20,10 +20,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $programmeName = $_POST['programmeName'];
     $description = $_POST['description'];
     $closingDate = $_POST['closingDate'];
+	$duration = $_POST['duration'];
+	$fee = $_POST['fee'];
 
 
-    $insertProgramme ="INSERT into programme (programmeName,progDescription,closingDate) values
-    ('$programmeName','$description','$closingDate')";
+    $insertProgramme ="INSERT into programme (programmeName,duration,totalFee,progDescription,closingDate) values
+    ('$programmeName','$duration','$fee','$description','$closingDate')";
     $conn->query($insertProgramme);
 	
 	$getID = "SELECT * FROM programme where programmeName='".$programmeName."' and progDescription = '".$description."' and closingDate = '".$closingDate."'";
@@ -230,6 +232,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                         <input type="text" id="programmeName" name="programmeName" class="form-control" placeholder="Programme Name">
                                         <span id="errorProgramme" class="error"></span>
                                         </div>
+										<div class="row">
+										<div class = "col-6">
+										<label for="duration">Duration</label>
+                                        <input type="text" id="duration" name="duration" class="form-control" placeholder="eg. 3 year">
+                                        <span id="errorDuration" class="error"></span>
+										</div>
+										<div class = "col-6">
+										<label for="fee">Total Fee</label>
+                                        <input type="text" id="fee" name="fee" class="form-control" placeholder="Cource Fee">
+                                        <span id="errorFee" class="error"></span>
+										</div>
+										</div>
                                         <div>
                                         <label>Programme Description</label>
                                                             <textarea name="description" class="form-control" id="description" cols="30" rows="10" placeholder="Programmme Description"></textarea>

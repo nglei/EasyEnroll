@@ -145,16 +145,16 @@ $conn->query($useDb);
 				   <br>
 				   <?php
 					$getProgramme = "SELECT * FROM programme";
-					if(($programme = $conn->query($getProgramme))==TRUE){
+					$programme = $conn->query($getProgramme);
 					
 					if($programme->num_rows > 0){
 						while($row = $programme->fetch_assoc()){
 							echo "<a href='viewQualification.php?qID=".$row['programmeID']."' class='list-group-item list-group-item-action'>".$row['programmeName']."</a>";
 						}
 					}
-					}else{
+					else{
             echo "No Programme added.";
-          }
+					}
 					?>
 
 							 </div>

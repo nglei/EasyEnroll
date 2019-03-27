@@ -151,7 +151,7 @@ $conn->query($useDb);
                     </div>
                 </div>
                 <!-- Single Course Area -->
-                <div class="col-12 col-sm-6 col-lg-6" onclick="location.href='#';" style="cursor: pointer;">
+                <div class="col-12 col-sm-6 col-lg-6" onclick="location.href='addUniversity.php';" style="cursor: pointer;">
                     <div class="single-course-area d-flex align-items-center  wow fadeInUp" data-wow-delay="400ms" style="visibility: visible; animation-delay: 400ms; animation-name: fadeInUp; margin:80px;">
                         <div class="course-icon">
                             <i class="fa fa-tasks"></i>

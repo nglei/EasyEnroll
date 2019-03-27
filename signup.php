@@ -19,6 +19,91 @@ $conn->query($useDb);
 
 
  ?>
+ 
+     <?php
+     $errorUsername = "";
+     $errorResult = "";
+
+     if($_SERVER["REQUEST_METHOD"] == "POST"){
+     	$username = $_POST['username'];
+		$password = $_POST['password'];
+     	$name = $_POST['fullName'];
+     	$email = $_POST['email'];
+     	$idType = $_POST['idType'];
+     	$idNo = $_POST['idNo'];
+     	$mobileNo = $_POST['mobileNo'];
+     	$date = $_POST['date'];
+		$qualification = $_POST['qualification'];
+    $subjectList = $_POST['subject'];
+    $gradeList = $_POST['grade'];
+
+     	if(isset($_POST['username'])){
+     	$findUser = "SELECT username from user where username = '".$username."'";
+     	$result = $conn->query($findUser);
+      $getNumSubject = "SELECT numOfSubject from qualification where qualificationID='".$qualification."'";
+      $noSubject = $conn->query($getNumSubject);
+     	if($result->num_rows >=1){
+
+        $save = array($username,$name,$email,$idType,$idNo,$mobileNo,$date,$qualification);
+     		$errorUsername = "Username already exist.";
+     	}
+      if($noSubject->num_rows >=1){
+
+        while($noSub = $noSubject->fetch_assoc()){
+        if(sizeof($gradeList) < $noSub['numOfSubject']){
+			$save = array($username,$name,$email,$idType,$idNo,$mobileNo,$date,$qualification);
+            $errorResult = "Must at least enter ".$noSub['numOfSubject']." subject and ".$noSub['numOfSubject']." score";
+        }
+      }
+      }
+      if($errorUsername == "" && $errorResult ==""){
+
+     	$insertUser = "INSERT into user (username,password,email,name) values('$username','$password','$email','$name')";
+     	$conn->query($insertUser);
+
+     	$insertApplicant = "INSERT into applicant (username,idtype,idno,mobileNo,dateOfBirth) values('$username','$idType','$idNo','$mobileNo','$date')";
+		  $conn->query($insertApplicant);
+
+
+
+      $getMethod = "SELECT method,numOfSubject from qualification where qualificationID = '".$qualification."'";
+      $methodRow = $conn->query($getMethod);
+      $overallScore = 0;
+      if($methodRow->num_rows > 0){
+                while($row = $methodRow->fetch_assoc()){
+                  $method = $row["method"];
+                  $numOfSubject = $row["numOfSubject"];
+                  if($method == "total"){
+                    rsort($gradeList);
+                    for($i = 0;$i < $numOfSubject ;$i++){
+                      $overallScore =  ($overallScore + $gradeList[$i]);
+                    }
+                  }else{
+					for($i = 0;$i < $numOfSubject ;$i++){
+						rsort($gradeList);
+                      $overallScore =  ($overallScore + $gradeList[$i]);
+                    }
+					$overallScore = ($overallScore / $numOfSubject);
+				  }
+                }}
+
+     	$insertQualObtained = "INSERT into qualificationobtained (username,qualificationID,overallScore) values ('$username','$qualification','$overallScore')";
+		  $conn->query($insertQualObtained);
+
+
+
+      for($i = 0;$i < sizeof($subjectList) ;$i++){
+        $subject = $subjectList[$i];
+        $grade = $gradeList[$i];
+        $insertResult = "INSERT into result (username,subject,grade) values('$username','$subject','$grade')";
+     		$conn->query($insertResult);
+      }
+		header('location:signin.php');
+     	}
+     	}
+
+     }
+      ?>
  <!DOCTYPE html>
  <html lang="en">
 
@@ -149,90 +234,7 @@ $conn->query($useDb);
          </div>
      </header>
      <!-- ##### Header Area End ##### -->
-     <?php
-     $errorUsername = "";
-     $errorResult = "";
 
-     if($_SERVER["REQUEST_METHOD"] == "POST"){
-     	$username = $_POST['username'];
-		$password = $_POST['password'];
-     	$name = $_POST['fullName'];
-     	$email = $_POST['email'];
-     	$idType = $_POST['idType'];
-     	$idNo = $_POST['idNo'];
-     	$mobileNo = $_POST['mobileNo'];
-     	$date = $_POST['date'];
-		$qualification = $_POST['qualification'];
-    $subjectList = $_POST['subject'];
-    $gradeList = $_POST['grade'];
-
-     	if(isset($_POST['username'])){
-     	$findUser = "SELECT username from user where username = '".$username."'";
-     	$result = $conn->query($findUser);
-      $getNumSubject = "SELECT numOfSubject from qualification where qualificationID='".$qualification."'";
-      $noSubject = $conn->query($getNumSubject);
-     	if($result->num_rows >=1){
-
-        $save = array($username,$name,$email,$idType,$idNo,$mobileNo,$date,$qualification);
-     		$errorUsername = "Username already exist.";
-     	}
-      if($noSubject->num_rows >=1){
-
-        while($noSub = $noSubject->fetch_assoc()){
-        if(sizeof($gradeList) < $noSub['numOfSubject']){
-			$save = array($username,$name,$email,$idType,$idNo,$mobileNo,$date,$qualification);
-            $errorResult = "Must at least enter ".$noSub['numOfSubject']." subject and ".$noSub['numOfSubject']." score";
-        }
-      }
-      }
-      if($errorUsername == "" && $errorResult ==""){
-
-     	$insertUser = "INSERT into user (username,password,email,name) values('$username','$password','$email','$name')";
-     	$conn->query($insertUser);
-
-     	$insertApplicant = "INSERT into applicant (username,idtype,idno,mobileNo,dateOfBirth) values('$username','$idType','$idNo','$mobileNo','$date')";
-		  $conn->query($insertApplicant);
-
-
-
-      $getMethod = "SELECT method,numOfSubject from qualification where qualificationID = '".$qualification."'";
-      $methodRow = $conn->query($getMethod);
-      $overallScore = 0;
-      if($methodRow->num_rows > 0){
-                while($row = $methodRow->fetch_assoc()){
-                  $method = $row["method"];
-                  $numOfSubject = $row["numOfSubject"];
-                  if($method == "total"){
-                    rsort($gradeList);
-                    for($i = 0;$i < $numOfSubject ;$i++){
-                      $overallScore =  ($overallScore + $gradeList[$i]);
-                    }
-                  }else{
-					for($i = 0;$i < $numOfSubject ;$i++){
-						rsort($gradeList);
-                      $overallScore =  ($overallScore + $gradeList[$i]);
-                    }
-					$overallScore = ($overallScore / $numOfSubject);
-				  }
-                }}
-
-     	$insertQualObtained = "INSERT into qualificationobtained (username,qualificationID,overallScore) values ('$username','$qualification','$overallScore')";
-		  $conn->query($insertQualObtained);
-
-
-
-      for($i = 0;$i < sizeof($subjectList) ;$i++){
-        $subject = $subjectList[$i];
-        $grade = $gradeList[$i];
-        $insertResult = "INSERT into result (username,subject,grade) values('$username','$subject','$grade')";
-     		$conn->query($insertResult);
-      }
-
-     	}
-     	}
-
-     }
-      ?>
      <!-- ##### Breadcumb Area Start ##### -->
      <div class="breadcumb-area bg-img" style="background-image: url(img/bg-img/breadcumb.jpg);">
          <div class="bradcumbContent">

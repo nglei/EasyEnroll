@@ -151,9 +151,9 @@ $conn->query($useDb);
 						while($row = $qualification->fetch_assoc()){
 							echo "<a href='viewQualification.php?qID=".$row['qualificationID']."' class='list-group-item list-group-item-action'>".$row['qualificationName']."</a>";
 						}
-					}}else{
+					}else{
 						echo "No Qualification in the list";
-					}
+					}}
 					?>
 
 							 </div>
@@ -250,46 +250,9 @@ $conn->query($useDb);
          </div>
      </footer>
      <!-- ##### Footer Area Start ##### -->
-	 <?php
-		echo "<script>var username = document.getElementById('inputUsername');";
-		echo "var fullName = document.getElementById('inputName');";
-		echo "var email = document.getElementById('inputEmail');";
-		echo "var idType = document.getElementById('selectIDType');";
-		echo "var idNo = document.getElementById('inputIDNo');";
-		echo "var mobileNo = document.getElementById('inputMobile');";
-		echo "var date = document.getElementById('inputDateOfBirth');";
-		echo "var qualification = document.getElementById('selectQualification');";
-		echo "username.value ='". $save[0]."';";
-		echo "fullName.value ='". $save[1]."';";
-		echo "email.value ='". $save[2]."';";
-		echo "idType.value ='". $save[3]."';";
-		echo "idNo.value ='". $save[4]."';";
-		echo "mobileNo.value ='". $save[5]."';";
-		echo "date.value ='". $save[6]."';";
-		echo "qualification.value ='". $save[7]."';";
-		echo "</script>";
-	 ?>
 	 
 	
-   <?php
-   if($errorUsername != "" || $errorResult != ""){
-		$subjectList = $_POST['subject'];
-		$gradeList = $_POST['grade'];
-
-		echo "<script>";
-
-
-		for($i = 0;$i < sizeof($subjectList) ;$i++){
-        $subject = $subjectList[$i];
-        $score = $gradeList[$i];
-		echo "var subject = document.getElementById('subject".($i+1)."');";
-		echo "var score = document.getElementById('score".($i+1)."');";
-		echo "subject.value = '".$subject."';";
-		echo "score.value = '".$score."';";
-      }
-		echo "</script>";
-   }
-   ?>
+  
      <script src="js/signup.js"></script>
      <!-- ##### All Javascript Script ##### -->
      <!-- jQuery-2.2.4 js -->
