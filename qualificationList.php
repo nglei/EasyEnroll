@@ -139,7 +139,7 @@ $conn->query($useDb);
                <div class="col-12">
                    <div class="contact-form-area wow fadeInUp" data-wow-delay="500ms">
 
-					<button type="button" class="btn academy-btn mt-30 btn-sm" onclick="location.href='addQualification.php'">Add Programme</button>
+					<button type="button" class="btn academy-btn mt-30 btn-sm" onclick="location.href='addQualification.php'">Add Qualification</button>
 					
 				   <ul class="list-group list-group-flush" id="qualificationList">
 				   <br>
