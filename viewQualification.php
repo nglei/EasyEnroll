@@ -383,8 +383,10 @@ if($result->num_rows > 0){
 		save.setAttribute("type","submit");
 		qualificationName.focus();
 		edit.innerHTML = 'Cancel';
-		edit.onclick = function () {
-        location.href = "viewQualification.php";}
+		<?php
+		echo "edit.onclick = function () {";
+        echo "location.href = 'viewQualification.php?qID=".$_SESSION['qID']."';}";
+		?>
 
 
 
