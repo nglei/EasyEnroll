@@ -69,6 +69,8 @@ $conn->query($resultTb);
 $programmeTb = "create table programme(
 programmeID int auto_increment primary key not null,
 programmeName varchar(100),
+duration varchar(50),
+totalFee decimal(9,2),
 progDescription varchar(200),
 closingDate date)";
 $conn->query($programmeTb);
