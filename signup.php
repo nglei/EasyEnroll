@@ -401,7 +401,7 @@ $conn->query($useDb);
 
                              </table>
 							 </div>
-							 <div><span id="errorResult" class="error"><?php if($errorResult !=""){echo $errorResult;}?></span></div>
+							 
 
 							 <div id="gradeList" class="gradeList">
 							 <br>
@@ -427,6 +427,7 @@ $conn->query($useDb);
 								?>
 							 </div>
                            </div>
+						   <div><span id="errorResult" class="error"><?php if($errorResult !=""){echo $errorResult;}?></span></div>
 
 
 
