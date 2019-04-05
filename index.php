@@ -68,11 +68,14 @@ $conn->query($resultTb);
 
 $programmeTb = "create table programme(
 programmeID int auto_increment primary key not null,
+UniID VARCHAR(5),
 programmeName varchar(100),
 duration varchar(50),
-totalFee decimal(9,2),
+totalFee int(10),
 progDescription varchar(200),
-closingDate date)";
+closingDate date,
+imgURL varchar(200),
+foreign key (UniID) references university(UniID))";
 $conn->query($programmeTb);
 
 $setProgID = "alter table programme AUTO_INCREMENt = 40001";
@@ -85,6 +88,19 @@ entryScore int(5),
 foreign key (programmeID) references programme(programmeID),
 foreign key (qualificationID) references qualification(qualificationID))";
 $conn->query($entryReqTb);
+
+$applicationTb = "create table application(
+applicationID int auto_increment primary key,
+applicationDate date,
+applicationStatus varchar(20),
+applicant varchar(50),
+progID int,
+foreign key (applicant) references user(username),
+foreign key (progID) references programme(programmeID));";
+$conn->query($applicationTb);
+
+$setapplicationID = "alter table application AUTO_INCREMENt = 60001";
+$conn->query($setapplicationID);
 
  ?>
  <!DOCTYPE html>
@@ -214,7 +230,7 @@ $conn->query($entryReqTb);
                                          </div>
                                      </li>
                                      <li><a href="about-us.html">About Us</a></li>
-                                     <li><a href="course.html">Course</a></li>
+                                     <li><a href="course.php">Course</a></li>
                                      <li><a href="contact.html">Contact</a></li>
                                  </ul>
                              </div>

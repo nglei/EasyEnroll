@@ -379,7 +379,7 @@ if($result->num_rows > 0){
 		method.style.backgroundColor = "#eef3f6";
 		numOfSubject.style.backgroundColor = "#eef3f6";
 
-		save.innerHTML = "Save Qualification";
+		save.innerHTML = "Save";
 		save.setAttribute("type","submit");
 		qualificationName.focus();
 		edit.innerHTML = 'Cancel';

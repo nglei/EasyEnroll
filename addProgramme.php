@@ -22,10 +22,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $closingDate = $_POST['closingDate'];
 	$duration = $_POST['duration'];
 	$fee = $_POST['fee'];
-
-
-    $insertProgramme ="INSERT into programme (programmeName,duration,totalFee,progDescription,closingDate) values
-    ('$programmeName','$duration','$fee','$description','$closingDate')";
+	$imageLocation = "img/prog-img/".$_FILES['uploadImage']['name'];
+	move_uploaded_file($_FILES['uploadImage']['tmp_name'],$imageLocation);
+	$UniID="";
+	$getUniID = "select UniID from university where adminUsername = '".$_SESSION['loginUser']."'";
+	$result = $conn->query($getUniID);
+	if($result->num_rows == 1){
+		while($uniid = $result->fetch_assoc()){
+			$UniID = $uniid['UniID'];
+		}
+	}
+	
+    $insertProgramme ="INSERT into programme (UniID,programmeName,duration,totalFee,progDescription,closingDate,imgURL) values
+    ('$UniID','$programmeName','$duration','$fee','$description','$closingDate','$imageLocation')";
     $conn->query($insertProgramme);
 	
 	$getID = "SELECT * FROM programme where programmeName='".$programmeName."' and progDescription = '".$description."' and closingDate = '".$closingDate."'";
@@ -226,7 +235,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             ?>
                             <div class="col-12 col-lg-7">
                                 <div class="contact-form-area wow fadeInUp" data-wow-delay="500ms">
-                                    <form action="addProgramme.php" method="post" onsubmit="return (validation() && checkScore())">
+                                    <form action="addProgramme.php" method="post" enctype="multipart/form-data" onsubmit="return (validation() && checkScore())">
 										<div>
 										<label for="programmeName">Programme Name</label>
                                         <input type="text" id="programmeName" name="programmeName" class="form-control" placeholder="Programme Name">
@@ -255,8 +264,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                           <span id="errorDate" class="error"></span>
 
                                         </div>
+										<div>
+										<label>Upload image for the programme</label>
+										<input type="file" name="uploadImage">
+										</div>
 										
 										<div>
+										<br>
 										<label>Entry Requirement for each qualification</label>
 										<table class="table">
 										<?php
@@ -284,7 +298,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 									
 									<div>
 
-                                        <button class="btn academy-btn mt-30" type="submit">Add Programme</button></div>
+                                        <input class="btn academy-btn mt-30" type="submit" value="Add Programme"></div>
                                     </form>
 
                                 </div>
