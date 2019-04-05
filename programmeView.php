@@ -12,7 +12,11 @@ $conn->query($useDb);
 if(isset($_GET['pID'])){
 $_SESSION['selectedProgramme'] = $_GET['pID'];}	
 $universityName = "";
+
 if($_SERVER["REQUEST_METHOD"] == "POST"){
+	if(isset($_SESSION['loginUser'])){
+		
+	
 	$overallScore ="";
 	$qualificationobtained = "";
 	$getScore = "select * from qualificationobtained where username = '".$_SESSION['loginUser']."'";
@@ -40,8 +44,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			
 		}
 	}
+	echo "<script>alert ('Application successful submitted.');window.location.href = 'course.php';</script>";
 	
-}
+	
+}else{
+	header("location:signin.php");
+}}
 ?>
 <!DOCTYPE html>
 <html lang="en">
