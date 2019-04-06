@@ -214,7 +214,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 											}	
 											echo "</div></div></div>";
 										echo '<h2 class="wow fadeInUp" data-wow-delay="300ms">Applicant\'s Result</h2>';
-										echo '<div class="col-12"><div class="single-blog-post mb-50 wow fadeInUp" data-wow-delay="300ms">';	
+										echo '<div class="col-12"><div class="single-blog-post mb-15 wow fadeInUp" data-wow-delay="300ms">';	
 											echo '<table class="table table-bordered">';
 											echo '<thead><tr><th>Subject</th><th>Score</th></tr></thead>';
 											$getSubject = "select * from result where username = '".$row['applicant']."'";

@@ -163,10 +163,10 @@ $_SESSION['programme'] = $_GET['pID'];}
 
                             <!-- Single Blog Start -->
                             <div class="col-12">
-                                <div class=" mb-50 wow fadeInUp" data-wow-delay="300ms">
+                                <div class=" mb-15 wow fadeInUp" data-wow-delay="300ms">
 									<table id="application" class="table">
 									<thead>
-										<tr onclick="location.href='qualificationList.php';">
+										<tr>
 											<td>Applicant's Name</td>
 											<td>Qualification Obtained</td>
 											<td>Overall Score</td>
@@ -205,7 +205,11 @@ $_SESSION['programme'] = $_GET['pID'];}
 
 								</table>
                                 </div>
+								<div class="col-12 mb-30 text-center">
+								<input type="button" name="back" class="btn academy-btn btn-sm mt-15" onclick="location.href = 'applicationList.php';" value="Back">
+								</div>
                             </div>
+							
 
                          
                         </div>
