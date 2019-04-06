@@ -10,6 +10,40 @@
 @import url(css/custom-icon.css);
 @import url(css/classy-nav.min.css);
 /* :: 3.0 Base CSS */
+.td-70{
+	width:70%;
+}
+.td-15{
+	width:15%;
+}
+.td-10{
+	width:10%;
+}
+.yellow{
+	background-color:yellow; width:40%;color:white;
+	width:80%;
+}
+.red{
+	background-color:red; width:40%;color:white;
+	width:80%;
+}
+.green{
+	background-color:limegreen; width:40%;color:white;
+	width:80%;
+}
+#application{
+	border: 2px solid #69bc5f;
+}
+#application thead{
+	font-weight: bold;
+}
+
+#application tbody tr:hover {background-color:#98FB98;
+cursor: pointer;}
+
+
+
+
 #viewQualification input,
 #viewQualification textarea,
 #viewQualification select{

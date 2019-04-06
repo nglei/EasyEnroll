@@ -144,7 +144,7 @@ $conn->query($useDb);
 				   <ul class="list-group list-group-flush">
 				   <br>
 				   <?php
-					$getProgramme = "SELECT * FROM programme";
+					$getProgramme = "SELECT * FROM programme where UniID = '".$_SESSION['uniID']."'";
 					$programme = $conn->query($getProgramme);
 					
 					if($programme->num_rows > 0){

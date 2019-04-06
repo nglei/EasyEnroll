@@ -161,7 +161,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <div class="contact-content">
+                    <div class="contact-content section-padding-100">
                         <div class="row">
                             <!-- Contact Information -->
                             <div class="col-12 col-lg-5">

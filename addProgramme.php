@@ -24,17 +24,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	$fee = $_POST['fee'];
 	$imageLocation = "img/prog-img/".$_FILES['uploadImage']['name'];
 	move_uploaded_file($_FILES['uploadImage']['tmp_name'],$imageLocation);
-	$UniID="";
-	$getUniID = "select UniID from university where adminUsername = '".$_SESSION['loginUser']."'";
-	$result = $conn->query($getUniID);
-	if($result->num_rows == 1){
-		while($uniid = $result->fetch_assoc()){
-			$UniID = $uniid['UniID'];
-		}
-	}
+
 	
     $insertProgramme ="INSERT into programme (UniID,programmeName,duration,totalFee,progDescription,closingDate,imgURL) values
-    ('$UniID','$programmeName','$duration','$fee','$description','$closingDate','$imageLocation')";
+    ('".$_SESSION['uniID']."','$programmeName','$duration','$fee','$description','$closingDate','$imageLocation')";
     $conn->query($insertProgramme);
 	
 	$getID = "SELECT * FROM programme where programmeName='".$programmeName."' and progDescription = '".$description."' and closingDate = '".$closingDate."'";

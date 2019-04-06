@@ -13,6 +13,13 @@ $useDb = "USE easyenroll";
 $conn->query($createDb);
 $conn->query($useDb);
 
+$getUniID = "select UniID from university where adminUsername = '".$_SESSION['loginUser']."'";
+	$result = $conn->query($getUniID);
+	if($result->num_rows == 1){
+		while($uniid = $result->fetch_assoc()){
+			$_SESSION['uniID'] = $uniid['UniID'];
+		}
+	}
 
  ?>
  <!DOCTYPE html>

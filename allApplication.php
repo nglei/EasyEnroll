@@ -9,7 +9,11 @@ if ($conn->connect_error){
 }
 $useDb = "USE easyenroll";
 $conn->query($useDb);
+
+if(isset($_GET['pID'])){
+$_SESSION['programme'] = $_GET['pID'];}	
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -144,123 +148,75 @@ $conn->query($useDb);
     <!-- ##### Breadcumb Area Start ##### -->
     <div class="breadcumb-area bg-img" style="background-image: url(img/bg-img/breadcumb.jpg);">
         <div class="bradcumbContent">
-            <h2>Our Courses</h2>
+            <h2>Application</h2>
         </div>
     </div>
     <!-- ##### Breadcumb Area End ##### -->
 
-    <!-- ##### Top Popular Courses Area Start ##### -->
-    <div class="top-popular-courses-area mt-50 section-padding-100-70">
+    <!-- ##### Blog Area Start ##### -->
+    <div class="blog-area mt-50 section-padding-100">
         <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="section-heading text-center mx-auto wow fadeInUp" data-wow-delay="300ms">
-                        <span>The Best</span>
-                        <h3>Top Popular Courses</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-<?php
-$getProgramme = "SELECT * FROM programme";
-					$programme = $conn->query($getProgramme);
-					
-					if($programme->num_rows > 0){
-						while($row = $programme->fetch_assoc()){
-							echo '<div class="col-12 col-lg-6">';
-							echo '<div class="single-top-popular-course d-flex align-items-center flex-wrap mb-30 wow fadeInUp" data-wow-delay="400ms">';
-							echo '<div class="popular-course-content">';
-							echo '<h5>'.$row['programmeName'].'</h5>';
-							$getUniID = "select * from university where UniID = '".$row['UniID']."'";
-							$result = $conn->query($getUniID);
-							if($result->num_rows == 1){
-								while($uniid = $result->fetch_assoc()){
-									echo '<span>'.$uniid['UniName'].'</span>';
+            <div class="">
+                <div class="col-12 col-md-12">
+                    <div class="academy-blog-posts">
+                        <div class="">
+
+                            <!-- Single Blog Start -->
+                            <div class="col-12">
+                                <div class=" mb-50 wow fadeInUp" data-wow-delay="300ms">
+									<table id="application" class="table">
+									<thead>
+										<tr onclick="location.href='qualificationList.php';">
+											<td>Applicant's Name</td>
+											<td>Qualification Obtained</td>
+											<td>Overall Score</td>
+											<td>Status</td>
+										</tr>
+									</thead>
+									<tbody>
+								<?php
+								$getApplication = "select * from application,user where user.username = application.applicant and application.progID =".$_GET['pID']." order by applicationStatus asc";
+								$result = $conn->query($getApplication);
+								if($result->num_rows >0){
+									while($row = $result->fetch_assoc()){					
+										echo  "<tr onclick='location.href=\"reviewApplication.php?aID=".$row['applicationID']."\";'>";
+										echo "<td>".$row['name']."</td>";
+										$getQualification = "select * from qualificationobtained,qualification where qualification.qualificationID=qualificationobtained.qualificationID and username='".$row['applicant']."'";
+										$getResult = $conn->query($getQualification);
+										if($getResult->num_rows > 0){
+											while($qualification = $getResult->fetch_assoc()){
+												echo "<td>".$qualification["qualificationName"]."</td>";
+												echo "<td>".$qualification['overallScore']."</td>";
+											}
+										}
+										if($row['applicationStatus']=="Successful"){
+											echo "<td><div class='green'>".$row['applicationStatus']."</div></td>";
+										}else if($row['applicationStatus']=="New"){
+											echo "<td><div>".$row['applicationStatus']."</div></td>";
+										}else{
+											echo "<td><div class='red'>".$row['applicationStatus']."</div></td>";
+										}										
+										echo "</tr>";
+										
+									}
 								}
-							}
-							echo '<p><b>Duration: </b>'.$row['duration'].'</br>';
-							echo '<b>Closing Date: </b>'.$row['closingDate'].'</br></p>';
-							
-							
-							echo '<a href="programmeView.php?pID='.$row['programmeID'].'" class="btn academy-btn btn-sm">See More</a>';
-							echo '</div><div class="popular-course-thumb bg-img" style="background-image: url('.$row['imgURL'].');"></div></div></div>';
-						}
-					}
-					else{
-            echo "No Programme in the list.";
-					}
-?>
-                <!-- Single Top Popular Course -->
-                
+								?>
+								</tbody>
+
+								</table>
+                                </div>
+                            </div>
+
+                         
+                        </div>
+                    </div>
+
                 </div>
+
             </div>
         </div>
     </div>
-    <!-- ##### Top Popular Courses Area End ##### -->
-
-    <!-- ##### Top Popular Courses Details Area Start ##### -->
-
-    <!-- ##### Top Popular Courses Details Area End ##### -->
-
-    <!-- ##### Course Area Start ##### -->
-    <div class="academy-courses-area section-padding-100-0">
-        <div class="container">
-            <div class="row">
-                <!-- Single Course Area -->
-                <div class="col-12 col-lg-4">
-                    <div class="single-course-area d-flex align-items-center mb-100">
-                        <div class="course-icon">
-                            <i class="icon-id-card"></i>
-                        </div>
-                        <div class="course-content">
-                            <h4>Business School</h4>
-                            <p>Cras vitae turpis lacinia, lacinia la cus non, fermentum nisi.</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Single Course Area -->
-                <div class="col-12 col-lg-4">
-                    <div class="single-course-area d-flex align-items-center mb-100">
-                        <div class="course-icon">
-                            <i class="icon-worldwide"></i>
-                        </div>
-                        <div class="course-content">
-                            <h4>Marketing</h4>
-                            <p>Lacinia, lacinia la cus non, fermen tum nisi.</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Single Course Area -->
-                <div class="col-12 col-lg-4">
-                    <div class="single-course-area d-flex align-items-center mb-100">
-                        <div class="course-icon">
-                            <i class="icon-map"></i>
-                        </div>
-                        <div class="course-content">
-                            <h4>Photography</h4>
-                            <p>Cras vitae turpis lacinia, lacinia la cus non, fermentum nisi.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- ##### Course Area End ##### -->
-
-    <!-- ##### CTA Area Start ##### -->
-    <div class="call-to-action-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="cta-content d-flex align-items-center justify-content-between flex-wrap">
-                        <h3>Do you want to enrole at our Academy? Get in touch!</h3>
-                        <a href="#" class="btn academy-btn">See More</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- ##### CTA Area End ##### -->
+    <!-- ##### Blog Area End ##### -->
 
     <!-- ##### Footer Area Start ##### -->
     <footer class="footer-area">
@@ -351,7 +307,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         </div>
     </footer>
     <!-- ##### Footer Area Start ##### -->
-
+	
     <!-- ##### All Javascript Script ##### -->
     <!-- jQuery-2.2.4 js -->
     <script src="js/jquery/jquery-2.2.4.min.js"></script>

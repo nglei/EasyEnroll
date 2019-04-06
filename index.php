@@ -95,7 +95,7 @@ applicationDate date,
 applicationStatus varchar(20),
 applicant varchar(50),
 progID int,
-foreign key (applicant) references user(username),
+foreign key (applicant) references applicant(username),
 foreign key (progID) references programme(programmeID));";
 $conn->query($applicationTb);
 

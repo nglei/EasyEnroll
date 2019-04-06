@@ -9,6 +9,21 @@ if ($conn->connect_error){
 }
 $useDb = "USE easyenroll";
 $conn->query($useDb);
+
+if(isset($_GET['aID'])){
+$_SESSION['application'] = $_GET['aID'];}	
+
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+	if(isset($_POST['accept'])){
+	$updateStatus = "UPDATE application set applicationStatus='Successful' where applicationID =".$_SESSION['application'];
+	$conn->query($updateStatus);
+	echo "<script>alert ('Application accepted succesfully.');window.location.href = 'allApplication.php?pID=".$_SESSION['programme']."';</script>";
+	}else{
+	$updateStatus = "UPDATE application set applicationStatus='Unsuccessful' where applicationID =".$_SESSION['application'];
+	$conn->query($updateStatus);	
+	}
+	
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,7 +65,20 @@ $conn->query($useDb);
                                 <a href="index.html"><img src="img/core-img/logo.png" alt=""></a>
                             </div>
                             <div class="login-content">
-                                <a href="#">Register / Login</a>
+                                <?php
+                                 if(isset($_SESSION['loginUser'])){
+									               echo "<a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>";
+									               echo "Welcome, ".$_SESSION['loginUser']."</a>";
+									               echo "<div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>";
+									               echo "<a class='dropdown-item' href='signout.php'>Logout</a></div>";
+
+
+                                 }else{
+                                   echo "<a href='signin.php' class='blueLink13'>";
+                                   echo "Register / Login";
+                                   echo "</a>";
+                                 }
+                                 ?>
                             </div>
                         </div>
                     </div>
@@ -142,125 +170,91 @@ $conn->query($useDb);
     <!-- ##### Header Area End ##### -->
 
     <!-- ##### Breadcumb Area Start ##### -->
-    <div class="breadcumb-area bg-img" style="background-image: url(img/bg-img/breadcumb.jpg);">
-        <div class="bradcumbContent">
-            <h2>Our Courses</h2>
-        </div>
+<div class="breadcumb-area bg-img" style="background-image: url(img/bg-img/breadcumb.jpg);">
+        
     </div>
     <!-- ##### Breadcumb Area End ##### -->
 
-    <!-- ##### Top Popular Courses Area Start ##### -->
-    <div class="top-popular-courses-area mt-50 section-padding-100-70">
+    <!-- ##### Blog Area Start ##### -->
+    <div class="blog-area mt-50 ">
         <div class="container">
+			
             <div class="row">
-                <div class="col-12">
-                    <div class="section-heading text-center mx-auto wow fadeInUp" data-wow-delay="300ms">
-                        <span>The Best</span>
-                        <h3>Top Popular Courses</h3>
+			<h2 class="wow fadeInUp" data-wow-delay="300ms">Application's Details</h2>
+                <div class="col-12 col-md-12">
+                    <div class="academy-blog-posts">
+                        <div class="row">
+
+                            <!-- Single Blog Start -->
+                            <div class="col-12">
+                                <div class="single-blog-post mb-15 wow fadeInUp" data-wow-delay="300ms">
+                                    <!-- Post Thumb -->
+									<?php
+									
+									$getApplication = "select * from application,user where user.username = application.applicant and application.applicationID =".$_GET['aID'];
+									$result = $conn->query($getApplication);
+									if($result->num_rows >0){
+										while($row = $result->fetch_assoc()){
+											$getProgramme = "SELECT * from programme where programmeID =".$row['progID'];
+											$programme = $conn->query($getProgramme);
+											if($programme->num_rows == 1){
+												while($progName = $programme->fetch_assoc()){
+													echo '<div class="row"><div class="col-12"><b>Programme Name:  </b>'.$progName['programmeName'].'</div>';
+													
+												}
+											}
+											echo '<div class="col-12"></br><b>Applicant\'s Name:</b>  '.$row['name'].'</div>';
+											$getQualification = "select * from qualificationobtained,qualification where qualification.qualificationID=qualificationobtained.qualificationID and username='".$row['applicant']."'";
+											$getResult = $conn->query($getQualification);
+											if($getResult->num_rows > 0){
+												while($qualification = $getResult->fetch_assoc()){
+													echo '<div class="col-12"></br><b>Qualification Obtained: </b>'.$qualification["qualificationName"].'</div>';
+													echo '<div class="col-12"></br><b>Overall Score: </b>'.$qualification['overallScore'].'</div>';
+												}
+											}	
+											echo "</div></div></div>";
+										echo '<h2 class="wow fadeInUp" data-wow-delay="300ms">Applicant\'s Result</h2>';
+										echo '<div class="col-12"><div class="single-blog-post mb-50 wow fadeInUp" data-wow-delay="300ms">';	
+											echo '<table class="table table-bordered">';
+											echo '<thead><tr><th>Subject</th><th>Score</th></tr></thead>';
+											$getSubject = "select * from result where username = '".$row['applicant']."'";
+											$allSubject = $conn->query($getSubject);
+											if($allSubject->num_rows > 0){
+												while($subject = $allSubject->fetch_assoc()){
+													echo '<tr><td>'.$subject['subject'].'</td>';
+													echo '<td>'.$subject['grade'].'</td></tr>';
+												}
+											}
+										echo "</table>";
+										}
+									}
+									?>
+									</div>
+									</div>
+									<div class="col-12 mb-30 text-center">
+									<form method="post" action="reviewApplication.php">
+									
+									<input type="submit" name="accept" class="btn academy-btn btn-sm mt-15" value="Accept">
+									<input type="submit" name="reject" class="btn academy-btn btn-sm mt-15" value="Reject">
+									<input type="button" name="back" class="btn academy-btn btn-sm mt-15" onclick="location.href = 'allApplication.php?pID=<?php echo $_SESSION['programme'];?>';" value="Back to List">
+									
+									</form></div>
+                                    
+                                
+                            
+
+
+
+
+
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-<?php
-$getProgramme = "SELECT * FROM programme";
-					$programme = $conn->query($getProgramme);
-					
-					if($programme->num_rows > 0){
-						while($row = $programme->fetch_assoc()){
-							echo '<div class="col-12 col-lg-6">';
-							echo '<div class="single-top-popular-course d-flex align-items-center flex-wrap mb-30 wow fadeInUp" data-wow-delay="400ms">';
-							echo '<div class="popular-course-content">';
-							echo '<h5>'.$row['programmeName'].'</h5>';
-							$getUniID = "select * from university where UniID = '".$row['UniID']."'";
-							$result = $conn->query($getUniID);
-							if($result->num_rows == 1){
-								while($uniid = $result->fetch_assoc()){
-									echo '<span>'.$uniid['UniName'].'</span>';
-								}
-							}
-							echo '<p><b>Duration: </b>'.$row['duration'].'</br>';
-							echo '<b>Closing Date: </b>'.$row['closingDate'].'</br></p>';
-							
-							
-							echo '<a href="programmeView.php?pID='.$row['programmeID'].'" class="btn academy-btn btn-sm">See More</a>';
-							echo '</div><div class="popular-course-thumb bg-img" style="background-image: url('.$row['imgURL'].');"></div></div></div>';
-						}
-					}
-					else{
-            echo "No Programme in the list.";
-					}
-?>
-                <!-- Single Top Popular Course -->
-                
+
                 </div>
             </div>
         </div>
     </div>
-    <!-- ##### Top Popular Courses Area End ##### -->
-
-    <!-- ##### Top Popular Courses Details Area Start ##### -->
-
-    <!-- ##### Top Popular Courses Details Area End ##### -->
-
-    <!-- ##### Course Area Start ##### -->
-    <div class="academy-courses-area section-padding-100-0">
-        <div class="container">
-            <div class="row">
-                <!-- Single Course Area -->
-                <div class="col-12 col-lg-4">
-                    <div class="single-course-area d-flex align-items-center mb-100">
-                        <div class="course-icon">
-                            <i class="icon-id-card"></i>
-                        </div>
-                        <div class="course-content">
-                            <h4>Business School</h4>
-                            <p>Cras vitae turpis lacinia, lacinia la cus non, fermentum nisi.</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Single Course Area -->
-                <div class="col-12 col-lg-4">
-                    <div class="single-course-area d-flex align-items-center mb-100">
-                        <div class="course-icon">
-                            <i class="icon-worldwide"></i>
-                        </div>
-                        <div class="course-content">
-                            <h4>Marketing</h4>
-                            <p>Lacinia, lacinia la cus non, fermen tum nisi.</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Single Course Area -->
-                <div class="col-12 col-lg-4">
-                    <div class="single-course-area d-flex align-items-center mb-100">
-                        <div class="course-icon">
-                            <i class="icon-map"></i>
-                        </div>
-                        <div class="course-content">
-                            <h4>Photography</h4>
-                            <p>Cras vitae turpis lacinia, lacinia la cus non, fermentum nisi.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- ##### Course Area End ##### -->
-
-    <!-- ##### CTA Area Start ##### -->
-    <div class="call-to-action-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="cta-content d-flex align-items-center justify-content-between flex-wrap">
-                        <h3>Do you want to enrole at our Academy? Get in touch!</h3>
-                        <a href="#" class="btn academy-btn">See More</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- ##### CTA Area End ##### -->
+    <!-- ##### Blog Area End ##### -->
 
     <!-- ##### Footer Area Start ##### -->
     <footer class="footer-area">
@@ -351,7 +345,6 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         </div>
     </footer>
     <!-- ##### Footer Area Start ##### -->
-
     <!-- ##### All Javascript Script ##### -->
     <!-- jQuery-2.2.4 js -->
     <script src="js/jquery/jquery-2.2.4.min.js"></script>
