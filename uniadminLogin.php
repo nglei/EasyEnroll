@@ -64,10 +64,17 @@ $getUniID = "select UniID from university where adminUsername = '".$_SESSION['lo
                              <div class="login-content">
                                  <?php
                                  if(isset($_SESSION['loginUser'])){
-									echo "<a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>";
-									echo "Welcome, ".$_SESSION['loginUser']."</a>";
-									echo "<div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>";
-									echo "<a class='dropdown-item' href='signout.php'>Logout</a></div>";
+									               echo "<a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>";
+												   $getName = "select * from user where username ='".$_SESSION['loginUser']."'";
+												   $user=$conn->query($getName);
+												   if($user->num_rows > 0){
+													   while($name = $user->fetch_assoc()){
+														   echo "Welcome, ".$name['name']."</a>";
+													   }
+												   }
+									               
+									               echo "<div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>";
+									               echo "<a class='dropdown-item' href='signout.php'>Logout</a></div>";
 
 
                                  }else{
@@ -107,8 +114,8 @@ $getUniID = "select UniID from university where adminUsername = '".$_SESSION['lo
                              <div class="classynav">
                                  <ul>
                                      <li><a href="uniadminLogin.php">Home</a></li>
-                                     <li><a href="3">Programme</a></li>
-                                     <li><a href="#">Review Application</a></li>
+                                     <li><a href="programmeList.php">Programme</a></li>
+                                     <li><a href="applicationList.php">Review Application</a></li>
                                  </ul>
                              </div>
                              <!-- Nav End -->
@@ -158,7 +165,7 @@ $getUniID = "select UniID from university where adminUsername = '".$_SESSION['lo
                     </div>
                 </div>
                 <!-- Single Course Area -->
-                <div class="col-12 col-sm-6 col-lg-6" onclick="location.href='#';" style="cursor: pointer;">
+                <div class="col-12 col-sm-6 col-lg-6" onclick="location.href='applicationList.php';" style="cursor: pointer;">
                     <div class="single-course-area d-flex align-items-center  wow fadeInUp" data-wow-delay="400ms" style="visibility: visible; animation-delay: 400ms; animation-name: fadeInUp; margin:80px;">
                         <div class="course-icon">
                             <i class="fa fa-tasks"></i>

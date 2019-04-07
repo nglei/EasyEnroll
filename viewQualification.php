@@ -24,8 +24,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	
 	$updateQualification ="UPDATE qualification set qualificationName = '$qualName' , minimumScore = $minS,maximumScore = $maxS,method='$calc',numOfSubject=$noSub,gradeList = '$gradeL' where qualificationID = ".$_SESSION['qID'];
 	$conn-> query($updateQualification);
-
-	header('Location: qualificationList.php');
+	
+	echo "<script>alert ('Qualification updated.');window.location.href = 'qualificationList.php';</script>";
+	
 }
 
  ?>

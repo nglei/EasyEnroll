@@ -54,7 +54,27 @@ $_SESSION['programme'] = $_GET['pID'];}
                                 <a href="index.html"><img src="img/core-img/logo.png" alt=""></a>
                             </div>
                             <div class="login-content">
-                                <a href="#">Register / Login</a>
+                                <?php
+                                 if(isset($_SESSION['loginUser'])){
+									               echo "<a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>";
+												   $getName = "select * from user where username ='".$_SESSION['loginUser']."'";
+												   $user=$conn->query($getName);
+												   if($user->num_rows > 0){
+													   while($name = $user->fetch_assoc()){
+														   echo "Welcome, ".$name['name']."</a>";
+													   }
+												   }
+									               
+									               echo "<div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>";
+									               echo "<a class='dropdown-item' href='signout.php'>Logout</a></div>";
+
+
+                                 }else{
+                                   echo "<a href='signin.php' class='blueLink13'>";
+                                   echo "Register / Login";
+                                   echo "</a>";
+                                 }
+                                 ?>
                             </div>
                         </div>
                     </div>
@@ -85,49 +105,10 @@ $_SESSION['programme'] = $_GET['pID'];}
                             <!-- Nav Start -->
                             <div class="classynav">
                                 <ul>
-                                    <li><a href="index.html">Home</a></li>
-                                    <li><a href="#">Pages</a>
-                                        <ul class="dropdown">
-                                            <li><a href="index.html">Home</a></li>
-                                            <li><a href="about-us.html">About Us</a></li>
-                                            <li><a href="course.html">Course</a></li>
-                                            <li><a href="blog.html">Blog</a></li>
-                                            <li><a href="contact.html">Contact</a></li>
-                                            <li><a href="elements.html">Elements</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="#">Mega Menu</a>
-                                        <div class="megamenu">
-                                            <ul class="single-mega cn-col-4">
-                                                <li><a href="#">Home</a></li>
-                                                <li><a href="#">Services &amp; Features</a></li>
-                                                <li><a href="#">Accordions and tabs</a></li>
-                                                <li><a href="#">Menu ideas</a></li>
-                                                <li><a href="#">Students Gallery</a></li>
-                                            </ul>
-                                            <ul class="single-mega cn-col-4">
-                                                <li><a href="#">Home</a></li>
-                                                <li><a href="#">Services &amp; Features</a></li>
-                                                <li><a href="#">Accordions and tabs</a></li>
-                                                <li><a href="#">Menu ideas</a></li>
-                                                <li><a href="#">Students Gallery</a></li>
-                                            </ul>
-                                            <ul class="single-mega cn-col-4">
-                                                <li><a href="#">Home</a></li>
-                                                <li><a href="#">Services &amp; Features</a></li>
-                                                <li><a href="#">Accordions and tabs</a></li>
-                                                <li><a href="#">Menu ideas</a></li>
-                                                <li><a href="#">Students Gallery</a></li>
-                                            </ul>
-                                            <div class="single-mega cn-col-4">
-                                                <img src="img/bg-img/bg-1.jpg" alt="">
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li><a href="about-us.html">About Us</a></li>
-                                    <li><a href="course.html">Course</a></li>
-                                    <li><a href="contact.html">Contact</a></li>
-                                </ul>
+                                     <li><a href="uniadminLogin.php">Home</a></li>
+                                     <li><a href="programmeList.php">Programme</a></li>
+                                     <li><a href="applicationList.php">Review Application</a></li>
+                                 </ul>
                             </div>
                             <!-- Nav End -->
                         </div>
@@ -180,25 +161,27 @@ $_SESSION['programme'] = $_GET['pID'];}
 								if($result->num_rows >0){
 									while($row = $result->fetch_assoc()){					
 										echo  "<tr onclick='location.href=\"reviewApplication.php?aID=".$row['applicationID']."\";'>";
-										echo "<td>".$row['name']."</td>";
+										echo "<td class='td-30'>".$row['name']."</td>";
 										$getQualification = "select * from qualificationobtained,qualification where qualification.qualificationID=qualificationobtained.qualificationID and username='".$row['applicant']."'";
 										$getResult = $conn->query($getQualification);
 										if($getResult->num_rows > 0){
 											while($qualification = $getResult->fetch_assoc()){
-												echo "<td>".$qualification["qualificationName"]."</td>";
-												echo "<td>".$qualification['overallScore']."</td>";
+												echo "<td class='td-45'>".$qualification["qualificationName"]."</td>";
+												echo "<td class='td-10'>".$qualification['overallScore']."</td>";
 											}
 										}
 										if($row['applicationStatus']=="Successful"){
-											echo "<td><div class='green'>".$row['applicationStatus']."</div></td>";
+											echo "<td class='td-15'><div class='green'>".$row['applicationStatus']."</div></td>";
 										}else if($row['applicationStatus']=="New"){
-											echo "<td><div>".$row['applicationStatus']."</div></td>";
+											echo "<td class='td-15'><div>".$row['applicationStatus']."</div></td>";
 										}else{
-											echo "<td><div class='red'>".$row['applicationStatus']."</div></td>";
+											echo "<td class='td-15'><div class='red'>".$row['applicationStatus']."</div></td>";
 										}										
 										echo "</tr>";
 										
 									}
+								}else{
+									echo "<tr><td colspan='4'>No Application at the moment</td></tr>";
 								}
 								?>
 								</tbody>

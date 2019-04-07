@@ -50,7 +50,27 @@ $conn->query($useDb);
                                 <a href="index.html"><img src="img/core-img/logo.png" alt=""></a>
                             </div>
                             <div class="login-content">
-                                <a href="#">Register / Login</a>
+                                <?php
+                                 if(isset($_SESSION['loginUser'])){
+									               echo "<a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>";
+												   $getName = "select * from user where username ='".$_SESSION['loginUser']."'";
+												   $user=$conn->query($getName);
+												   if($user->num_rows > 0){
+													   while($name = $user->fetch_assoc()){
+														   echo "Welcome, ".$name['name']."</a>";
+													   }
+												   }
+									               
+									               echo "<div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>";
+									               echo "<a class='dropdown-item' href='signout.php'>Logout</a></div>";
+
+
+                                 }else{
+                                   echo "<a href='signin.php' class='blueLink13'>";
+                                   echo "Register / Login";
+                                   echo "</a>";
+                                 }
+                                 ?>
                             </div>
                         </div>
                     </div>
@@ -81,7 +101,7 @@ $conn->query($useDb);
                             <!-- Nav Start -->
                             <div class="classynav">
                                 <ul>
-                                    <li><a href="index.html">Home</a></li>
+                                    <li><a href="index.php">Home</a></li>
                                     <li><a href="#">Pages</a>
                                         <ul class="dropdown">
                                             <li><a href="index.html">Home</a></li>
@@ -121,7 +141,7 @@ $conn->query($useDb);
                                         </div>
                                     </li>
                                     <li><a href="about-us.html">About Us</a></li>
-                                    <li><a href="course.html">Course</a></li>
+                                    <li><a href="course.php">Course</a></li>
                                     <li><a href="contact.html">Contact</a></li>
                                 </ul>
                             </div>
@@ -175,7 +195,7 @@ $getProgramme = "SELECT * FROM programme";
 							$result = $conn->query($getUniID);
 							if($result->num_rows == 1){
 								while($uniid = $result->fetch_assoc()){
-									echo '<span>'.$uniid['UniName'].'</span>';
+									echo '<span><i class="fa fa-map-marker"></i> '.$uniid['UniName'].'</span>';
 								}
 							}
 							echo '<p><b>Duration: </b>'.$row['duration'].'</br>';

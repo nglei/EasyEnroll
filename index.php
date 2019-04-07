@@ -147,7 +147,14 @@ $conn->query($setapplicationID);
                                  <?php
                                  if(isset($_SESSION['loginUser'])){
 									               echo "<a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>";
-									               echo "Welcome, ".$_SESSION['loginUser']."</a>";
+												   $getName = "select * from user where username ='".$_SESSION['loginUser']."'";
+												   $user=$conn->query($getName);
+												   if($user->num_rows > 0){
+													   while($name = $user->fetch_assoc()){
+														   echo "Welcome, ".$name['name']."</a>";
+													   }
+												   }
+									               
 									               echo "<div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>";
 									               echo "<a class='dropdown-item' href='signout.php'>Logout</a></div>";
 
@@ -188,11 +195,11 @@ $conn->query($setapplicationID);
                              <!-- Nav Start -->
                              <div class="classynav">
                                  <ul>
-                                     <li><a href="index.html">Home</a></li>
+                                     <li><a href="index.php">Home</a></li>
                                      <li><a href="#">Pages</a>
-
+	
                                          <ul class="dropdown">
-                                             <li><a href="index.html">Home</a></li>
+                                             <li><a href="index.php">Home</a></li>
                                              <li><a href="addUniversity.php">Add University</a></li>
                                              <li><a href="addProgramme.html">Course</a></li>
                                              <li><a href="addQualification.html">Programme</a></li>

@@ -1,8 +1,9 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$conn = new mysqli($servername,$username,$password);
+session_start();
+$_SESSION['servername'] = "localhost";
+$_SESSION['username'] = "root";
+$_SESSION['password'] = "";
+$conn = new mysqli($_SESSION['servername'], $_SESSION['username'],$_SESSION['password']);
 if($conn->connect_error){
     die("Connection failed: " . $conn->connect_error);
 }
@@ -91,7 +92,27 @@ $sqlcreateTbl = "CREATE TABLE IF NOT EXISTS University (
                                 <a href="index.html"><img src="img/bg-img/EasyEnroll.png" alt="" height = "122vh" width="68vh"></a>
                             </div>
                             <div class="login-content">
-                                <a href="//www.123formbuilder.com/form-4669784/school-admission-form" class="blueLink13">Register / Login</a>
+                                <?php
+                                 if(isset($_SESSION['loginUser'])){
+									               echo "<a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>";
+												   $getName = "select * from sasadmin where username ='".$_SESSION['loginUser']."'";
+												   $user=$conn->query($getName);
+												   if($user->num_rows > 0){
+													   while($name = $user->fetch_assoc()){
+														   echo "Welcome, ".$name['name']."</a>";
+													   }
+												   }
+									               
+									               echo "<div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>";
+									               echo "<a class='dropdown-item' href='signout.php'>Logout</a></div>";
+
+
+                                 }else{
+                                   echo "<a href='signin.php' class='blueLink13'>";
+                                   echo "Register / Login";
+                                   echo "</a>";
+                                 }
+                                 ?>
                             </div>
                         </div>
                     </div>
@@ -121,52 +142,11 @@ $sqlcreateTbl = "CREATE TABLE IF NOT EXISTS University (
 
                             <!-- Nav Start -->
                             <div class="classynav">
-                                <ul>
-                                    <li><a href="index.html">Home</a></li>
-                                    <li><a href="#">Pages</a>
-                                        
-                                    <ul class="dropdown">
-                                            <li><a href="index.html">Home</a></li>
-                                            <li><a href="addUniversity.php">Add University</a></li>
-                                            <li><a href="addProgramme.html">Course</a></li>
-                                            <li><a href="addQualification.html">Programme</a></li>
-                                            <li><a href="contact.html">Apply Now</a></li>
-                                            <li><a href="elements.html">Contact</a></li>
-
-                                        </ul>
-                                    </li>
-                                    <li><a href="#">Universities</a>
-                                        <div class="megamenu">
-                                            <ul class="single-mega cn-col-4">
-                                                <li><a href="index.html">Home</a></li>
-                                                <li><a href="#">Yale University</a></li>
-                                                <li><a href="#">Tokyo University</a></li>
-                                                <li><a href="#">National Technology University</a></li>
-                                                <li><a href="#">National University Singapore</a></li>
-                                            </ul>
-                                            <ul class="single-mega cn-col-4">
-                                                <li><a href="#">University Kebangsaan Malaysia</a></li>
-                                                <li><a href="#">University Islam </a></li>
-                                                <li><a href="#">University Teknologi Malaysia</a></li>
-                                                <li><a href="#">SEGI</a></li>
-                                                <li><a href="#">Students Gallery</a></li>
-                                            </ul>
-                                            <ul class="single-mega cn-col-4">
-                                                <li><a href="#">Home</a></li>
-                                                <li><a href="#">Services &amp; Features</a></li>
-                                                <li><a href="#">Accordions and tabs</a></li>
-                                                <li><a href="#">Menu ideas</a></li>
-                                                <li><a href="#">Students Gallery</a></li>
-                                            </ul>
-                                            <div class="single-mega cn-col-4">
-                                                <img src="img/bg-img/bg-1.jpg" alt="">
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li><a href="about-us.html">About Us</a></li>
-                                    <li><a href="course.html">Course</a></li>
-                                    <li><a href="contact.html">Contact</a></li>
-                                </ul>
+								<ul>
+                                     <li><a href="adminLogin.php">Home</a></li>
+                                     <li><a href="qualificationList.php">Qualification</a></li>
+                                     <li><a href="addUniversity.php">University</a></li>
+                                 </ul>
                             </div>
                             <!-- Nav End -->
                         </div>

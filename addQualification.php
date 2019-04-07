@@ -32,7 +32,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $insertQualification ="INSERT into qualification (qualificationName,minimumScore,maximumScore,method,numOfSubject,gradeList) values
             ('$qualificationName','$minScore','$maxScore','$method','$numOfSub','$gradeList')";
             $conn->query($insertQualification);
-			header('location:qualificationList.php');
+			echo "<script>alert ('Qualification has been recorded.');window.location.href = 'qualificationList.php';</script>";
+
         }
     }
 
@@ -83,10 +84,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             <div class="login-content">
                                 <?php
                                  if(isset($_SESSION['loginUser'])){
-									echo "<a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>";
-									echo "Welcome, ".$_SESSION['loginUser']."</a>";
-									echo "<div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>";
-									echo "<a class='dropdown-item' href='signout.php'>Logout</a></div>";
+									               echo "<a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>";
+												   $getName = "select * from sasadmin where username ='".$_SESSION['loginUser']."'";
+												   $user=$conn->query($getName);
+												   if($user->num_rows > 0){
+													   while($name = $user->fetch_assoc()){
+														   echo "Welcome, ".$name['name']."</a>";
+													   }
+												   }
+									               
+									               echo "<div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>";
+									               echo "<a class='dropdown-item' href='signout.php'>Logout</a></div>";
 
 
                                  }else{
@@ -125,9 +133,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                              <!-- Nav Start -->
                              <div class="classynav">
                                  <ul>
-                                     <li><a href="amdinLogin.php">Home</a></li>
+                                     <li><a href="adminLogin.php">Home</a></li>
                                      <li><a href="qualificationList.php">Qualification</a></li>
-                                     <li><a href="#">University</a></li>
+                                     <li><a href="addUniversity.php">University</a></li>
                                  </ul>
                              </div>
                              <!-- Nav End -->
