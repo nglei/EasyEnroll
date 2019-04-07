@@ -28,7 +28,7 @@ $createApplicantTb = "CREATE TABLE applicant(
 username varchar(50) PRIMARY KEY,
 idtype varchar(10),
 idno varchar(20),
-mobileNo varchar(12),
+mobileNo varchar(14),
 dateOfBirth date,
 foreign key (username) references user(username))";
 $conn->query($createApplicantTb);
