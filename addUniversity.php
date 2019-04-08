@@ -16,7 +16,7 @@ if($conn->query($sql) === TRUE){
 }
 $sqlUseDb = "USE easyenroll";
 $sqlcreateTbl = "CREATE TABLE IF NOT EXISTS University (
-    UniID VARCHAR(5) PRIMARY KEY DEFAULT '0' NOT NULL, UniName VARCHAR(55), adminUsername VARCHAR(50), foreign KEY (adminUsername) references user(username));";
+    UniID VARCHAR(12) PRIMARY KEY DEFAULT '0' NOT NULL, UniName VARCHAR(55), adminUsername VARCHAR(50), foreign KEY (adminUsername) references user(username));";
     if($conn->query($sqlUseDb) === TRUE){
         echo "Use Database Successful";
     }
@@ -292,7 +292,7 @@ $sqlcreateTbl = "CREATE TABLE IF NOT EXISTS University (
                                         <h6>University Admin Details Sign Up</h6>
                                         <div class="form-label-group">
                                         <input type="text" class="form-control" id="uniadminusername" name="uniadminusername" placeholder="marcus" required>
-                                        <span id="errorUsername" class="error"><?php echo(" | " . $duplicateusername)?></span>
+                                        <span id="errorUsername" class="error"><?php if(isset($_POST['uniadminusername'])){echo(" | " . $duplicateusername);}?></span>
                                         <label for="uniadminusername">University's Admin username (e.g. marcusliew@utar)</label>
                                         
                                     </div>
