@@ -41,10 +41,18 @@ $errorMessage="";
 
     }else{
       $_SESSION['loginUser'] = $loginUsername;
-      if($userType == "applicant"){
-      header('Location: index.php');}
-      else if($userType == "uniadmin"){header('Location: uniadminLogin.php');}
-        else{header('Location: adminLogin.php');}
+		if($userType == "uniadmin"){
+		  header('Location: uniadminLogin.php');
+		}
+		else if($userType == "sasadmin"){
+		header('Location: adminLogin.php');
+		}
+		else if($_SESSION['selectedProgramme'] != ''){
+		  header('location:programmeView.php?pID='.$_SESSION['selectedProgramme'].'');
+		}      
+        else{
+			header('Location: index.php');
+		}
     }
   }
 

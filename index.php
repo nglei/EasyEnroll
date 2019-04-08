@@ -28,7 +28,7 @@ $createApplicantTb = "CREATE TABLE applicant(
 username varchar(50) PRIMARY KEY,
 idtype varchar(10),
 idno varchar(20),
-mobileNo varchar(12),
+mobileNo varchar(14),
 dateOfBirth date,
 foreign key (username) references user(username))";
 $conn->query($createApplicantTb);
@@ -68,11 +68,14 @@ $conn->query($resultTb);
 
 $programmeTb = "create table programme(
 programmeID int auto_increment primary key not null,
+UniID VARCHAR(5),
 programmeName varchar(100),
 duration varchar(50),
-totalFee decimal(9,2),
+totalFee int(10),
 progDescription varchar(200),
-closingDate date)";
+closingDate date,
+imgURL varchar(200),
+foreign key (UniID) references university(UniID))";
 $conn->query($programmeTb);
 
 $setProgID = "alter table programme AUTO_INCREMENt = 40001";
@@ -85,6 +88,19 @@ entryScore int(5),
 foreign key (programmeID) references programme(programmeID),
 foreign key (qualificationID) references qualification(qualificationID))";
 $conn->query($entryReqTb);
+
+$applicationTb = "create table application(
+applicationID int auto_increment primary key,
+applicationDate date,
+applicationStatus varchar(20),
+applicant varchar(50),
+progID int,
+foreign key (applicant) references applicant(username),
+foreign key (progID) references programme(programmeID));";
+$conn->query($applicationTb);
+
+$setapplicationID = "alter table application AUTO_INCREMENt = 60001";
+$conn->query($setapplicationID);
 
  ?>
  <!DOCTYPE html>
@@ -131,7 +147,14 @@ $conn->query($entryReqTb);
                                  <?php
                                  if(isset($_SESSION['loginUser'])){
 									               echo "<a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>";
-									               echo "Welcome, ".$_SESSION['loginUser']."</a>";
+												   $getName = "select * from user where username ='".$_SESSION['loginUser']."'";
+												   $user=$conn->query($getName);
+												   if($user->num_rows > 0){
+													   while($name = $user->fetch_assoc()){
+														   echo "Welcome, ".$name['name']."</a>";
+													   }
+												   }
+									               
 									               echo "<div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>";
 									               echo "<a class='dropdown-item' href='signout.php'>Logout</a></div>";
 
@@ -172,11 +195,11 @@ $conn->query($entryReqTb);
                              <!-- Nav Start -->
                              <div class="classynav">
                                  <ul>
-                                     <li><a href="index.html">Home</a></li>
+                                     <li><a href="index.php">Home</a></li>
                                      <li><a href="#">Pages</a>
-
+	
                                          <ul class="dropdown">
-                                             <li><a href="index.html">Home</a></li>
+                                             <li><a href="index.php">Home</a></li>
                                              <li><a href="addUniversity.php">Add University</a></li>
                                              <li><a href="addProgramme.html">Course</a></li>
                                              <li><a href="addQualification.html">Programme</a></li>
@@ -214,7 +237,7 @@ $conn->query($entryReqTb);
                                          </div>
                                      </li>
                                      <li><a href="about-us.html">About Us</a></li>
-                                     <li><a href="course.html">Course</a></li>
+                                     <li><a href="course.php">Course</a></li>
                                      <li><a href="contact.html">Contact</a></li>
                                  </ul>
                              </div>

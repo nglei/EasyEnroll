@@ -24,8 +24,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	
 	$updateQualification ="UPDATE qualification set qualificationName = '$qualName' , minimumScore = $minS,maximumScore = $maxS,method='$calc',numOfSubject=$noSub,gradeList = '$gradeL' where qualificationID = ".$_SESSION['qID'];
 	$conn-> query($updateQualification);
-
-	header('Location: qualificationList.php');
+	
+	echo "<script>alert ('Qualification updated.');window.location.href = 'qualificationList.php';</script>";
+	
 }
 
  ?>
@@ -379,7 +380,7 @@ if($result->num_rows > 0){
 		method.style.backgroundColor = "#eef3f6";
 		numOfSubject.style.backgroundColor = "#eef3f6";
 
-		save.innerHTML = "Save Qualification";
+		save.innerHTML = "Save";
 		save.setAttribute("type","submit");
 		qualificationName.focus();
 		edit.innerHTML = 'Cancel';

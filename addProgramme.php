@@ -22,10 +22,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $closingDate = $_POST['closingDate'];
 	$duration = $_POST['duration'];
 	$fee = $_POST['fee'];
+	$imageLocation = "img/prog-img/".$_FILES['uploadImage']['name'];
+	move_uploaded_file($_FILES['uploadImage']['tmp_name'],$imageLocation);
 
-
-    $insertProgramme ="INSERT into programme (programmeName,duration,totalFee,progDescription,closingDate) values
-    ('$programmeName','$duration','$fee','$description','$closingDate')";
+	
+    $insertProgramme ="INSERT into programme (UniID,programmeName,duration,totalFee,progDescription,closingDate,imgURL) values
+    ('".$_SESSION['uniID']."','$programmeName','$duration','$fee','$description','$closingDate','$imageLocation')";
     $conn->query($insertProgramme);
 	
 	$getID = "SELECT * FROM programme where programmeName='".$programmeName."' and progDescription = '".$description."' and closingDate = '".$closingDate."'";
@@ -46,8 +48,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			
 	}
 	}
+	echo "<script>alert ('Programme added.');window.location.href = 'programmeList.php';</script>";
 	
-	header('location:programmeList.php');
         
     
 
@@ -96,10 +98,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             <div class="login-content">
                                 <?php
                                  if(isset($_SESSION['loginUser'])){
-									echo "<a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>";
-									echo "Welcome, ".$_SESSION['loginUser']."</a>";
-									echo "<div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>";
-									echo "<a class='dropdown-item' href='signout.php'>Logout</a></div>";
+									               echo "<a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>";
+												   $getName = "select * from user where username ='".$_SESSION['loginUser']."'";
+												   $user=$conn->query($getName);
+												   if($user->num_rows > 0){
+													   while($name = $user->fetch_assoc()){
+														   echo "Welcome, ".$name['name']."</a>";
+													   }
+												   }
+									               
+									               echo "<div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>";
+									               echo "<a class='dropdown-item' href='signout.php'>Logout</a></div>";
 
 
                                  }else{
@@ -140,7 +149,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                  <ul>
                                      <li><a href="uniadminLogin.php">Home</a></li>
                                      <li><a href="programmeList.php">Programme</a></li>
-                                     <li><a href="#">Review Application</a></li>
+                                     <li><a href="applicationList.php">Review Application</a></li>
                                  </ul>
                              </div>
                              <!-- Nav End -->
@@ -226,7 +235,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             ?>
                             <div class="col-12 col-lg-7">
                                 <div class="contact-form-area wow fadeInUp" data-wow-delay="500ms">
-                                    <form action="addProgramme.php" method="post" onsubmit="return (validation() && checkScore())">
+                                    <form action="addProgramme.php" method="post" enctype="multipart/form-data" onsubmit="return (validation() && checkScore())">
 										<div>
 										<label for="programmeName">Programme Name</label>
                                         <input type="text" id="programmeName" name="programmeName" class="form-control" placeholder="Programme Name">
@@ -255,8 +264,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                           <span id="errorDate" class="error"></span>
 
                                         </div>
+										<div>
+										<label>Upload image for the programme</label>
+										<input type="file" name="uploadImage">
+										</div>
 										
 										<div>
+										<br>
 										<label>Entry Requirement for each qualification</label>
 										<table class="table">
 										<?php
@@ -284,7 +298,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 									
 									<div>
 
-                                        <button class="btn academy-btn mt-30" type="submit">Add Programme</button></div>
+                                        <input class="btn academy-btn mt-30" type="submit" value="Add Programme"></div>
                                     </form>
 
                                 </div>

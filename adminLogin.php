@@ -57,10 +57,17 @@ $conn->query($useDb);
                              <div class="login-content">
                                  <?php
                                  if(isset($_SESSION['loginUser'])){
-									echo "<a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>";
-									echo "Welcome, ".$_SESSION['loginUser']."</a>";
-									echo "<div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>";
-									echo "<a class='dropdown-item' href='signout.php'>Logout</a></div>";
+									               echo "<a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>";
+												   $getName = "select * from sasadmin where username ='".$_SESSION['loginUser']."'";
+												   $user=$conn->query($getName);
+												   if($user->num_rows > 0){
+													   while($name = $user->fetch_assoc()){
+														   echo "Welcome, ".$name['name']."</a>";
+													   }
+												   }
+									               
+									               echo "<div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>";
+									               echo "<a class='dropdown-item' href='signout.php'>Logout</a></div>";
 
 
                                  }else{
@@ -101,7 +108,7 @@ $conn->query($useDb);
                                  <ul>
                                      <li><a href="adminLogin.php">Home</a></li>
                                      <li><a href="qualificationList.php">Qualification</a></li>
-                                     <li><a href="#">University</a></li>
+                                     <li><a href="addUniversity.php">University</a></li>
                                  </ul>
                              </div>
                              <!-- Nav End -->
