@@ -16,11 +16,12 @@ function uniAdminValidation(){
             }
         }
     }
+    return false;
 }
 
 
 function validUsername(){
-    if (usernamefield.value == ""){
+    if (usernamefield.value == "" || usernamefield.value == " "){
         document.getElementById("errorUsername").innerHTML="Please enter valid username";
         usernamefield.style.borderColor="rgb(255,0,0)";
     }
@@ -32,7 +33,7 @@ function validUsername(){
     }
 
     function validUniversityName(){
-        if(unifield.value == "" || unifield.value==" "){
+        if(unifield.value == "" || unifield.value ==" "){
             document.getElementById("invalidUniName").innerHTML = "University Name is blamk";
         }else{
             return true;
