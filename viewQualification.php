@@ -70,20 +70,28 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                  <a href="index.html"><img src="img/bg-img/EasyEnroll.png" alt="" height="102vh" width="88vh"></a>
                              </div>
                              <div class="login-content">
+                             
                                <?php
-                               if(isset($_SESSION['loginUser'])){
-                echo "<a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>";
-                echo "Welcome, ".$_SESSION['loginUser']."</a>";
-                echo "<div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>";
-                echo "<a class='dropdown-item' href='signout.php'>Logout</a></div>";
+                                 if(isset($_SESSION['loginUser'])){
+									               echo "<a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>";
+												   $getName = "select * from sasadmin where username ='".$_SESSION['loginUser']."'";
+												   $user=$conn->query($getName);
+												   if($user->num_rows > 0){
+													   while($name = $user->fetch_assoc()){
+														   echo "Welcome, ".$name['name']."</a>";
+													   }
+												   }
+									               
+									               echo "<div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>";
+									               echo "<a class='dropdown-item' href='signout.php'>Logout</a></div>";
 
 
-                               }else{
-                                 echo "<a href='signin.php' class='blueLink13'>";
-                                 echo "Register / Login";
-                                 echo "</a>";
-                               }
-                               ?>
+                                 }else{
+                                   echo "<a href='signin.php' class='blueLink13'>";
+                                   echo "Register / Login";
+                                   echo "</a>";
+                                 }
+                                 ?>
                              </div>
                          </div>
                      </div>
@@ -114,9 +122,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                              <!-- Nav Start -->
                              <div class="classynav">
                                <ul>
-                                   <li><a href="index.php">Home</a></li>
-                                   <li><a href="about-us.html">Qualification</a></li>
-                                   <li><a href="course.html">University</a></li>
+                                   <li><a href="adminLogin.php">Home</a></li>
+                                   <li><a href="qualificationList.php">Qualification</a></li>
+                                   <li><a href="addUniversity.php">University</a></li>
                                </ul>
                              </div>
                              <!-- Nav End -->

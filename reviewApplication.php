@@ -20,7 +20,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	echo "<script>alert ('Application accepted succesfully.');window.location.href = 'allApplication.php?pID=".$_SESSION['programme']."';</script>";
 	}else{
 	$updateStatus = "UPDATE application set applicationStatus='Unsuccessful' where applicationID =".$_SESSION['application'];
-	$conn->query($updateStatus);	
+	$conn->query($updateStatus);
+	echo "<script>alert ('Application rejected.');window.location.href = 'allApplication.php?pID=".$_SESSION['programme']."';</script>";	
 	}
 	
 }

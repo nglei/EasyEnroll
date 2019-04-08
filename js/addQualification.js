@@ -36,6 +36,7 @@ function validation(){
 	if(qualificationName.value == ""){
 		document.getElementById("errorQualification").innerHTML="Please enter a Qualification Name";
         qualificationName.style.borderColor="red";
+		qualificationName.focus();
 		return false;
 	}
 	else{
@@ -47,10 +48,12 @@ function validation(){
 	if(isNaN(minScore.value)){
 		document.getElementById("errorMinScore").innerHTML="Please enter number for minimum score";
         minScore.style.borderColor="red";
+		minScore.focus();
 		return false;
 	}else if(minScore.value == ""){
 		document.getElementById("errorMinScore").innerHTML="Please enter minimum score";
         minScore.style.borderColor="red";
+		minScore.focus();
 		return false;
 	}
 	else{
@@ -61,10 +64,12 @@ function validation(){
 	if(isNaN(maxScore.value)){
 		document.getElementById("errorMaxScore").innerHTML="Please enter number for maximum score";
         maxScore.style.borderColor="red";
+		maxScore.focus();
 		return false;
 	}else if(maxScore.value == ""){
 		document.getElementById("errorMaxScore").innerHTML="Please enter maximum score";
         maxScore.style.borderColor="red";
+		maxScore.focus();
 		return false;
 	}
 	else{
@@ -75,10 +80,13 @@ function validation(){
 	if(subNum.value == ""){
 		document.getElementById("errorSubNum").innerHTML="Please the number of subject";
         subNum.style.borderColor="red";
+		subNum.focus();
 		return false;
 	}else if(isNaN(subNum.value)){
 		document.getElementById("errorSubNum").innerHTML="Please enter numeric data for number of subject";
         subNum.style.borderColor="red";
+		subNum.focus();
+		return false;
 	}else{
 		return true;
 	}}
@@ -87,6 +95,7 @@ function validation(){
 	if(gradeList.value == ""){
 		document.getElementById("errorGradeList").innerHTML="Please a grade list";
         gradeList.style.borderColor="red";
+		gradeList.focus();
 		return false;
 	}else{
 		return true;
@@ -97,6 +106,7 @@ function validation(){
 		if(selectMethod == ""){
 			document.getElementById("errorMethod").innerHTML="Please choose a calculation method";
 			calcMethod.style.borderColor="red";
+			calcMethod.focus();
 			return false;
 		}
 		else{

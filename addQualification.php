@@ -33,10 +33,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             ('$qualificationName','$minScore','$maxScore','$method','$numOfSub','$gradeList')";
             $conn->query($insertQualification);
 			echo "<script>alert ('Qualification has been recorded.');window.location.href = 'qualificationList.php';</script>";
-
         }
     }
-
 }
 ?>
 <!DOCTYPE html>

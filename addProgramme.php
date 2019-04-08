@@ -44,15 +44,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			$qID = $row['qualificationID'];
 			$entryReq = $_POST[$qID];
 			$insertReq = "INSERT into entryreq (programmeID,qualificationID,entryScore) values ('$progID','$qID','$entryReq')";
-			$conn->query($insertReq);
+			if($conn->query($insertReq)){
+				echo "success";
+			}else{
+				echo "fail";
+			}
 			
 	}
 	}
 	echo "<script>alert ('Programme added.');window.location.href = 'programmeList.php';</script>";
-	
-        
-    
-
 }
 ?>
 <!DOCTYPE html>

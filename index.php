@@ -69,10 +69,10 @@ $conn->query($resultTb);
 $programmeTb = "create table programme(
 programmeID int auto_increment primary key not null,
 UniID VARCHAR(5),
-programmeName varchar(100),
+programmeName varchar(1000),
 duration varchar(50),
 totalFee int(10),
-progDescription varchar(200),
+progDescription varchar(2000),
 closingDate date,
 imgURL varchar(200),
 foreign key (UniID) references university(UniID))";
@@ -84,7 +84,7 @@ $conn->query($setProgID);
 $entryReqTb = "create table entryReq(
 programmeID int,
 qualificationID int,
-entryScore int(5),
+entryScore decimal(6,1),
 foreign key (programmeID) references programme(programmeID),
 foreign key (qualificationID) references qualification(qualificationID))";
 $conn->query($entryReqTb);
