@@ -176,39 +176,19 @@ $conn->query($useDb);
                              <div class="classynav">
                                  <ul>
                                      <li><a href="index.php">Home</a></li>
-                                     <li><a href="#">Pages</a>
-                                         <ul class="dropdown">
-                                             <li><a href="index.html">Home</a></li>
-                                             <li><a href="about-us.html">About Us</a></li>
-                                             <li><a href="course.html">Course</a></li>
-                                             <li><a href="blog.html">Blog</a></li>
-                                             <li><a href="contact.html">Contact</a></li>
-                                             <li><a href="elements.html">Elements</a></li>
-                                         </ul>
-                                     </li>
-                                     <li><a href="#">Mega Menu</a>
+                                     <li><a href="signin.php">Login</a></li>
+                                     <li><a href="#">Goes To</a>
                                          <div class="megamenu">
                                              <ul class="single-mega cn-col-4">
-                                                 <li><a href="#">Home</a></li>
-                                                 <li><a href="#">Services &amp; Features</a></li>
-                                                 <li><a href="#">Accordions and tabs</a></li>
-                                                 <li><a href="#">Menu ideas</a></li>
-                                                 <li><a href="#">Students Gallery</a></li>
+                                                 <li><a href="index.php">Home</a></li>
+                                                 
                                              </ul>
                                              <ul class="single-mega cn-col-4">
-                                                 <li><a href="#">Home</a></li>
-                                                 <li><a href="#">Services &amp; Features</a></li>
-                                                 <li><a href="#">Accordions and tabs</a></li>
-                                                 <li><a href="#">Menu ideas</a></li>
-                                                 <li><a href="#">Students Gallery</a></li>
+                                                 
+                                                 <li><a href="signin.php"> &#x21B0; Back To Sign In</a></li>
+                                                 
                                              </ul>
-                                             <ul class="single-mega cn-col-4">
-                                                 <li><a href="#">Home</a></li>
-                                                 <li><a href="#">Services &amp; Features</a></li>
-                                                 <li><a href="#">Accordions and tabs</a></li>
-                                                 <li><a href="#">Menu ideas</a></li>
-                                                 <li><a href="#">Students Gallery</a></li>
-                                             </ul>
+                                            
                                              <div class="single-mega cn-col-4">
                                                  <img src="img/bg-img/bg-1.jpg" alt="">
                                              </div>
