@@ -283,7 +283,7 @@ $conn->query($setapplicationID);
                          <div class="col-12">
                              <div class="hero-slides-content">
                                  <h4 data-animation="fadeInUp" data-delay="100ms">Excellent achievements Successful future</h4>
-                                 <h2 data-animation="fadeInUp" data-delay="400ms">Wellcome to our <br>Easy Enroll</h2>
+                                 <h2 data-animation="fadeInUp" data-delay="400ms">Welcome to our <br>Easy Enroll</h2>
                                  <a href="#" class="btn academy-btn" data-animation="fadeInUp" data-delay="700ms">Read More</a>
                              </div>
                          </div>
