@@ -1,5 +1,5 @@
 var usernamefield= document.getElementById("uniadminusername");
-var unifield = document.getElementById("uniadminusername");
+var unifield = document.getElementById("uniName");
 var pwfield = document.getElementById("uniadminpw");
 var fullNamefield = document.getElementById("uniadminfullname");
 var emailfield = document.getElementById("uniadminemail");
